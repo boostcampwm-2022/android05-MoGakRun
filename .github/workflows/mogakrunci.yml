@@ -1,9 +1,8 @@
 name: MoGakRun CI
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
+    
 jobs:
   build:
     runs-on: ubuntu-latest
