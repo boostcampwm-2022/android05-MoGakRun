@@ -17,10 +17,13 @@ jobs:
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      
+
+    - name: Create google-service
+      run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > ./data/google-services.json
+
     - name: Build with Gradle
       run: ./gradlew build
-      
+
     - name: Build Debug APK
       run: bash ./gradlew assembleDebug --stacktrace
       

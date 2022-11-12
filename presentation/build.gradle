@@ -28,9 +28,13 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    dataBinding {
+        enable = true
+    }
 }
 
 dependencies {
+
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "com.google.android.material:material:$materialVersion"
@@ -38,4 +42,7 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$junitUiVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
+
+    // timber 로그
+    implementation "com.jakewharton.timber:timber:$timberVersion"
 }
