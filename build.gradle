@@ -9,11 +9,11 @@ buildscript {
         espressoCoreVersion = "3.5.0"
         firebaseVersion = "31.0.2"
         googleServiceVersion = "4.3.14"
+        timberVersion = "5.0.1"
+        leakcanaryVersion = "2.10"
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"
-        timberVersion = "5.0.1"
-        leakcanaryVersion = "2.10"
     }
 }
 
