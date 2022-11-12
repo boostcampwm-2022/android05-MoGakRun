@@ -7,6 +7,8 @@ buildscript {
         junitVersion = "4.13.2"
         junitUiVersion = "1.1.4"
         espressoCoreVersion = "3.5.0"
+        timberVersion = "5.0.1"
+        leakcanaryVersion = "2.10"
     }
 }
 
