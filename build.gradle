@@ -7,6 +7,11 @@ buildscript {
         junitVersion = "4.13.2"
         junitUiVersion = "1.1.4"
         espressoCoreVersion = "3.5.0"
+        firebaseVersion = "31.0.2"
+        googleServiceVersion = "4.3.14"
+    }
+    dependencies {
+        classpath "com.google.gms:google-services:$googleServiceVersion"
     }
 }
 
