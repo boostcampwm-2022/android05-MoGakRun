@@ -12,6 +12,8 @@ buildscript {
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"
+        timberVersion = "5.0.1"
+        leakcanaryVersion = "2.10"
     }
 }
 
