@@ -45,4 +45,10 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$junitUiVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
+
+    // timber 로그
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+
+    // leakcanary 메모리 누수 체크
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanaryVersion"
 }
