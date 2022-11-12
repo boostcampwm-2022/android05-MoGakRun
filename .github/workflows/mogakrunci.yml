@@ -38,3 +38,29 @@ jobs:
       with:
         name: app-debug.apk
         path: app/build/outputs/apk/debug/app-debug.apk
+      
+    - uses: MeilCli/slack-upload-file@v1
+      with:
+        slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
+        channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
+        file_path: 'app/build/outputs/apk/release/app-release-unsigned.apk'
+        file_name: 'app-release-unsigned.apk'
+        file_type: 'apk'
+        initial_comment: '🎁 release 버전 테스트 앱!'
+        
+    - uses: MeilCli/slack-upload-file@v1
+      with:
+        slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
+        channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
+        file_path: 'app/build/outputs/apk/debug/app-debug.apk'
+        file_name: 'app-debug.apk'
+        file_type: 'apk'
+        initial_comment: '🙏 debug 버전 테스트 앱!'
+      
+    - name: action-slack
+      uses: 8398a7/action-slack@v3.8.0
+      with:
+        status: ${{ job.status }}
+        author_name: 빌드 알림
+      env:
+         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
