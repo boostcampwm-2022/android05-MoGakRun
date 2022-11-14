@@ -7,4 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="mogakrun_primary">#F5FFD9</color>
+    <color name="mogakrun_primary_light">#ffffff</color>
+    <color name="mogakrun_primary_dark">#c2cca7</color>
+    <color name="mogakrun_on_primary">#6d8f5a</color>
+
+    <color name="mogakrun_secondary">#9cbf87</color>
+    <color name="mogakrun_secondary_light">#cdf2b7</color>
+    <color name="mogakrun_secondary_dark">#6d8f5a</color>
+    <color name="mogakrun_on_secondary">#f5ffd9</color>
+
 </resources>
