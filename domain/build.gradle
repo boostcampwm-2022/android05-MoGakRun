@@ -1,9 +1,21 @@
 plugins {
-    id 'java-library'
-    id 'org.jetbrains.kotlin.jvm'
+    id "java-library"
+    id "org.jetbrains.kotlin.jvm"
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+dependencies {
+    // Inject
+    implementation "javax.inject:javax.inject:1"
+
+    // Coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
+
+    // PagingData - Common
+    implementation "androidx.paging:paging-common-ktx:$paging3Version"
+    testImplementation "androidx.paging:paging-common:$paging3Version"
 }
