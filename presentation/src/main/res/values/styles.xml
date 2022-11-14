@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Extra Bold -->
+    <style name="MoGakRunText.ExtraBold" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">@font/nanum_square_round_extra_bold</item>
+    </style>
+
+    <!-- Bold -->
+    <style name="MoGakRunText.Bold" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">@font/nanum_square_round_bold</item>
+    </style>
+
+    <style name="MoGakRunText.Bold.Large">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="MoGakRunText.Bold.Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MoGakRunText.Bold.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- Regular -->
+    <style name="MoGakRunText.Regular" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">@font/nanum_square_round_regular</item>
+    </style>
+
+    <style name="MoGakRunText.Regular.Large">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="MoGakRunText.Regular.Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MoGakRunText.Regular.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- Light -->
+    <style name="MoGakRunText.Light" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">@font/nanum_square_round_light</item>
+    </style>
+
+    <style name="MoGakRunText.Light.Large">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="MoGakRunText.Light.Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MoGakRunText.Light.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+</resources>
