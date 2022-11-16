@@ -11,6 +11,7 @@ val runner3 = "sdfa9123"
 val runner4 = "lknk131"
 val runner5 = "10293jhd"
 
+// 러너 등록(달리기 시작)
 fun writeRunner() {
     db.collection("Runners")
         .document("runnersId")
@@ -20,6 +21,7 @@ fun writeRunner() {
         )
 }
 
+// 러너 삭제(달리기 종료)
 fun deleteRunner() {
     val delete = hashMapOf<String, Any>(
         runner2 to FieldValue.delete()
@@ -33,6 +35,7 @@ fun deleteRunner() {
         }
 }
 
+// 달리고 있는 러너의 수 확인하기
 fun getRunnerCount(): Flow<Int> = callbackFlow {
     db.collection("Runners")
         .document("runnersId")

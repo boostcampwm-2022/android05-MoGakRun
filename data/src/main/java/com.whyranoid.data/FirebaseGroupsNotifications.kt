@@ -6,40 +6,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import java.util.UUID
 
+val groupIdForNotification = "adsf123asdf123"
+
 enum class NotificationType(val type: String) {
     START("start"),
     END("end")
 }
 
-fun readOnlyStartNotifications() {
-    db.collection("StartNotifications")
-        .document("test")
-        .addSnapshotListener { snapshot, e ->
-            val startNotification = snapshot?.toObject(StartNotification::class.java)
-            println("시작 알림 $startNotification")
-        }
-}
-
-fun readOnlyFinishNotifications() {
-    db.collection("FinishNotifications")
-        .document("test")
-        .addSnapshotListener { snapshot, e ->
-
-            db.collection("FinishNotifications")
-                .document("test")
-                .get()
-                .addOnCompleteListener { snapshot ->
-                    val document = snapshot.result
-                    println("종료 알림 ${document.get("test")}")
-                    val finishNotification = document?.toObject(Notifications::class.java)
-                    println("종료 알림 $finishNotification")
-                }
-        }
-}
-
+// 운동 시작 알림 보내기
 fun writeStartGroupNotifications() {
     db.collection("GroupNotifications")
-        .document("collections")
+        .document(groupIdForNotification)
         .collection(NotificationType.START.type)
         .document(UUID.randomUUID().toString())
         .set(
@@ -51,41 +28,42 @@ fun writeStartGroupNotifications() {
         )
 }
 
-fun collectStartNotificationTest() {
+fun collectStartNotificationTest(): Flow<StartNotification> = callbackFlow {
     db.collection("GroupNotifications")
-        .document("collections")
+        .document(groupIdForNotification)
         .collection("start")
         .addSnapshotListener { snapshot, error ->
             snapshot?.forEach { document ->
-                document.toObject(StartNotification::class.java).apply {
-                    println("알림 시작 노티$this")
-                }
+                val startNotification = document.toObject(StartNotification::class.java)
+                trySend(startNotification)
             }
         }
+
+    awaitClose()
 }
 
 fun writeEndGroupNotifications() {
     db.collection("GroupNotifications")
-        .document("collections")
+        .document(groupIdForNotification)
         .collection(NotificationType.END.type)
         .document(UUID.randomUUID().toString())
         .set(
             FirebaseEndNotification(
-                finishedAt = 5435324L,
-                historyId = "123123",
-                pace = 21.0,
-                startedAt = 4384134234L,
+                finishedAt = 0L,
+                historyId = "123123dfadf",
+                pace = 50.0,
+                startedAt = 15611234L,
                 totalRunningTime = 3610,
                 totalDistance = 41.2,
                 type = NotificationType.END.type,
-                uid = "asdoifasdpof"
+                uid = "vcbadf351"
             )
         )
 }
 
 fun collectEndGroupNotifications(): Flow<EndNotification> = callbackFlow {
     db.collection("GroupNotifications")
-        .document("collections")
+        .document(groupIdForNotification)
         .collection("end")
         .addSnapshotListener { snapshot, error ->
             snapshot?.forEach { document ->
