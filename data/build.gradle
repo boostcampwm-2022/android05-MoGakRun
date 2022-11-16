@@ -42,7 +42,4 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:$firebaseVersion")
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation "com.google.firebase:firebase-firestore-ktx"
-
-    // timber 로그
-    implementation "com.jakewharton.timber:timber:$timberVersion"
 }

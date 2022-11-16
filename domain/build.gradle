@@ -18,7 +18,4 @@ dependencies {
     // PagingData - Common
     implementation "androidx.paging:paging-common-ktx:$paging3Version"
     testImplementation "androidx.paging:paging-common:$paging3Version"
-
-    // timber 로그
-    implementation "com.jakewharton.timber:timber:$timberVersion"
 }
