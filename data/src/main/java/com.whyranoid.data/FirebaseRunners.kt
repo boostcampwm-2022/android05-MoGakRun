@@ -15,7 +15,7 @@ fun writeRunner() {
     db.collection("Runners")
         .document("runnersId")
         .update(
-            runner3,
+            runner2,
             ""
         )
 }
