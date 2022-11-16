@@ -1,12 +1,19 @@
 package com.whyranoid.data
 
-import java.util.*
+import com.google.firebase.firestore.FieldValue
+import kotlinx.coroutines.tasks.await
 
-val randomGroupId = UUID.randomUUID()
+data class FirebaseGroup(
+    val groupId: String = "",
+    val groupName: String = "",
+    val introduce: String = "",
+    val leaderId: String = "",
+    val membersId: List<String> = emptyList(),
+    val rules: List<String> = emptyList()
+)
 
+// 그룹 생성하기
 fun writeGroup() {
-
-    // 그룹 아이디 테스트용 UUID - 랜덤(생성)하고 싶을 때 사용
     db.collection("Groups")
         .document(groupId)
         .set(
@@ -24,28 +31,48 @@ fun writeGroup() {
         )
 }
 
-fun readGroup() {
-    db.collection("Groups")
+// 그룹 id로 그룹 정보 읽어오기
+suspend fun readGroup(): FirebaseGroup {
+    val groupData = db.collection("Groups")
         .document(groupId)
         .get()
-        .addOnSuccessListener { snapshot ->
+        .await()
 
-            // null도 그냥 들어옴. 예외처리 필요.
-            println("그룹읽기 성공")
-            snapshot.data.apply {
-                println("그룹읽기 $this")
-            }
-        }
-        .addOnFailureListener {
-            println("그룹읽기 실패")
-        }
+    return groupData.toObject(FirebaseGroup::class.java) ?: fakeGroup
 }
 
-data class FirebaseGroup(
-    val groupId: String,
-    val groupName: String,
-    val introduce: String,
-    val leaderId: String,
-    val membersId: List<String>,
-    val rules: List<String>
-)
+// 그룹에 멤버 추가
+fun joinUserToGroup() {
+    db.collection("Groups")
+        .document(groupId)
+        .update(
+            "membersId", FieldValue.arrayUnion("숙지")
+        )
+}
+
+// 그룹에서 멤버 제거
+fun exitUserToGroup() {
+    db.collection("Groups")
+        .document(groupId)
+        .update(
+            "membersId", FieldValue.arrayRemove("숙지")
+        )
+}
+
+// 그룹에 규칙 추가
+fun addRuleToGroup() {
+    db.collection("Groups")
+        .document(groupId)
+        .update(
+            "rules", FieldValue.arrayUnion("일-12-00")
+        )
+}
+
+// 그룹에서 멤버 제거
+fun removeRUleToGroup() {
+    db.collection("Groups")
+        .document(groupId)
+        .update(
+            "rules", FieldValue.arrayRemove("일-12-00")
+        )
+}
