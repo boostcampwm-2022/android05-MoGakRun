@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MoGakRun</string>
+    <!-- 바텀네비게이션 -->
+    <string name="bottom_navigation_menu_community">커뮤니티</string>
+    <string name="bottom_navigation_menu_running">러닝</string>
+    <string name="bottom_navigation_menu_my_run">마이런</string>
 </resources>
