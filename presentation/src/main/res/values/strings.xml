@@ -4,4 +4,6 @@
     <string name="bottom_navigation_menu_community">커뮤니티</string>
     <string name="bottom_navigation_menu_running">러닝</string>
     <string name="bottom_navigation_menu_my_run">마이런</string>
+    <!-- 로그인 화면 -->
+    <string name="sign_in_mogakrun_logo_description">로그인 화면의 모각런 로고입니다.</string>
 </resources>

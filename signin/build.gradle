@@ -1,26 +1,24 @@
 plugins {
-    id "com.android.application"
+    id "com.android.library"
     id "org.jetbrains.kotlin.android"
 }
 
 android {
-    namespace "com.whyranoid.mogakrun"
+    namespace "com.whyranoid.signin"
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.whyranoid.mogakrun"
         minSdk 23
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
@@ -28,19 +26,16 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = '11'
     }
-    buildFeatures {
-        dataBinding true
+    dataBinding {
+        enable = true
     }
 }
 
 dependencies {
 
-    implementation project(":data")
-    implementation project(":domain")
-    implementation project(':presentation')
-    implementation project(":signin")
+    implementation project(":presentation")
 
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
@@ -53,6 +48,8 @@ dependencies {
     // timber 로그
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
-    // leakcanary 메모리 누수 체크
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanaryVersion"
+    // firebase auth
+    implementation platform("com.google.firebase:firebase-bom:$firebaseVersion")
+    implementation "com.google.firebase:firebase-auth-ktx"
+    implementation "com.google.android.gms:play-services-auth:$playServicesAuthVersion"
 }

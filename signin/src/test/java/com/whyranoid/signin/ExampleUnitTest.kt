@@ -1,4 +1,4 @@
-package com.whyranoid.presentation
+package com.whyranoid.signin
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
