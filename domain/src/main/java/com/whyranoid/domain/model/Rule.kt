@@ -4,7 +4,11 @@ data class Rule(
     val dayOfWeek: DayOfWeek,
     val hour: Int,
     val minute: Int
-)
+) {
+    override fun toString(): String {
+        return "${dayOfWeek.dayResId}-$hour-$minute"
+    }
+}
 
 enum class DayOfWeek(val dayResId: String) {
     MON("월"),
