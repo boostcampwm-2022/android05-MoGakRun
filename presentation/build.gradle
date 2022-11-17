@@ -45,4 +45,8 @@ dependencies {
 
     // timber 로그
     implementation "com.jakewharton.timber:timber:$timberVersion"
+
+    // jetpack navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
 }
