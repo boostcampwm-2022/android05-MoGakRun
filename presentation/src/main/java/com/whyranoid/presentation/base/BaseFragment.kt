@@ -14,7 +14,7 @@ internal abstract class BaseFragment<VDB : ViewDataBinding>(
 ) : Fragment() {
 
     private var _binding: VDB? = null
-    val binding get() = requireNotNull(_binding)
+    protected val binding get() = requireNotNull(_binding)
 
     override fun onCreateView(
         inflater: LayoutInflater,

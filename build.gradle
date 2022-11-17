@@ -7,12 +7,14 @@ buildscript {
         junitVersion = "4.13.2"
         junitUiVersion = "1.1.4"
         espressoCoreVersion = "3.5.0"
-        firebaseVersion = "31.0.2"
+        firebaseVersion = "31.0.3"
         googleServiceVersion = "4.3.14"
         timberVersion = "5.0.1"
         leakcanaryVersion = "2.10"
         kotlinxCoroutinesVersion = "1.6.4"
         paging3Version = "3.1.1"
+        navVersion = "2.5.3"
+        playServicesAuthVersion = "20.3.0"
         hiltVersion = "2.44"
         lottieVersion = "5.2.0"
         activityKtxVersion = "1.6.1"
@@ -21,6 +23,7 @@ buildscript {
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion"
     }
 }
 

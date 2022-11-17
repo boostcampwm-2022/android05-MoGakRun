@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/page_community"
+        android:enabled="true"
+        android:icon="@drawable/bottom_navigation_community"
+        android:title="@string/bottom_navigation_menu_community"/>
+    <item
+        android:id="@+id/page_running"
+        android:enabled="true"
+        android:icon="@drawable/bottom_navigation_running"
+        android:title="@string/bottom_navigation_menu_running"/>
+    <item
+        android:id="@+id/page_my_run"
+        android:enabled="true"
+        android:icon="@drawable/bottom_navigation_my_run"
+        android:title="@string/bottom_navigation_menu_my_run"
+        />
+</menu>

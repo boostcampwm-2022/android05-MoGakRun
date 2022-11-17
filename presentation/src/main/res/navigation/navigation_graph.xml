@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph.xml"
+    app:startDestination="@id/myRunFragment">
+
+    <activity
+        android:id="@+id/signInActivity"
+        android:name="com.whyranoid.presentation.SignInActivity"
+        android:label="SignInActivity"
+        tools:layout="@layout/activity_sign_in"/>
+    <activity
+        android:id="@+id/splashActivity"
+        android:name="com.whyranoid.presentation.SplashActivity"
+        android:label="SplashActivity"
+        tools:layout="@layout/activity_splash"/>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.whyranoid.presentation.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/myRunFragment"
+        android:name="com.whyranoid.presentation.MyRunFragment"
+        android:label="MyRunFragment"
+        tools:layout="@layout/fragment_my_run">
+        <action
+            android:id="@+id/action_myRunFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.whyranoid.presentation.SettingFragment"
+        android:label="SettingFragment"
+        tools:layout="@layout/fragment_setting"/>
+
+</navigation>

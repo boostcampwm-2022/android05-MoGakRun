@@ -1,12 +1,10 @@
 plugins {
     id "com.android.library"
     id "org.jetbrains.kotlin.android"
-    id "kotlin-kapt"
-    id "dagger.hilt.android.plugin"
 }
 
 android {
-    namespace "com.whyranoid.presentation"
+    namespace "com.whyranoid.signin"
     compileSdk 33
 
     defaultConfig {
@@ -20,7 +18,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
@@ -28,16 +26,16 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = '11'
     }
-    buildFeatures {
-        dataBinding true
+    dataBinding {
+        enable = true
     }
 }
 
 dependencies {
 
-    implementation project(":domain")
+    implementation project(":presentation")
 
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
@@ -50,21 +48,8 @@ dependencies {
     // timber 로그
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
-    // jetpack navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
-    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
-
-    // lottie
-    implementation "com.airbnb.android:lottie:$lottieVersion"
-
-    // Hilt
-    implementation "com.google.dagger:hilt-android:$hiltVersion"
-    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
-
-    // by viewModels
-    implementation "androidx.activity:activity-ktx:$activityKtxVersion"
-    implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
-
-    // ViewModelScope
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleViewmodelKtxVersion"
+    // firebase auth
+    implementation platform("com.google.firebase:firebase-bom:$firebaseVersion")
+    implementation "com.google.firebase:firebase-auth-ktx"
+    implementation "com.google.android.gms:play-services-auth:$playServicesAuthVersion"
 }

@@ -14,7 +14,7 @@
         android:name=".MogakrunApplication"
         tools:targetApi="31">
         <activity
-            android:name="com.whyranoid.presentation.MainActivity"
+            android:name="com.whyranoid.signin.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
