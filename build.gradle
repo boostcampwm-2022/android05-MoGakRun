@@ -13,6 +13,11 @@ buildscript {
         leakcanaryVersion = "2.10"
         kotlinxCoroutinesVersion = "1.6.4"
         paging3Version = "3.1.1"
+        hiltVersion = "2.44"
+        lottieVersion = "5.2.0" // 병한이 : 로티 추가했습니당
+        activityKtxVersion = "1.6.1"
+        fragmentKtxVersion = "1.5.4"
+        lifecycleViewmodelKtxVersion = "2.5.1"
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"
@@ -24,4 +29,5 @@ plugins {
     id "com.android.library" version "7.3.1" apply false
     id "org.jetbrains.kotlin.android" version "1.7.20" apply false
     id 'org.jetbrains.kotlin.jvm' version '1.7.20' apply false
+    id "com.google.dagger.hilt.android" version "2.44" apply false
 }

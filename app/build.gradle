@@ -1,6 +1,8 @@
 plugins {
     id "com.android.application"
     id "org.jetbrains.kotlin.android"
+    id "kotlin-kapt"
+    id "dagger.hilt.android.plugin"
 }
 
 android {
@@ -30,6 +32,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        dataBinding true
+    }
 }
 
 dependencies {
@@ -51,4 +56,8 @@ dependencies {
 
     // leakcanary 메모리 누수 체크
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanaryVersion"
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
 }
