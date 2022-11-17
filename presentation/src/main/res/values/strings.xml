@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MoGakRun</string>
+    <string name="runner_start_runner_unit">명</string>
+    <string name="runner_start_prefix">지금,</string>
+    <string name="runner_start_suffix">함께 달리고 있습니다</string>
+    <string name="runner_start_button_text">달리기</string>
+    <string name="running_start_thumbnail_des">모각런 썸네일</string>
 </resources>
