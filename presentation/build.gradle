@@ -1,6 +1,8 @@
 plugins {
     id "com.android.library"
     id "org.jetbrains.kotlin.android"
+    id "kotlin-kapt"
+    id "dagger.hilt.android.plugin"
 }
 
 android {
@@ -28,12 +30,14 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    dataBinding {
-        enable = true
+    buildFeatures {
+        dataBinding true
     }
 }
 
 dependencies {
+
+    implementation project(":domain")
 
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
@@ -45,4 +49,19 @@ dependencies {
 
     // timber 로그
     implementation "com.jakewharton.timber:timber:$timberVersion"
+
+    // 병한이 : 로티 디펜던시 추가
+    // lottie
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+
+    // by viewModels
+     implementation "androidx.activity:activity-ktx:$activityKtxVersion"
+     implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
+
+    // ViewModelScope
+     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleViewmodelKtxVersion"
 }
