@@ -5,11 +5,11 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#FF010101</color>
     <color name="white">#FFFFFFFF</color>
 
     <color name="mogakrun_primary">#F5FFD9</color>
-    <color name="mogakrun_primary_light">#ffffff</color>
+    <color name="mogakrun_primary_light">#F3F8E9</color>
     <color name="mogakrun_primary_dark">#c2cca7</color>
     <color name="mogakrun_on_primary">#6d8f5a</color>
 
