@@ -3,9 +3,11 @@ package com.whyranoid.data.group
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.whyranoid.data.constant.CollectionId.GROUPS_COLLECTION
+import com.whyranoid.data.constant.CollectionId.USERS_COLLECTION
 import com.whyranoid.data.constant.FieldId.GROUP_INTRODUCE
 import com.whyranoid.data.constant.FieldId.GROUP_MEMBERS_ID
 import com.whyranoid.data.constant.FieldId.GROUP_NAME
+import com.whyranoid.data.constant.FieldId.JOINED_GROUP_LIST
 import com.whyranoid.data.constant.FieldId.RULES
 import com.whyranoid.domain.model.Rule
 import javax.inject.Inject
@@ -52,6 +54,34 @@ class GroupDataSource @Inject constructor(
                     FieldValue.arrayUnion(uid)
                 ).addOnSuccessListener {
                     continuation.resume(true)
+                }.addOnFailureListener {
+                    continuation.resume(false)
+                }
+        }
+    }
+
+    suspend fun exitGroup(uid: String, groupId: String): Boolean {
+        return suspendCoroutine { continuation ->
+            db.collection(GROUPS_COLLECTION)
+                .document(groupId)
+                .update(
+                    mapOf(
+                        GROUP_MEMBERS_ID to FieldValue.arrayRemove(uid)
+                    )
+                ).addOnSuccessListener {
+                    db.collection(USERS_COLLECTION)
+                        .document(uid)
+                        .update(
+                            mapOf(
+                                JOINED_GROUP_LIST to FieldValue.arrayRemove(groupId)
+                            )
+                        )
+                        .addOnSuccessListener {
+                            continuation.resume(true)
+                        }
+                        .addOnFailureListener {
+                            continuation.resume(false)
+                        }
                 }.addOnFailureListener {
                     continuation.resume(false)
                 }

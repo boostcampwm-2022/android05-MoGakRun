@@ -7,4 +7,5 @@ object FieldId {
     const val GROUP_NAME = "groupName"
     const val GROUP_INTRODUCE = "introduce"
     const val RULES = "rules"
+    const val JOINED_GROUP_LIST = "joinedGroupList"
 }

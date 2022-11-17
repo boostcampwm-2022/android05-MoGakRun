@@ -32,6 +32,10 @@ class GroupRepositoryImpl @Inject constructor(
         return groupDataSource.joinGroup(uid, groupId)
     }
 
+    override suspend fun exitGroup(uid: String, groupId: String): Boolean {
+        return groupDataSource.joinGroup(uid, groupId)
+    }
+
     override fun getGroupNotifications(groupId: String): Flow<List<GroupNotification>> {
         return groupNotificationDataSource.getGroupNotifications(groupId)
     }
