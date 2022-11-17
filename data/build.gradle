@@ -2,6 +2,8 @@ plugins {
     id "com.android.library"
     id "org.jetbrains.kotlin.android"
     id "com.google.gms.google-services"
+    id "kotlin-kapt"
+    id "dagger.hilt.android.plugin"
 }
 
 android {
@@ -42,4 +44,8 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:$firebaseVersion")
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation "com.google.firebase:firebase-firestore-ktx"
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
 }
