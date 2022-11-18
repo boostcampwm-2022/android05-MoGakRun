@@ -1,5 +1,6 @@
 package com.whyranoid.data.group
 
+import com.whyranoid.data.groupnotification.GroupNotificationDataSource
 import com.whyranoid.data.user.UserDataSource
 import com.whyranoid.domain.model.GroupInfo
 import com.whyranoid.domain.model.GroupNotification
@@ -10,7 +11,8 @@ import javax.inject.Inject
 
 class GroupRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource,
-    private val groupDataSource: GroupDataSource
+    private val groupDataSource: GroupDataSource,
+    private val groupNotificationDataSource: GroupNotificationDataSource
 ) : GroupRepository {
 
     override suspend fun getMyGroupList(uid: String): Result<List<GroupInfo>> {
@@ -30,7 +32,11 @@ class GroupRepositoryImpl @Inject constructor(
         return groupDataSource.joinGroup(uid, groupId)
     }
 
+    override suspend fun exitGroup(uid: String, groupId: String): Boolean {
+        return groupDataSource.joinGroup(uid, groupId)
+    }
+
     override fun getGroupNotifications(groupId: String): Flow<List<GroupNotification>> {
-        TODO("Not yet implemented")
+        return groupNotificationDataSource.getGroupNotifications(groupId)
     }
 }
