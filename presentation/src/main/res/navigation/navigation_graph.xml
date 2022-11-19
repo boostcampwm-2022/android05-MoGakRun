@@ -3,26 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph.xml"
-    app:startDestination="@id/myRunFragment">
+    app:startDestination="@id/runningStartFragment">
 
-    <activity
-        android:id="@+id/signInActivity"
-        android:name="com.whyranoid.presentation.SignInActivity"
-        android:label="SignInActivity"
-        tools:layout="@layout/activity_sign_in"/>
-    <activity
-        android:id="@+id/splashActivity"
-        android:name="com.whyranoid.presentation.SplashActivity"
-        android:label="SplashActivity"
-        tools:layout="@layout/activity_splash"/>
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.whyranoid.presentation.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
     <fragment
         android:id="@+id/myRunFragment"
-        android:name="com.whyranoid.presentation.MyRunFragment"
+        android:name="com.whyranoid.presentation.myrun.MyRunFragment"
         android:label="MyRunFragment"
         tools:layout="@layout/fragment_my_run">
         <action
@@ -31,8 +16,17 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.whyranoid.presentation.SettingFragment"
+        android:name="com.whyranoid.presentation.myrun.SettingFragment"
         android:label="SettingFragment"
         tools:layout="@layout/fragment_setting"/>
+    <fragment
+        android:id="@+id/runningStartFragment"
+        android:name="com.whyranoid.presentation.runningstart.RunningStartFragment"
+        android:label="RunningStartFragment"
+        tools:layout="@layout/fragment_running_start">
+        <action
+            android:id="@+id/action_runningStartFragment_to_myRunFragment"
+            app:destination="@id/myRunFragment" />
+    </fragment>
 
 </navigation>

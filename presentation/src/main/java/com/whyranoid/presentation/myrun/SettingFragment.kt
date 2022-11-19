@@ -1,5 +1,6 @@
-package com.whyranoid.presentation
+package com.whyranoid.presentation.myrun
 
+import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentSettingBinding
 

@@ -67,4 +67,7 @@ dependencies {
 
     // ViewModelScope
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleViewmodelKtxVersion"
+
+    // splash
+    implementation "androidx.core:core-splashscreen:$splashVersion"
 }
