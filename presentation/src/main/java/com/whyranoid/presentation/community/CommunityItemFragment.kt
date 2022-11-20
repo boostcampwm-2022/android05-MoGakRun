@@ -1,5 +1,6 @@
 package com.whyranoid.presentation.community
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -15,8 +16,13 @@ internal class CommunityItemFragment :
     private val viewModel: CommunityViewModel by viewModels()
 
     private val category by lazy {
-        arguments?.getSerializable(COMMUNITY_CATEGORY_KEY) as? CommunityCategory
-            ?: CommunityCategory.BOARD
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getSerializable(COMMUNITY_CATEGORY_KEY, CommunityCategory::class.java)
+                ?: CommunityCategory.BOARD
+        } else {
+            arguments?.getSerializable(COMMUNITY_CATEGORY_KEY) as? CommunityCategory
+                ?: CommunityCategory.BOARD
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
