@@ -20,6 +20,7 @@ buildscript {
         activityKtxVersion = "1.6.1"
         fragmentKtxVersion = "1.5.4"
         lifecycleViewmodelKtxVersion = "2.5.1"
+        viewPager2Version = "1.0.0"
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"
