@@ -9,7 +9,7 @@ class RunningRepositoryImpl(private val runningDataSource: RunningDataSource) : 
     }
 
     override suspend fun startRunning(uid: String): Boolean {
-        return true
+        return runningDataSource.startRunning(uid)
     }
 
     override suspend fun finishRunning(uid: String): Boolean {
