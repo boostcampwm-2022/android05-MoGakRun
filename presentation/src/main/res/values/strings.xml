@@ -7,9 +7,6 @@
     <string name="bottom_navigation_menu_running">러닝</string>
     <string name="bottom_navigation_menu_my_run">마이런</string>
     
-    <!-- 로그인 화면 -->
-    <string name="sign_in_mogakrun_logo_description">로그인 화면의 모각런 로고입니다.</string>
-    
     <!-- 러닝 탭 화면 -->
     <string name="runner_start_runner_unit">명</string>
     <string name="runner_start_prefix">지금,</string>

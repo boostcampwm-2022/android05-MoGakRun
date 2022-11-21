@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 로그인 화면 -->
+    <string name="sign_in_mogakrun_logo_description">로그인 화면의 모각런 로고입니다.</string>
+    <string name="sign_in_success">로그인 성공</string>
+    <string name="sign_in_fail_network">네트워크 연결을 확인해주세요</string>
+    <string name="sign_in_fail_cancel">구글 계정과 앱을 연동하는데 실패했어요</string>
+</resources>

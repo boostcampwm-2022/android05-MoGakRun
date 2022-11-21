@@ -13,6 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            android:id="@+id/bottom_navigation"
+            layout="@layout/bottom_navigation_bar" />
+
+        <include
+            android:id="@+id/tool_bar"
+            layout="@layout/tool_bar" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/width_start"
             android:layout_width="wrap_content"
@@ -32,12 +40,12 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="48dp"
+            android:contentDescription="@string/running_start_thumbnail_des"
             android:scaleType="fitXY"
             android:src="@drawable/thumbnail_src_small"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/width_end"
             app:layout_constraintStart_toStartOf="@id/width_start"
-            android:contentDescription="@string/running_start_thumbnail_des"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -96,7 +104,7 @@
             android:layout_height="0dp"
             app:cardBackgroundColor="@color/mogakrun_primary_light"
             app:cardCornerRadius="999dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/bottom_navigation"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/width_end"
             app:layout_constraintStart_toStartOf="@id/width_start"
