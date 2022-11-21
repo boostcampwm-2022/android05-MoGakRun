@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="groupInfo"
+            type="com.whyranoid.domain.model.GroupInfo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@color/mogakrun_primary"
+        android:elevation="10dp">
+
+        <TextView
+            android:id="@+id/group_name"
+            style="@style/MoGakRunText.Bold.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@{groupInfo.name}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="내 그룹" />
+
+        <TextView
+            android:id="@+id/text_group_name"
+            style="@style/MoGakRunText.Bold.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@{groupInfo.leader.name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="작성자" />
+
+        <TextView
+            android:id="@+id/text_group_introduce"
+            style="@style/MoGakRunText.Bold.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{groupInfo.introduce}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_group_name"
+            tools:text="그룹 소개 어쩌구 저쩌구 하하 후후\n\n\n\n\n\n\n" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
