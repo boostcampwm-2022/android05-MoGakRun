@@ -16,5 +16,11 @@
     <string name="runner_start_suffix">함께 달리고 있습니다</string>
     <string name="runner_start_button_text">달리기</string>
     <string name="running_start_thumbnail_des">모각런 썸네일</string>
-    
+
+    <!-- 커뮤니티 탭 화면 -->
+    <string name="text_board">게시판</string>
+    <string name="text_my_group">내 그룹</string>
+    <string name="text_my_post">내가 쓴 글</string>
+    <string name="text_community">커뮤니티</string>
+
 </resources>
