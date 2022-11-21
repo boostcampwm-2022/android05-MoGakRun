@@ -23,6 +23,7 @@ buildscript {
         splashVersion = "1.0.0"
         dataStoreVersion = "1.0.0"
         viewPager2Version = "1.0.0"
+        shimmerVersion = "0.5.0"
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"
