@@ -109,6 +109,7 @@
             app:layout_constraintBottom_toBottomOf="@id/bottom_navigation"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/width_end"
+            android:onClick="@{() -> vm.onStartButtonClicked()}"
             app:layout_constraintStart_toStartOf="@id/width_start"
             app:layout_constraintTop_toBottomOf="@id/tv_runner_count_suffix">
 
