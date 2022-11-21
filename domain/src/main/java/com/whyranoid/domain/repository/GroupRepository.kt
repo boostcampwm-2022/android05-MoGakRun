@@ -9,6 +9,8 @@ interface GroupRepository {
 
     suspend fun getMyGroupList(uid: String): Result<List<GroupInfo>>
 
+    fun getMyGroupListFlow(uid: String): Flow<List<GroupInfo>>
+
     // 그룹 정보 수정, 홍보 글 수정
     suspend fun updateGroupInfo(
         groupId: String,
