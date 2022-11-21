@@ -70,4 +70,7 @@ dependencies {
 
     // splash
     implementation "androidx.core:core-splashscreen:$splashVersion"
+
+    // ViewPager2
+    implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
 }
