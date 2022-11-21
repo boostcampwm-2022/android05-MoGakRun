@@ -31,6 +31,7 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignInBinding
     private lateinit var auth: FirebaseAuth
     private var uid: String? = null
+    private var email: String? = null
     private var nickName: String? = null
     private var profileImgUri: String? = null
     private val viewModel by viewModels<SignInViewModel>()
@@ -58,6 +59,7 @@ class SignInActivity : AppCompatActivity() {
                     account.idToken?.let { idToken ->
                         signInWithGoogle(idToken)
                         // 데이터 스토어에 유저 정보 저장
+                        email = account.email
                         nickName = account.displayName
                         profileImgUri = account.photoUrl.toString()
                     }
@@ -122,8 +124,8 @@ class SignInActivity : AppCompatActivity() {
 
                 uid = auth.uid
                 lifecycleScope.launch {
-                    uid?.let {
-                        viewModel.saveUserInfo(User(it, nickName, profileImgUri))
+                    uid?.let { uid ->
+                        viewModel.saveUserInfo(User(uid, email, nickName, profileImgUri))
                     }
                 }
 

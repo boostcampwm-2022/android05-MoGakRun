@@ -12,6 +12,7 @@ class SignInDataSourceImpl @Inject constructor(
 
     private object PreferenceKeys {
         val uid = stringPreferencesKey(UID_KEY)
+        val email = stringPreferencesKey(EMAIL_KEY)
         val nickName = stringPreferencesKey(NICK_NAME_KEY)
         val profileImgUrl = stringPreferencesKey(PROFILE_IMG_URI)
     }
@@ -19,6 +20,7 @@ class SignInDataSourceImpl @Inject constructor(
     override suspend fun saveLogInUserInfo(userInfo: User): Boolean {
         dataStoreDb.edit { preferences ->
             preferences[PreferenceKeys.uid] = userInfo.uid
+            preferences[PreferenceKeys.email] = userInfo.email ?: ""
             preferences[PreferenceKeys.nickName] = userInfo.nickName ?: ""
             preferences[PreferenceKeys.profileImgUrl] = userInfo.profileImgUri ?: ""
         }
@@ -27,6 +29,7 @@ class SignInDataSourceImpl @Inject constructor(
 
     companion object {
         private const val UID_KEY = "uid"
+        private const val EMAIL_KEY = "email"
         private const val NICK_NAME_KEY = "nick_name"
         private const val PROFILE_IMG_URI = "profile_img_uri"
     }
