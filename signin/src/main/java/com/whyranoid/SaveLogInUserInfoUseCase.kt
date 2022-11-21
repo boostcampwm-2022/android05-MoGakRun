@@ -1,9 +1,11 @@
 package com.whyranoid
 
-// class SaveLogInUserInfoUseCase @Inject constructor(
-//    private val signInRepository: SignInRepository
-// ) {
-//    operator fun invoke(uid: String, nickName: String, profileImgUrl: String): Boolean {
-//        //return signInRepository.saveLogInUserInfo(uid, nickName, profileImgUrl)
-//    }
-// }
+import javax.inject.Inject
+
+class SaveLogInUserInfoUseCase @Inject constructor(
+    private val signInRepository: SignInRepository
+) {
+    suspend operator fun invoke(userInfo: User): Boolean {
+        return signInRepository.saveLogInUserInfo(userInfo)
+    }
+}

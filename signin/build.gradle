@@ -70,4 +70,7 @@ dependencies {
     // hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-compiler:$hiltVersion"
+
+    // by viewModels
+    implementation "androidx.activity:activity-ktx:$activityKtxVersion"
 }

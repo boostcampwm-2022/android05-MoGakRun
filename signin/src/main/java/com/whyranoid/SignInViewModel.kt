@@ -1,10 +1,14 @@
 package com.whyranoid
 
-// @HiltViewModel
-// class SignInViewModel @Inject constructor(
-//    private val saveLogInUserInfoUseCase: SaveLogInUserInfoUseCase
-// ) : ViewModel() {
-//    fun saveUserInfo() {
-//        // saveLogInUserInfoUseCase()
-//    }
-// }
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
+@HiltViewModel
+class SignInViewModel @Inject constructor(
+    private val saveLogInUserInfoUseCase: SaveLogInUserInfoUseCase
+) : ViewModel() {
+    suspend fun saveUserInfo(userInfo: User) {
+        saveLogInUserInfoUseCase(userInfo)
+    }
+}
