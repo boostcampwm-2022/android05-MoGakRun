@@ -1,6 +1,8 @@
-package com.whyranoid.data.di.running
+package com.whyranoid.data.di
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.whyranoid.data.running.RunningDataSource
+import com.whyranoid.data.running.RunningDataSourceImpl
 import com.whyranoid.data.running.RunningRepositoryImpl
 import com.whyranoid.domain.repository.RunningRepository
 import dagger.Module

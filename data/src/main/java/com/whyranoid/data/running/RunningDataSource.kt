@@ -1,4 +1,4 @@
-package com.whyranoid.data.di.running
+package com.whyranoid.data.running
 
 import kotlinx.coroutines.flow.Flow
 
