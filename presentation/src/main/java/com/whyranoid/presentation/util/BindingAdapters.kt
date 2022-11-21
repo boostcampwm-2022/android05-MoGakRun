@@ -12,3 +12,12 @@ fun View.networkConnectionVisibility(networkState: NetworkState) {
         is NetworkState.DisConnection -> View.VISIBLE
     }
 }
+
+@BindingAdapter("enableWithNetworkState")
+fun View.enableWithNetworkState(networkState: NetworkState) {
+    isEnabled = when (networkState) {
+        is NetworkState.UnInitialized -> true
+        is NetworkState.Connection -> false
+        is NetworkState.DisConnection -> true
+    }
+}
