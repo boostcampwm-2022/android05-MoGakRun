@@ -72,7 +72,6 @@ class UserDataSource @Inject constructor(
                 val joinedGroupList =
                     documentSnapshot?.toObject(UserResponse::class.java)?.joinedGroupList
 
-                println("테스트 그룹 리스트 $joinedGroupList")
                 joinedGroupList?.forEach { groupId ->
 
                     db.collection(GROUPS_COLLECTION)
@@ -82,7 +81,7 @@ class UserDataSource @Inject constructor(
 
                             val groupInfoResponse =
                                 documentSnapshot.toObject(GroupInfoResponse::class.java)
-                            println("테스트 그룹 정보 $groupInfoResponse")
+
                             groupInfoResponse?.let {
                                 db.collection(USERS_COLLECTION)
                                     .document(it.leaderId)
@@ -91,7 +90,7 @@ class UserDataSource @Inject constructor(
                                         val leader =
                                             documentSnapshot.toObject(UserResponse::class.java)
                                                 ?.toUser()
-                                        println("테스트 리더 정보 $leader")
+
                                         leader?.let {
                                             val groupInfo = groupInfoResponse.toGroupInfo(
                                                 leader = leader,
