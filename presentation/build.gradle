@@ -69,5 +69,5 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleViewmodelKtxVersion"
 
     // ViewPager2
-    implementation("androidx.viewpager2:viewpager2:$viewPager2Version")
+    implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
 }
