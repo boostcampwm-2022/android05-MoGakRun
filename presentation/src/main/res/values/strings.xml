@@ -21,4 +21,18 @@
     <string name="text_community">커뮤니티</string>
     <string name="network_connection_alert">네트워크 상태를 확인해주세요.</string>
 
+    <!-- 마이런 탭 화면 -->
+    <string name="my_run_tool_bar_menu_setting">설정</string>
+    <string name="my_run_profile_image_description">사용자의 프로필 사진입니다</string>
+    <string name="my_run_edit_nick_name_button_description">닉네임 수정 버튼입니다</string>
+
+    <!-- 설정 화면 -->
+    <string name="setting_connected_account">연결된 계정</string>
+    <string name="setting_whyranoider">왜안돼로이더</string>
+    <string name="setting_service_center">고객센터</string>
+    <string name="setting_privacy_policy">개인정보처리방침</string>
+    <string name="setting_service_policy">서비스 이용약관</string>
+    <string name="setting_open_source_license">오픈소스 라이센스</string>
+    <string name="setting_log_out">로그아웃</string>
+
 </resources>

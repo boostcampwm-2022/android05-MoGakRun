@@ -24,6 +24,8 @@ buildscript {
         dataStoreVersion = "1.0.0"
         viewPager2Version = "1.0.0"
         shimmerVersion = "0.5.0"
+        desugarVersion = "2.0.0"
+        calendarVersion = "1.0.4"
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"

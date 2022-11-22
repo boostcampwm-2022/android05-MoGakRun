@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -10,9 +11,99 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/bottom_navigation_bar" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/tool_bar" />
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/top_app_bar"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:menu="@menu/my_run_setting_menu"
+                app:title="@string/bottom_navigation_menu_my_run"
+                app:titleCentered="true" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+            app:layout_constraintTop_toBottomOf="@id/tool_bar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/iv_profile_image"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="@string/my_run_profile_image_description"
+                    android:src="@drawable/thumbnail_src_small"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_nick_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:textAppearance="@style/MoGakRunText.Bold.Medium"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_profile_image"
+                    app:layout_constraintStart_toEndOf="@id/iv_profile_image"
+                    app:layout_constraintTop_toTopOf="@id/iv_profile_image"
+                    tools:text="병희희" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:padding="8dp"
+                    android:contentDescription="@string/my_run_edit_nick_name_button_description"
+                    android:src="@drawable/my_run_edit_nick_name"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_nick_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_nick_name" />
+
+                <com.kizitonwose.calendarview.CalendarView
+                    android:id="@+id/calendar_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="20dp"
+                    app:cv_dayViewResource="@layout/item_calendar_day"
+                    app:cv_hasBoundaries="false"
+                    app:cv_scrollMode="paged"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_profile_image" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_my_running_history"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/calendar_view" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/bottom_navigation"
+            layout="@layout/bottom_navigation_bar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

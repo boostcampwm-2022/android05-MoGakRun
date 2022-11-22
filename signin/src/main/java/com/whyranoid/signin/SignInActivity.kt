@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -17,15 +19,22 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.whyranoid.SignInUserInfo
+import com.whyranoid.SignInViewModel
 import com.whyranoid.presentation.MainActivity
 import com.whyranoid.signin.databinding.ActivitySignInBinding
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SignInActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignInBinding
     private lateinit var auth: FirebaseAuth
+    private var uid: String? = null
+    private var email: String? = null
+    private var nickName: String? = null
+    private var profileImgUri: String? = null
+    private val viewModel by viewModels<SignInViewModel>()
 
     // 구글 로그인 클라이언트 객체
     private val googleSignInClient by lazy {
@@ -50,7 +59,9 @@ class SignInActivity : AppCompatActivity() {
                     account.idToken?.let { idToken ->
                         signInWithGoogle(idToken)
                         // 데이터 스토어에 유저 정보 저장
-                        Timber.d("닉네임 : ${account.displayName} 프로필 사진 주소 : ${account.photoUrl}")
+                        email = account.email
+                        nickName = account.displayName
+                        profileImgUri = account.photoUrl.toString()
                     }
                 } catch (e: ApiException) {
                     Snackbar.make(
@@ -110,6 +121,14 @@ class SignInActivity : AppCompatActivity() {
                     getString(R.string.sign_in_success),
                     Snackbar.LENGTH_SHORT
                 ).show()
+
+                uid = auth.uid
+                lifecycleScope.launch {
+                    uid?.let { uid ->
+                        viewModel.saveUserInfo(SignInUserInfo(uid, email, nickName, profileImgUri))
+                    }
+                }
+
                 startActivity(intent)
             } else {
                 Snackbar.make(
