@@ -25,4 +25,6 @@ interface GroupRepository {
 
     // 혹은 그룹 채팅을 가져오기 + 글 작성하기
     fun getGroupNotifications(groupId: String): Flow<List<GroupNotification>>
+
+    suspend fun notifyRunningStart(uid: String, groupIdList: List<String>)
 }

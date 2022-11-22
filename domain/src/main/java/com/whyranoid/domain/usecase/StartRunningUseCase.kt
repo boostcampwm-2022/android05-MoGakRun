@@ -1,18 +1,26 @@
 package com.whyranoid.domain.usecase
 
 import com.whyranoid.domain.repository.AccountRepository
+import com.whyranoid.domain.repository.GroupRepository
 import com.whyranoid.domain.repository.RunningRepository
 import javax.inject.Inject
 
 class StartRunningUseCase @Inject constructor(
     private val runningRepository: RunningRepository,
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
+    private val groupRepository: GroupRepository
 ) {
     suspend operator fun invoke(): Boolean {
         accountRepository.getUid().onSuccess { uid ->
-            return runningRepository.startRunning(uid)
+            runningRepository.startRunning(uid)
+            groupRepository.getMyGroupList(uid).onSuccess { groupInfos ->
+                groupRepository.notifyRunningStart(uid, groupInfos.map { it.groupId })
+                return true
+            }.onFailure {
+                return false
+            }
         }.onFailure {
-            println("UID 또 이상해")
+            return false
         }
         return false
     }

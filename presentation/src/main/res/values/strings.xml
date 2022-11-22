@@ -19,5 +19,6 @@
     <string name="text_my_group">내 그룹</string>
     <string name="text_my_post">내가 쓴 글</string>
     <string name="text_community">커뮤니티</string>
+    <string name="network_connection_alert">네트워크 상태를 확인해주세요.</string>
 
 </resources>
