@@ -1,6 +1,5 @@
 package com.whyranoid.data.running
 
-import com.whyranoid.data.di.running.RunningDataSource
 import com.whyranoid.domain.repository.RunningRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -10,7 +9,7 @@ class RunningRepositoryImpl(private val runningDataSource: RunningDataSource) : 
     }
 
     override suspend fun startRunning(uid: String): Boolean {
-        return true
+        return runningDataSource.startRunning(uid)
     }
 
     override suspend fun finishRunning(uid: String): Boolean {

@@ -1,4 +1,4 @@
-package com.whyranoid.data.di.running
+package com.whyranoid.data.running
 
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,6 +38,7 @@ class RunningDataSourceImpl(private val db: FirebaseFirestore) : RunningDataSour
     }
 
     override suspend fun finishRunning(uid: String): Boolean {
+        // TODO 구현
         return suspendCoroutine { continuation ->
             db.collection("Runners")
                 .document("runnersId")

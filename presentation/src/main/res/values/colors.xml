@@ -19,5 +19,6 @@
     <color name="mogakrun_on_secondary">#f5ffd9</color>
 
     <color name="mogakrun_bottom_navigation_menu_grey">#666666</color>
+    <color name="gray">#cccccc</color>
 
 </resources>
