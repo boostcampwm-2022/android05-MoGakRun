@@ -17,12 +17,12 @@ class SignInDataSourceImpl @Inject constructor(
         val profileImgUrl = stringPreferencesKey(PROFILE_IMG_URI)
     }
 
-    override suspend fun saveLogInUserInfo(userInfo: User): Boolean {
+    override suspend fun saveLogInUserInfo(userInfo: SignInUserInfo): Boolean {
         dataStoreDb.edit { preferences ->
             preferences[PreferenceKeys.uid] = userInfo.uid
-            preferences[PreferenceKeys.email] = userInfo.email ?: ""
-            preferences[PreferenceKeys.nickName] = userInfo.nickName ?: ""
-            preferences[PreferenceKeys.profileImgUrl] = userInfo.profileImgUri ?: ""
+            preferences[PreferenceKeys.email] = userInfo.email ?: EMPTY_STRING
+            preferences[PreferenceKeys.nickName] = userInfo.nickName ?: EMPTY_STRING
+            preferences[PreferenceKeys.profileImgUrl] = userInfo.profileImgUri ?: EMPTY_STRING
         }
         return true
     }
@@ -32,5 +32,6 @@ class SignInDataSourceImpl @Inject constructor(
         private const val EMAIL_KEY = "email"
         private const val NICK_NAME_KEY = "nick_name"
         private const val PROFILE_IMG_URI = "profile_img_uri"
+        private const val EMPTY_STRING = ""
     }
 }

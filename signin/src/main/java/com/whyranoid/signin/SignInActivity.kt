@@ -19,8 +19,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.whyranoid.SignInUserInfo
 import com.whyranoid.SignInViewModel
-import com.whyranoid.User
 import com.whyranoid.presentation.MainActivity
 import com.whyranoid.signin.databinding.ActivitySignInBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -125,7 +125,7 @@ class SignInActivity : AppCompatActivity() {
                 uid = auth.uid
                 lifecycleScope.launch {
                     uid?.let { uid ->
-                        viewModel.saveUserInfo(User(uid, email, nickName, profileImgUri))
+                        viewModel.saveUserInfo(SignInUserInfo(uid, email, nickName, profileImgUri))
                     }
                 }
 

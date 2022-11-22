@@ -12,9 +12,9 @@ abstract class SignInModule {
 
     @Binds
     @Singleton
-    abstract fun bindSignInRepository(impl: SignInRepositoryImpl): SignInRepository
+    abstract fun bindSignInRepository(signInRepositoryImpl: SignInRepositoryImpl): SignInRepository
 
     @Binds
     @Singleton
-    abstract fun bindSignInDataSource(impl: SignInDataSourceImpl): SignInDataSource
+    abstract fun bindSignInDataSource(signInDataSourceImpl: SignInDataSourceImpl): SignInDataSource
 }

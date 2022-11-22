@@ -1,6 +1,6 @@
 package com.whyranoid
 
-data class User(
+data class SignInUserInfo(
     val uid: String,
     val email: String?,
     val nickName: String?,

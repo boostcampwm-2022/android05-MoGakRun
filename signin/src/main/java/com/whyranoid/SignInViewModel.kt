@@ -8,7 +8,7 @@ import javax.inject.Inject
 class SignInViewModel @Inject constructor(
     private val saveLogInUserInfoUseCase: SaveLogInUserInfoUseCase
 ) : ViewModel() {
-    suspend fun saveUserInfo(userInfo: User) {
+    suspend fun saveUserInfo(userInfo: SignInUserInfo) {
         saveLogInUserInfoUseCase(userInfo)
     }
 }

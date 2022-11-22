@@ -76,6 +76,5 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
 
     // Calendar Library
-
     implementation "com.github.kizitonwose:CalendarView:$calendarVersion"
 }
