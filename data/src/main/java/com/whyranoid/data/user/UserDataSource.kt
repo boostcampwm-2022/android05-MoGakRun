@@ -12,6 +12,9 @@ import com.whyranoid.data.model.toGroupInfo
 import com.whyranoid.data.model.toRule
 import com.whyranoid.data.model.toUser
 import com.whyranoid.domain.model.GroupInfo
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -57,5 +60,53 @@ class UserDataSource @Inject constructor(
             }
             if (myGroupInfoList.size == 0) throw NO_JOINED_GROUP_EXCEPTION else myGroupInfoList
         }
+    }
+
+    // TODO: 콜백을 suspend로 변경
+    // TODO: 예외처리
+    fun getMyGroupListFlow(uid: String): Flow<List<GroupInfo>> = callbackFlow {
+        db.collection(USERS_COLLECTION)
+            .document(uid)
+            .addSnapshotListener { documentSnapshot, _ ->
+                val myGroupInfoList = mutableListOf<GroupInfo>()
+                val joinedGroupList =
+                    documentSnapshot?.toObject(UserResponse::class.java)?.joinedGroupList
+
+                joinedGroupList?.forEach { groupId ->
+
+                    db.collection(GROUPS_COLLECTION)
+                        .document(groupId)
+                        .get()
+                        .addOnSuccessListener { documentSnapshot ->
+
+                            val groupInfoResponse =
+                                documentSnapshot.toObject(GroupInfoResponse::class.java)
+
+                            groupInfoResponse?.let {
+                                db.collection(USERS_COLLECTION)
+                                    .document(it.leaderId)
+                                    .get()
+                                    .addOnSuccessListener { documentSnapshot ->
+                                        val leader =
+                                            documentSnapshot.toObject(UserResponse::class.java)
+                                                ?.toUser()
+
+                                        leader?.let {
+                                            val groupInfo = groupInfoResponse.toGroupInfo(
+                                                leader = leader,
+                                                rules = groupInfoResponse.rules.map {
+                                                    it.toRule()
+                                                }
+                                            )
+                                            myGroupInfoList.add(groupInfo)
+                                            trySend(myGroupInfoList)
+                                        }
+                                    }
+                            }
+                        }
+                }
+            }
+
+        awaitClose()
     }
 }

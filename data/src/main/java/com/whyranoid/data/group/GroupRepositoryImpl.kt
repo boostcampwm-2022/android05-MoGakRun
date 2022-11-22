@@ -19,6 +19,8 @@ class GroupRepositoryImpl @Inject constructor(
         return userDataSource.getMyGroupList(uid)
     }
 
+    override fun getMyGroupListFlow(uid: String) = userDataSource.getMyGroupListFlow(uid)
+
     override suspend fun updateGroupInfo(
         groupId: String,
         groupName: String,

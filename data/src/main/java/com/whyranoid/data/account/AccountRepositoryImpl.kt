@@ -4,6 +4,7 @@ import com.whyranoid.domain.model.User
 import com.whyranoid.domain.repository.AccountRepository
 import javax.inject.Inject
 
+// TODO AccountRepositoryImpl 재구현 필요!! 현재는 Fake 상태
 class AccountRepositoryImpl @Inject constructor() : AccountRepository {
     override suspend fun getUser(): Result<User> {
         return Result.success(User("byeonghee-uid", "병희", "github.com/bngsh"))
