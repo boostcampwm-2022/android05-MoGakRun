@@ -60,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:enabled="@{viewModel.isButtonEnable()}"
+            android:onClick="@{() -> viewModel.onButtonClicked()}"
             android:text="@string/text_duplicate_check"
             app:layout_constraintBottom_toTopOf="@id/time_and_date_picker"
             app:layout_constraintEnd_toEndOf="parent"
@@ -95,12 +96,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@={viewModel.groupIntroduce}"
                 android:background="@color/mogakrun_secondary"
                 android:gravity="top|start"
                 android:hint="@string/text_group_introduce"
                 android:maxLength="200"
                 android:minLines="2"
+                android:text="@={viewModel.groupIntroduce}"
                 android:textColor="@color/mogakrun_on_secondary" />
 
         </com.google.android.material.textfield.TextInputLayout>

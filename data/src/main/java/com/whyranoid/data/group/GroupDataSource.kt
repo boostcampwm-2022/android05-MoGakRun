@@ -106,7 +106,7 @@ class GroupDataSource @Inject constructor(
                         groupName = groupName,
                         introduce = introduce,
                         leaderId = uid,
-                        membersId = emptyList(),
+                        membersId = listOf(uid),
                         rules = emptyList()
                     )
                 ).addOnSuccessListener {
