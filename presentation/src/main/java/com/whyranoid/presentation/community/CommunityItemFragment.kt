@@ -2,7 +2,12 @@ package com.whyranoid.presentation.community
 
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -44,6 +49,7 @@ internal class CommunityItemFragment :
             }
             CommunityCategory.MY_GROUP -> {
                 setMyGroupAdapter()
+                setupMenu()
             }
             CommunityCategory.MY_POST -> {
                 // TODO: Adapter 설정
@@ -90,6 +96,27 @@ internal class CommunityItemFragment :
                 isVisible = false
             }
         }
+    }
+
+    private fun setupMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onPrepareMenu(menu: Menu) {
+                super.onPrepareMenu(menu)
+            }
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.my_group_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.create_group -> {
+                        Snackbar.make(binding.root, "생성하기", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+                return true
+            }
+        })
     }
 
     companion object {
