@@ -7,6 +7,10 @@ plugins {
     id "kotlin-parcelize"
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file("local.properties").newDataInputStream())
+def naver_map_client_id = properties.getProperty("naver.map.client.id")
+
 android {
     namespace "com.whyranoid.presentation"
     compileSdk 33
@@ -17,6 +21,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        manifestPlaceholders = [naverMapClientId: naver_map_client_id]
     }
 
     buildTypes {
@@ -98,4 +104,7 @@ dependencies {
 
     // Material Design 2
     implementation "androidx.compose.material:material"
+
+    // Naver Map
+    implementation "com.naver.maps:map-sdk:3.16.0"
 }

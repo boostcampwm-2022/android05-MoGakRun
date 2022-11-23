@@ -9,6 +9,9 @@
             android:exported="true">
         </activity>
         <activity android:name="com.whyranoid.presentation.running.RunningActivity" />
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="${naverMapClientId}" />
     </application>
 
 </manifest>
