@@ -44,5 +44,6 @@
     <string name="text_warning_create_group">그룹명과 그룹 소개를 입력해주세요.</string>
     <string name="text_create_group_success">그룹이 생성되었습니다!</string>
     <string name="text_create_group_fail">그룹 생성에 실패하였습니다.</string>
+    <string name="text_select_rule">규칙 고르기</string>
 
 </resources>
