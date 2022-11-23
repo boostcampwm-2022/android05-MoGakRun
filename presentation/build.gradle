@@ -80,4 +80,8 @@ dependencies {
     
     // Calendar Library
     implementation "com.github.kizitonwose:CalendarView:$calendarVersion"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
 }

@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentMyRunBinding
+import com.whyranoid.presentation.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,6 +29,10 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
     private fun observeInfo() {
         viewModel.nickName.observe(viewLifecycleOwner) {
             binding.tvNickName.text = it
+        }
+
+        viewModel.profileImgUri.observe(viewLifecycleOwner) {
+            binding.ivProfileImage.loadImage(it)
         }
     }
 }
