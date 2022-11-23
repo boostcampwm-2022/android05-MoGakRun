@@ -54,7 +54,7 @@ internal class CommunityFragment :
     private fun setOnMenuClickListener() {
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.create_group -> {
+                R.id.go_to_create_group -> {
                     val action =
                         CommunityFragmentDirections.actionCommunityFragmentToCreateGroupFragment()
                     findNavController().navigate(action)

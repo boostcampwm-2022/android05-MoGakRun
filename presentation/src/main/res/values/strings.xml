@@ -37,8 +37,9 @@
 
     <!-- 그룹 생성하기 화면-->
     <string name="text_group_name">그룹명</string>
-    <string name="text_create_group">그룹 생성하기</string>
+    <string name="text_go_to_create_group">그룹 생성하러 가기</string>
     <string name="text_group_introduce">그룹 소개</string>
     <string name="text_duplicate_check">중복확인</string>
+    <string name="text_create_group">그룹 생성하기</string>
 
 </resources>
