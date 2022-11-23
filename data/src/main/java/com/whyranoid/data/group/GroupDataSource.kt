@@ -9,7 +9,10 @@ import com.whyranoid.data.constant.FieldId.GROUP_MEMBERS_ID
 import com.whyranoid.data.constant.FieldId.GROUP_NAME
 import com.whyranoid.data.constant.FieldId.JOINED_GROUP_LIST
 import com.whyranoid.data.constant.FieldId.RULES
+import com.whyranoid.data.model.GroupInfoResponse
 import com.whyranoid.domain.model.Rule
+import kotlinx.coroutines.suspendCancellableCoroutine
+import java.util.UUID
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -18,6 +21,7 @@ class GroupDataSource @Inject constructor(
     private val db: FirebaseFirestore
 ) {
 
+    // TODO: suspendcancellablecoroutine로 변경
     suspend fun updateGroupInfo(
         groupId: String,
         groupName: String,
@@ -45,6 +49,7 @@ class GroupDataSource @Inject constructor(
         }
     }
 
+    // TODO: suspendcancellablecoroutine로 변경
     suspend fun joinGroup(uid: String, groupId: String): Boolean {
         return suspendCoroutine<Boolean> { continuation ->
             db.collection(GROUPS_COLLECTION)
@@ -60,6 +65,7 @@ class GroupDataSource @Inject constructor(
         }
     }
 
+    // TODO: suspendcancellablecoroutine로 변경
     suspend fun exitGroup(uid: String, groupId: String): Boolean {
         return suspendCoroutine { continuation ->
             db.collection(GROUPS_COLLECTION)
@@ -84,6 +90,29 @@ class GroupDataSource @Inject constructor(
                         }
                 }.addOnFailureListener {
                     continuation.resume(false)
+                }
+        }
+    }
+
+    // TODO Rule 추가
+    suspend fun createGroup(groupName: String, introduce: String, uid: String): Boolean {
+        return suspendCancellableCoroutine { cancellableContinuation ->
+            val newGroupId = UUID.randomUUID().toString()
+            db.collection(GROUPS_COLLECTION)
+                .document(newGroupId)
+                .set(
+                    GroupInfoResponse(
+                        groupId = newGroupId,
+                        groupName = groupName,
+                        introduce = introduce,
+                        leaderId = uid,
+                        membersId = emptyList(),
+                        rules = emptyList()
+                    )
+                ).addOnSuccessListener {
+                    cancellableContinuation.resume(true)
+                }.addOnFailureListener {
+                    cancellableContinuation.resume(false)
                 }
         }
     }

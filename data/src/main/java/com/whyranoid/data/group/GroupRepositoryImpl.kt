@@ -45,4 +45,8 @@ class GroupRepositoryImpl @Inject constructor(
     override suspend fun notifyRunningStart(uid: String, groupIdList: List<String>) {
         groupNotificationDataSource.notifyRunningStart(uid, groupIdList)
     }
+
+    override suspend fun createGroup(groupName: String, introduce: String, uid: String): Boolean {
+        return groupDataSource.createGroup(groupName, introduce, uid)
+    }
 }
