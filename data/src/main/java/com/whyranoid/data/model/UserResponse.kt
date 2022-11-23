@@ -6,8 +6,8 @@ import com.whyranoid.domain.model.User
 
 data class UserResponse(
     val uid: String = "",
-    val name: String = "",
-    val profileUrl: String = "",
+    val name: String? = "",
+    val profileUrl: String? = "",
     val joinedGroupList: List<String> = emptyList()
 )
 

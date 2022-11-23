@@ -4,10 +4,13 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.google.firebase.firestore.FirebaseFirestore
+import com.whyranoid.data.model.UserResponse
 import javax.inject.Inject
 
 class SignInDataSourceImpl @Inject constructor(
-    private val dataStoreDb: DataStore<Preferences>
+    private val dataStoreDb: DataStore<Preferences>,
+    private val fireBaseDb: FirebaseFirestore
 ) : SignInDataSource {
 
     private object PreferenceKeys {
@@ -24,6 +27,17 @@ class SignInDataSourceImpl @Inject constructor(
             preferences[PreferenceKeys.nickName] = userInfo.nickName ?: EMPTY_STRING
             preferences[PreferenceKeys.profileImgUri] = userInfo.profileImgUri ?: EMPTY_STRING
         }
+
+        fireBaseDb.collection("Users")
+            .document(userInfo.uid).set(
+                UserResponse(
+                    userInfo.uid,
+                    userInfo.nickName,
+                    userInfo.profileImgUri,
+                    emptyList()
+                )
+            )
+
         return true
     }
 
