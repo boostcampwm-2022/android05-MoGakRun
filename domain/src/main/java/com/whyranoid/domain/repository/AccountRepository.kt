@@ -19,7 +19,7 @@ interface AccountRepository {
 
     // 닉네임 수정, 서버에 먼저 보내고 성공하면 로컬에 반영
     // 실패하면 실패 사용자에게 알리기
-    suspend fun updateNickname(newNickname: String): Boolean
+    suspend fun updateNickname(newNickName: String): Result<String>
 
     // 데이터스토어에서 프로필 이미지 가져오기
     suspend fun getProfileUri(): Flow<String>

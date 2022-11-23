@@ -25,8 +25,8 @@ class AccountRepositoryImpl @Inject constructor(
         return accountDataSource.getUserNickName()
     }
 
-    override suspend fun updateNickname(newNickname: String): Boolean {
-        return true
+    override suspend fun updateNickname(newNickName: String): Result<String> {
+        return accountDataSource.updateUserNickName(newNickName)
     }
 
     override suspend fun getProfileUri(): Flow<String> {

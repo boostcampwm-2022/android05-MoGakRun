@@ -6,16 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.usecase.GetNicknameUseCase
 import com.whyranoid.domain.usecase.GetProfileUriUseCase
+import com.whyranoid.domain.usecase.UpdateNicknameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MyRunViewModel @Inject constructor(
     private val getNicknameUseCase: GetNicknameUseCase,
-    private val getProfileUriUseCase: GetProfileUriUseCase
+    private val getProfileUriUseCase: GetProfileUriUseCase,
+    private val updateNickNameUseCase: UpdateNicknameUseCase
 ) : ViewModel() {
+
     private val _nickName = MutableLiveData<String>()
     val nickName: LiveData<String>
         get() = _nickName
@@ -27,7 +29,6 @@ class MyRunViewModel @Inject constructor(
     fun getNickName() {
         viewModelScope.launch {
             getNicknameUseCase().collect {
-                Timber.d("유저 닉네임 불러오기 $it")
                 _nickName.value = it
             }
         }
@@ -37,6 +38,16 @@ class MyRunViewModel @Inject constructor(
         viewModelScope.launch {
             getProfileUriUseCase().collect {
                 _profileImgUri.value = it
+            }
+        }
+    }
+
+    fun updateNickName(newNickName: String) {
+        viewModelScope.launch {
+            updateNickNameUseCase(newNickName).onSuccess {
+                _nickName.value = it
+            }.onFailure {
+                // TODO 닉네임 변경 실패시
             }
         }
     }
