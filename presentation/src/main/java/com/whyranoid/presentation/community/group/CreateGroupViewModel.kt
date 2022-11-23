@@ -49,7 +49,7 @@ class CreateGroupViewModel @Inject constructor(
                     if (isCreateGroupSuccess) {
                         _eventFlow.emit(event)
                     } else {
-                        _eventFlow.emit(event.copy(isCompleted = false))
+                        _eventFlow.emit(event.copy(isSuccess = false))
                     }
                 }
                 is Event.WarningButtonClick -> {

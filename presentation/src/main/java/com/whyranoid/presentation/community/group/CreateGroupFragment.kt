@@ -35,12 +35,20 @@ internal class CreateGroupFragment :
     private fun handleEvent(event: Event) {
         when (event) {
             is Event.CreateGroupButtonClick -> {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.text_complete_create_group),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                findNavController().popBackStack()
+                if (event.isSuccess) {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_create_group_success),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    findNavController().popBackStack()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_create_group_fail),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
             }
             is Event.WarningButtonClick -> {
                 Snackbar.make(
