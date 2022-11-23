@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -21,9 +22,26 @@ class CreateGroupViewModel @Inject constructor(
 
     val groupName = MutableStateFlow<String?>(null)
     val groupIntroduce = MutableStateFlow<String?>(null)
+    val rules = MutableStateFlow<List<String>>(emptyList())
+
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
 
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow = _eventFlow.asSharedFlow()
+
+    fun onOpenDialogClicked() {
+        _showDialog.value = true
+    }
+
+    fun onDialogConfirm(date: String, hour: String, minute: String) {
+        rules.value = rules.value + listOf("$date-$hour-$minute")
+        _showDialog.value = false
+    }
+
+    fun onDialogDismiss() {
+        _showDialog.value = false
+    }
 
     val isButtonEnable: StateFlow<Boolean>
         get() = groupName.combine(groupIntroduce) { name, introduce ->
@@ -35,7 +53,11 @@ class CreateGroupViewModel @Inject constructor(
         )
 
     // TODO 그룹명 중복확인 로직
-    fun onButtonClicked() {
+    fun onDuplicateCheckButtonClicked() {
+    }
+
+    fun onAddRuleButtonClicked() {
+        emitEvent(Event.AddRuleButtonClick)
     }
 
     fun emitEvent(event: Event) {
@@ -44,7 +66,8 @@ class CreateGroupViewModel @Inject constructor(
                 is Event.CreateGroupButtonClick -> {
                     val isCreateGroupSuccess = createGroupUseCase(
                         groupName.value ?: "",
-                        groupIntroduce.value ?: ""
+                        groupIntroduce.value ?: "",
+                        rules.value
                     )
                     if (isCreateGroupSuccess) {
                         _eventFlow.emit(event)
@@ -53,6 +76,9 @@ class CreateGroupViewModel @Inject constructor(
                     }
                 }
                 is Event.WarningButtonClick -> {
+                    _eventFlow.emit(event)
+                }
+                is Event.AddRuleButtonClick -> {
                     _eventFlow.emit(event)
                 }
             }

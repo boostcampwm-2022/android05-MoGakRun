@@ -95,7 +95,12 @@ class GroupDataSource @Inject constructor(
     }
 
     // TODO Rule 추가
-    suspend fun createGroup(groupName: String, introduce: String, uid: String): Boolean {
+    suspend fun createGroup(
+        groupName: String,
+        introduce: String,
+        rules: List<String>,
+        uid: String
+    ): Boolean {
         return suspendCancellableCoroutine { cancellableContinuation ->
             val newGroupId = UUID.randomUUID().toString()
             db.collection(GROUPS_COLLECTION)
@@ -107,7 +112,7 @@ class GroupDataSource @Inject constructor(
                         introduce = introduce,
                         leaderId = uid,
                         membersId = listOf(uid),
-                        rules = emptyList()
+                        rules = rules
                     )
                 ).addOnSuccessListener {
                     cancellableContinuation.resume(true)

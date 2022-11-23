@@ -31,5 +31,5 @@ interface GroupRepository {
     suspend fun notifyRunningStart(uid: String, groupIdList: List<String>)
 
     // 그룹 생성하기
-    suspend fun createGroup(groupName: String, introduce: String, uid: String): Boolean
+    suspend fun createGroup(groupName: String, introduce: String, rules: List<String>, uid: String): Boolean
 }

@@ -60,23 +60,36 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:enabled="@{viewModel.isButtonEnable()}"
-            android:onClick="@{() -> viewModel.onButtonClicked()}"
+            android:onClick="@{() -> viewModel.onDuplicateCheckButtonClicked()}"
             android:text="@string/text_duplicate_check"
             app:layout_constraintBottom_toTopOf="@id/time_and_date_picker"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar" />
 
-        <!-- TODO 요일, 시간 피커 추가 -->
         <TextView
             android:id="@+id/time_and_date_picker"
+            style="@style/MoGakRunText.Bold.Medium"
             android:layout_width="0dp"
             android:layout_height="70dp"
             android:layout_margin="16dp"
             android:background="@color/mogakrun_secondary_dark"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.rules.toString()}"
+            app:layout_constraintEnd_toStartOf="@id/btn_select_rule"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_input_layout_group_name"
-            tools:text="피커가 들어갈 자리입니다~" />
+            tools:text="규칙들 들어갈 자리입니다~" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_select_rule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:onClick="@{() -> viewModel.onAddRuleButtonClicked()}"
+            android:text="@string/text_select_rule"
+            app:layout_constraintBottom_toTopOf="@id/text_input_layout_group_introduce"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_input_layout_group_name" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_layout_group_introduce"
@@ -105,6 +118,15 @@
                 android:textColor="@color/mogakrun_on_secondary" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/compose_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

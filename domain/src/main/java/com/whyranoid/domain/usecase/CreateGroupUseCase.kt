@@ -7,7 +7,7 @@ class CreateGroupUseCase @Inject constructor(
     private val groupRepository: GroupRepository
 ) {
     // TODO AccountRepository에서 uid를 가져와야함.
-    suspend operator fun invoke(groupName: String, introduce: String): Boolean {
-        return groupRepository.createGroup(groupName, introduce, uid = "hsjeon")
+    suspend operator fun invoke(groupName: String, introduce: String, rules: List<String>): Boolean {
+        return groupRepository.createGroup(groupName, introduce, rules = rules, uid = "hsjeon")
     }
 }

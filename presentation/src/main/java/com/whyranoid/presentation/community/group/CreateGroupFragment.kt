@@ -2,11 +2,16 @@ package com.whyranoid.presentation.community.group
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
+import com.whyranoid.presentation.compose.RulePicker
 import com.whyranoid.presentation.databinding.FragmentCreateGroupBinding
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +33,12 @@ internal class CreateGroupFragment :
         repeatWhenUiStarted {
             viewModel.eventFlow.collect { event ->
                 handleEvent(event)
+            }
+        }
+
+        repeatWhenUiStarted {
+            viewModel.rules.collect {
+                println("테스트 $it")
             }
         }
     }
@@ -56,6 +67,20 @@ internal class CreateGroupFragment :
                     getString(R.string.text_warning_create_group),
                     Snackbar.LENGTH_SHORT
                 ).show()
+            }
+            is Event.AddRuleButtonClick -> {
+                binding.composeView.apply {
+                    setViewCompositionStrategy(
+                        ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+                    )
+                    viewModel.onOpenDialogClicked()
+                    setContent {
+                        val showDialogState: Boolean by viewModel.showDialog.collectAsState()
+                        MaterialTheme {
+                            RulePicker(showDialogState, viewModel)
+                        }
+                    }
+                }
             }
         }
     }
