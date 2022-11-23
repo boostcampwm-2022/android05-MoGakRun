@@ -1,15 +1,16 @@
-package com.whyranoid
+package com.whyranoid.data.account
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.nickName
+import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.profileImgUri
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class SignInDataSourceImpl @Inject constructor(
+class AccountDataSourceImpl @Inject constructor(
     private val dataStoreDb: DataStore<Preferences>
-) : SignInDataSource {
-
+) : AccountDataSource {
     private object PreferenceKeys {
         val uid = stringPreferencesKey(UID_KEY)
         val email = stringPreferencesKey(EMAIL_KEY)
@@ -17,15 +18,15 @@ class SignInDataSourceImpl @Inject constructor(
         val profileImgUri = stringPreferencesKey(PROFILE_IMG_URI)
     }
 
-    override suspend fun saveLogInUserInfo(userInfo: SignInUserInfo): Boolean {
-        dataStoreDb.edit { preferences ->
-            preferences[PreferenceKeys.uid] = userInfo.uid
-            preferences[PreferenceKeys.email] = userInfo.email ?: EMPTY_STRING
-            preferences[PreferenceKeys.nickName] = userInfo.nickName ?: EMPTY_STRING
-            preferences[PreferenceKeys.profileImgUri] = userInfo.profileImgUri ?: EMPTY_STRING
+    override fun getUserNickName() = dataStoreDb.data
+        .map { preferences ->
+            preferences[nickName] ?: EMPTY_STRING
         }
-        return true
-    }
+
+    override fun getUserProfileImgUri() = dataStoreDb.data
+        .map { preferences ->
+            preferences[profileImgUri] ?: EMPTY_STRING
+        }
 
     companion object {
         private const val UID_KEY = "uid"

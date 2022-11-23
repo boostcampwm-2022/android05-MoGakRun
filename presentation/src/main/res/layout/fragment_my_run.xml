@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.whyranoid.presentation.myrun.MyRunViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,77 +31,86 @@
         </com.google.android.material.appbar.AppBarLayout>
 
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-            app:layout_constraintTop_toBottomOf="@id/tool_bar">
+            app:layout_constraintTop_toBottomOf="@id/tool_bar"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
-                <ImageView
-                    android:id="@+id/iv_profile_image"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="20dp"
-                    android:contentDescription="@string/my_run_profile_image_description"
-                    android:src="@drawable/thumbnail_src_small"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/tv_nick_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:textAppearance="@style/MoGakRunText.Bold.Medium"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_profile_image"
-                    app:layout_constraintStart_toEndOf="@id/iv_profile_image"
-                    app:layout_constraintTop_toTopOf="@id/iv_profile_image"
-                    tools:text="병희희" />
+                    <ImageView
+                        android:id="@+id/iv_profile_image"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
+                        android:contentDescription="@string/my_run_profile_image_description"
+                        android:src="@drawable/thumbnail_src_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="16dp"
-                    android:padding="8dp"
-                    android:contentDescription="@string/my_run_edit_nick_name_button_description"
-                    android:src="@drawable/my_run_edit_nick_name"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_nick_name"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_nick_name" />
+                    <TextView
+                        android:id="@+id/tv_nick_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:textAppearance="@style/MoGakRunText.Bold.Medium"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_profile_image"
+                        app:layout_constraintStart_toEndOf="@id/iv_profile_image"
+                        app:layout_constraintTop_toTopOf="@id/iv_profile_image"
+                        tools:text="병희희" />
 
-                <com.kizitonwose.calendarview.CalendarView
-                    android:id="@+id/calendar_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="20dp"
-                    app:cv_dayViewResource="@layout/item_calendar_day"
-                    app:cv_hasBoundaries="false"
-                    app:cv_scrollMode="paged"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_profile_image" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/my_run_edit_nick_name_button_description"
+                        android:padding="8dp"
+                        android:src="@drawable/my_run_edit_nick_name"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_nick_name"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_nick_name" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_my_running_history"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/calendar_view" />
+                    <com.kizitonwose.calendarview.CalendarView
+                        android:id="@+id/calendar_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="20dp"
+                        app:cv_dayViewResource="@layout/item_calendar_day"
+                        app:cv_hasBoundaries="false"
+                        app:cv_scrollMode="paged"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/iv_profile_image" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_my_running_history"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/calendar_view" />
 
-        </androidx.core.widget.NestedScrollView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
             android:id="@+id/bottom_navigation"
