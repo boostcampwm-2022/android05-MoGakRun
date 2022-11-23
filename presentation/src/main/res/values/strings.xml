@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">>
 
     <string name="app_name">MoGakRun</string>
 
@@ -6,7 +6,7 @@
     <string name="bottom_navigation_menu_community">커뮤니티</string>
     <string name="bottom_navigation_menu_running">러닝</string>
     <string name="bottom_navigation_menu_my_run">마이런</string>
-    
+
     <!-- 러닝 탭 화면 -->
     <string name="runner_start_runner_unit">명</string>
     <string name="runner_start_prefix">지금,</string>
@@ -34,5 +34,11 @@
     <string name="setting_service_policy">서비스 이용약관</string>
     <string name="setting_open_source_license">오픈소스 라이센스</string>
     <string name="setting_log_out">로그아웃</string>
+
+    <!-- 그룹 생성하기 화면-->
+    <string name="text_group_name">그룹명</string>
+    <string name="text_create_group">그룹 생성하기</string>
+    <string name="text_group_introduce">그룹 소개</string>
+    <string name="text_duplicate_check">중복확인</string>
 
 </resources>
