@@ -28,7 +28,7 @@ class SignInDataSourceImpl @Inject constructor(
             preferences[PreferenceKeys.profileImgUri] = userInfo.profileImgUri ?: EMPTY_STRING
         }
 
-        fireBaseDb.collection("Users")
+        fireBaseDb.collection(USER_COLLECTION_PATH)
             .document(userInfo.uid).set(
                 UserResponse(
                     userInfo.uid,
@@ -47,5 +47,6 @@ class SignInDataSourceImpl @Inject constructor(
         private const val NICK_NAME_KEY = "nick_name"
         private const val PROFILE_IMG_URI = "profile_img_uri"
         private const val EMPTY_STRING = ""
+        private const val USER_COLLECTION_PATH = "Users"
     }
 }
