@@ -34,6 +34,10 @@ android {
     }
     buildFeatures {
         dataBinding true
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.3.2"
     }
 }
 
@@ -78,7 +82,16 @@ dependencies {
 
     // shimmer
     implementation "com.facebook.shimmer:shimmer:$shimmerVersion"
-    
+
     // Calendar Library
     implementation "com.github.kizitonwose:CalendarView:$calendarVersion"
+
+    // composeBom
+    def composeBom = platform("androidx.compose:compose-bom:2022.10.00")
+    implementation composeBom
+    androidTestImplementation composeBom
+
+    // or Material Design 2
+    implementation 'androidx.compose.material:material'
+
 }
