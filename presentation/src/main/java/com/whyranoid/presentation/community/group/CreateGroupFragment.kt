@@ -25,7 +25,6 @@ internal class CreateGroupFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         setupMenu()
@@ -86,7 +85,25 @@ internal class CreateGroupFragment :
     }
 
     private fun setupMenu() {
-        binding.topAppBar.inflateMenu(R.menu.create_group_menu)
+        with(binding.topAppBar) {
+            inflateMenu(R.menu.create_group_menu)
+
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.create_group_button -> {
+                        viewModel.emitEvent(Event.CreateGroupButtonClick())
+                        true
+                    }
+                    R.id.warning_about_create_group_button -> {
+                        viewModel.emitEvent(Event.WarningButtonClick)
+                        true
+                    }
+                    else -> {
+                        false
+                    }
+                }
+            }
+        }
 
         repeatWhenUiStarted {
             viewModel.isButtonEnable.collect { isEnable ->
@@ -96,22 +113,6 @@ internal class CreateGroupFragment :
                 } else {
                     binding.topAppBar.menu.setGroupVisible(R.id.ready_to_create, false)
                     binding.topAppBar.menu.setGroupVisible(R.id.not_ready_to_create, true)
-                }
-            }
-        }
-
-        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.create_group_button -> {
-                    viewModel.emitEvent(Event.CreateGroupButtonClick())
-                    true
-                }
-                R.id.warning_about_create_group_button -> {
-                    viewModel.emitEvent(Event.WarningButtonClick)
-                    true
-                }
-                else -> {
-                    false
                 }
             }
         }
