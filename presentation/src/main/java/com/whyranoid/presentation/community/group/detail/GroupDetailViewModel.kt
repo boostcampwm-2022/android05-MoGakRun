@@ -45,7 +45,6 @@ class GroupDetailViewModel @Inject constructor(
                         when (notification) {
                             is StartNotification -> notification.startedAt
                             is FinishNotification -> notification.runningHistory.startedAt
-                            else -> 0
                         }
                     }
         }.launchIn(viewModelScope)
