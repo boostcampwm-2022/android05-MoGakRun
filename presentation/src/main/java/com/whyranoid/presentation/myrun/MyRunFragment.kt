@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentMyRunBinding
@@ -38,6 +39,14 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
         }
 
         binding.rvMyRunningHistory.adapter = runningHistoryAdapter
+
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.my_run_setting ->
+                    findNavController().navigate(R.id.action_myRunFragment_to_settingFragment)
+            }
+            true
+        }
     }
 
     private fun observeInfo() {

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph.xml"
-    app:startDestination="@id/myRunFragment">
+    app:startDestination="@id/runningStartFragment">
 
     <fragment
         android:id="@+id/myRunFragment"
@@ -23,11 +23,7 @@
         android:id="@+id/runningStartFragment"
         android:name="com.whyranoid.presentation.runningstart.RunningStartFragment"
         android:label="RunningStartFragment"
-        tools:layout="@layout/fragment_running_start">
-        <action
-            android:id="@+id/action_runningStartFragment_to_myRunFragment"
-            app:destination="@id/myRunFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_running_start"/>
     <fragment
         android:id="@+id/communityFragment"
         android:name="com.whyranoid.presentation.community.CommunityFragment"

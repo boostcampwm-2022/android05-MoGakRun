@@ -15,10 +15,6 @@
         android:layout_height="match_parent">
 
         <include
-            android:id="@+id/bottom_navigation"
-            layout="@layout/bottom_navigation_bar" />
-
-        <include
             android:id="@+id/tv_network_connection"
             layout="@layout/network_conntection_alert"
             bind:networkState="@{vm.networkState}" />
@@ -108,7 +104,7 @@
             android:onClick="@{() -> vm.onStartButtonClicked()}"
             app:cardBackgroundColor="@color/mogakrun_primary_light"
             app:cardCornerRadius="999dp"
-            app:layout_constraintBottom_toBottomOf="@id/bottom_navigation"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/width_end"
             app:layout_constraintStart_toStartOf="@id/width_start"
