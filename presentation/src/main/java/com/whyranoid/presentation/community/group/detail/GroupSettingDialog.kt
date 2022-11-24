@@ -30,19 +30,24 @@ class GroupSettingDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setButtons()
+    }
 
-        binding.btnEditGroup.setOnClickListener {
-            onEditButtonClickListener.invoke()
-            dismiss()
-        }
+    private fun setButtons() {
+        with(binding) {
+            btnEditGroup.setOnClickListener {
+                onEditButtonClickListener.invoke()
+                dismiss()
+            }
 
-        binding.btnDeleteGroup.setOnClickListener {
-            onDeleteButtonClickListener.invoke()
-            dismiss()
-        }
+            btnDeleteGroup.setOnClickListener {
+                onDeleteButtonClickListener.invoke()
+                dismiss()
+            }
 
-        binding.btnCancel.setOnClickListener {
-            dismiss()
+            btnCancel.setOnClickListener {
+                dismiss()
+            }
         }
     }
 }
