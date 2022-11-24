@@ -68,18 +68,18 @@ internal class RunningStartFragment :
         when {
             ContextCompat.checkSelfPermission(
                 requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
                 startActivity(Intent(requireContext(), RunningActivity::class.java))
             }
-            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) -> {
+            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
                 // 다이얼로그 띄우기, 거부된 상태
                 showPermissionRequestDialog()
             }
             else -> {
                 // 최초 요청
                 locationPermissionRequest.launch(
-                    Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION
                 )
             }
         }
