@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.whyranoid.presentation.community.group.CreateGroupViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".community.group.CreateGroupFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/top_app_bar"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/text_create_group" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_layout_group_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@color/mogakrun_primary"
+            app:counterEnabled="true"
+            app:layout_constraintEnd_toStartOf="@id/btn_duplicate_check"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_group_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/mogakrun_secondary"
+                android:hint="@string/text_group_name"
+                android:maxLength="20"
+                android:text="@={viewModel.groupName}"
+                android:textColor="@color/mogakrun_on_secondary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_duplicate_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:enabled="@{viewModel.isButtonEnable()}"
+            android:onClick="@{() -> viewModel.onDuplicateCheckButtonClicked()}"
+            android:text="@string/text_duplicate_check"
+            app:layout_constraintBottom_toTopOf="@id/time_and_date_picker"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar" />
+
+        <TextView
+            android:id="@+id/time_and_date_picker"
+            style="@style/MoGakRunText.Bold.Medium"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_margin="16dp"
+            android:background="@color/mogakrun_secondary_dark"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.rules.toString()}"
+            app:layout_constraintEnd_toStartOf="@id/btn_select_rule"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_input_layout_group_name"
+            tools:text="규칙들 들어갈 자리입니다~" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_select_rule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:onClick="@{() -> viewModel.onAddRuleButtonClicked()}"
+            android:text="@string/text_select_rule"
+            app:layout_constraintBottom_toTopOf="@id/text_input_layout_group_introduce"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_input_layout_group_name" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_layout_group_introduce"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:background="@color/mogakrun_primary"
+            android:gravity="top|start"
+            app:counterEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/time_and_date_picker">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_group_introduce"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/mogakrun_secondary"
+                android:gravity="top|start"
+                android:hint="@string/text_group_introduce"
+                android:maxLength="200"
+                android:minLines="2"
+                android:text="@={viewModel.groupIntroduce}"
+                android:textColor="@color/mogakrun_on_secondary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/compose_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

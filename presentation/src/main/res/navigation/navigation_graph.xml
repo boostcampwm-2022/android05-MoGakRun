@@ -28,5 +28,19 @@
             android:id="@+id/action_runningStartFragment_to_myRunFragment"
             app:destination="@id/myRunFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/communityFragment"
+        android:name="com.whyranoid.presentation.community.CommunityFragment"
+        android:label="CommunityFragment"
+        tools:layout="@layout/fragment_community">
+        <action
+            android:id="@+id/action_communityFragment_to_createGroupFragment"
+            app:destination="@id/createGroupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createGroupFragment"
+        android:name="com.whyranoid.presentation.community.group.CreateGroupFragment"
+        android:label="CreateGroupFragment"
+        tools:layout="@layout/fragment_create_group"/>
 
 </navigation>

@@ -29,4 +29,7 @@ interface GroupRepository {
     fun getGroupNotifications(groupId: String): Flow<List<GroupNotification>>
 
     suspend fun notifyRunningStart(uid: String, groupIdList: List<String>)
+
+    // 그룹 생성하기
+    suspend fun createGroup(groupName: String, introduce: String, rules: List<String>, uid: String): Boolean
 }
