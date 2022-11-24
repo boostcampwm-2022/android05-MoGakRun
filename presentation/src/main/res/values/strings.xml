@@ -54,5 +54,6 @@
     <string name="text_headcount">%d명</string>
     <string name="text_recruit">홍보하기</string>
     <string name="text_exit_group">그룹 나가기</string>
+    <string name="text_setting_group">그룹 설정</string>
 
 </resources>
