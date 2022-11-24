@@ -2,8 +2,10 @@ package com.whyranoid.presentation.myrun
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.usecase.GetNicknameUseCase
 import com.whyranoid.domain.usecase.GetProfileUriUseCase
+import com.whyranoid.domain.usecase.GetRunningHistoryUseCase
 import com.whyranoid.domain.usecase.UpdateNicknameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +18,8 @@ import javax.inject.Inject
 class MyRunViewModel @Inject constructor(
     private val getNicknameUseCase: GetNicknameUseCase,
     private val getProfileUriUseCase: GetProfileUriUseCase,
-    private val updateNickNameUseCase: UpdateNicknameUseCase
+    private val updateNickNameUseCase: UpdateNicknameUseCase,
+    private val getRunningHistoryUseCase: GetRunningHistoryUseCase
 ) : ViewModel() {
 
     private val EMPTY_STRING = ""
@@ -28,6 +31,10 @@ class MyRunViewModel @Inject constructor(
     private val _profileImgUri = MutableStateFlow(EMPTY_STRING)
     val profileImgUri: StateFlow<String>
         get() = _profileImgUri.asStateFlow()
+
+    private val _runningHistoryList = MutableStateFlow<List<RunningHistory>>(emptyList())
+    val runningHistoryList: StateFlow<List<RunningHistory>>
+        get() = _runningHistoryList.asStateFlow()
 
     fun getNickName() {
         viewModelScope.launch {
@@ -51,6 +58,14 @@ class MyRunViewModel @Inject constructor(
                 _nickName.value = it
             }.onFailure {
                 // TODO 닉네임 변경 실패시
+            }
+        }
+    }
+
+    private fun getRunningHistoryList() {
+        viewModelScope.launch {
+            getRunningHistoryUseCase().collect { runningHistoryList ->
+                _runningHistoryList.value = runningHistoryList
             }
         }
     }

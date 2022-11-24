@@ -2,10 +2,11 @@ package com.whyranoid.domain.usecase
 
 import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.repository.RunningHistoryRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetRunningHistoryUseCase @Inject constructor(private val runningHistoryRepository: RunningHistoryRepository) {
-    suspend operator fun invoke(): List<RunningHistory> {
+    operator fun invoke(): Flow<List<RunningHistory>> {
         return runningHistoryRepository.getRunningHistory()
     }
 }

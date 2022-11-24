@@ -29,6 +29,7 @@
     <string name="my_run_edit_nick_name_dialog_positive">수정</string>
     <string name="my_run_edit_nick_name_dialog_negative">취소</string>
     <string name="my_run_edit_nick_name_dialog_hint">20글자 이하로 입력해주세요</string>
+    <string name="my_run_label_my_running_history">내 운동기록</string>
 
     <!-- 설정 화면 -->
     <string name="setting_connected_account">연결된 계정</string>
@@ -50,4 +51,10 @@
     <string name="text_create_group_fail">그룹 생성에 실패하였습니다.</string>
     <string name="text_select_rule">규칙 고르기</string>
 
+    <!-- 운동 기록 아이템 뷰 -->
+    <string name="running_history_label_total_running_time">총 운동시간</string>
+    <string name="running_history_label_start_running_time">시작시간</string>
+    <string name="running_history_label_finish_running_time">종료시간</string>
+    <string name="running_history_label_running_distance">이동거리</string>
+    <string name="running_history_label_running_pace">페이스</string>
 </resources>

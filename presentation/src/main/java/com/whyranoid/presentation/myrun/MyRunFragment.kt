@@ -21,6 +21,8 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
         AlertDialog.Builder(requireContext())
     }
 
+    private val runningHistoryAdapter = MyRunningHistoryAdapter()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -34,6 +36,8 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
         binding.ivEditNickName.setOnClickListener {
             popUpEditNickNameDialog()
         }
+
+        binding.rvMyRunningHistory.adapter = runningHistoryAdapter
     }
 
     private fun observeInfo() {
@@ -46,6 +50,12 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
         repeatWhenUiStarted {
             viewModel.profileImgUri.collect { profileImgUri ->
                 binding.ivProfileImage.loadImage(profileImgUri)
+            }
+        }
+
+        repeatWhenUiStarted {
+            viewModel.runningHistoryList.collect { runningHistoryList ->
+                runningHistoryAdapter.submitList(runningHistoryList)
             }
         }
     }
