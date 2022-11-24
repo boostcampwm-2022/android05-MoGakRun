@@ -1,33 +1,24 @@
 package com.whyranoid.presentation.myrun
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
-import com.whyranoid.presentation.databinding.DialogEditNickNameBinding
 import com.whyranoid.presentation.databinding.FragmentMyRunBinding
 import com.whyranoid.presentation.util.loadImage
+import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragment_my_run) {
 
     private val viewModel by viewModels<MyRunViewModel>()
-    private lateinit var dialogViewBinding: DialogEditNickNameBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        dialogViewBinding =
-            DataBindingUtil.inflate(inflater, R.layout.dialog_edit_nick_name, container, false)
-        return super.onCreateView(inflater, container, savedInstanceState)
+    private val builder: AlertDialog.Builder by lazy {
+        AlertDialog.Builder(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,31 +37,37 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
     }
 
     private fun observeInfo() {
-        viewModel.nickName.observe(viewLifecycleOwner) {
-            binding.tvNickName.text = it
+        repeatWhenUiStarted {
+            viewModel.nickName.collect { nickName ->
+                binding.tvNickName.text = nickName
+            }
         }
 
-        viewModel.profileImgUri.observe(viewLifecycleOwner) {
-            binding.ivProfileImage.loadImage(it)
+        repeatWhenUiStarted {
+            viewModel.profileImgUri.collect { profileImgUri ->
+                binding.ivProfileImage.loadImage(profileImgUri)
+            }
         }
     }
 
     private fun popUpEditNickNameDialog() {
-        val newNickName = dialogViewBinding.etChangeNickName
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_nick_name, null)
 
-        val builder = AlertDialog.Builder(requireContext())
-            .setView(dialogViewBinding.root)
-            .setPositiveButton(
-                getString(R.string.my_run_edit_nick_name_dialog_positive)
-            ) { _, _ ->
-                viewModel.updateNickName(newNickName.text.toString())
-            }
-            .setNegativeButton(
-                getString(R.string.my_run_edit_nick_name_dialog_negative)
-            ) { dialog, _ ->
-                dialog.dismiss()
-            }
-
-        builder.show()
+        if (dialogView.parent != null) {
+            builder.show()
+        } else {
+            builder.setView(dialogView)
+                .setPositiveButton(
+                    getString(R.string.my_run_edit_nick_name_dialog_positive)
+                ) { dialog, _ ->
+                    viewModel.updateNickName(dialogView.findViewById<EditText>(R.id.et_change_nick_name).text.toString())
+                    dialog.dismiss()
+                }
+                .setNegativeButton(
+                    getString(R.string.my_run_edit_nick_name_dialog_negative)
+                ) { dialog, _ ->
+                    dialog.dismiss()
+                }.show()
+        }
     }
 }

@@ -1,13 +1,14 @@
 package com.whyranoid.presentation.myrun
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.usecase.GetNicknameUseCase
 import com.whyranoid.domain.usecase.GetProfileUriUseCase
 import com.whyranoid.domain.usecase.UpdateNicknameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,13 +19,15 @@ class MyRunViewModel @Inject constructor(
     private val updateNickNameUseCase: UpdateNicknameUseCase
 ) : ViewModel() {
 
-    private val _nickName = MutableLiveData<String>()
-    val nickName: LiveData<String>
-        get() = _nickName
+    private val EMPTY_STRING = ""
 
-    private val _profileImgUri = MutableLiveData<String>()
-    val profileImgUri: LiveData<String>
-        get() = _profileImgUri
+    private val _nickName = MutableStateFlow(EMPTY_STRING)
+    val nickName: StateFlow<String>
+        get() = _nickName.asStateFlow()
+
+    private val _profileImgUri = MutableStateFlow(EMPTY_STRING)
+    val profileImgUri: StateFlow<String>
+        get() = _profileImgUri.asStateFlow()
 
     fun getNickName() {
         viewModelScope.launch {
