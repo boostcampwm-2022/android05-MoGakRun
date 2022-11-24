@@ -111,4 +111,8 @@ dependencies {
 
     // WorkManager dependency
     implementation "androidx.work:work-runtime-ktx:$workManagerVersion"
+
+    // HiltWorker
+    implementation "androidx.hilt:hilt-work:$hiltWorkerVersion"
+    kapt "androidx.hilt:hilt-compiler:$hiltCompilerVersion"
 }

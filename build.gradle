@@ -32,6 +32,8 @@ buildscript {
         naverMapVersion = "3.16.0"
         googleLocationVersion = "21.0.1"
         workManagerVersion = "2.7.1"
+        hiltWorkerVersion = "1.0.0"
+        hiltCompilerVersion = "1.0.0"
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"
