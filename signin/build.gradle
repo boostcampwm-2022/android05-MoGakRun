@@ -43,6 +43,7 @@ android {
 dependencies {
 
     implementation project(":presentation")
+    implementation project(":data")
 
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
@@ -59,6 +60,7 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:$firebaseVersion")
     implementation "com.google.firebase:firebase-auth-ktx"
     implementation "com.google.android.gms:play-services-auth:$playServicesAuthVersion"
+    implementation "com.google.firebase:firebase-firestore-ktx"
 
     // splash
     implementation "androidx.core:core-splashscreen:$splashVersion"

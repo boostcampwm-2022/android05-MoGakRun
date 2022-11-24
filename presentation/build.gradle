@@ -86,12 +86,15 @@ dependencies {
     // Calendar Library
     implementation "com.github.kizitonwose:CalendarView:$calendarVersion"
 
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+
     // composeBom
     def composeBom = platform("androidx.compose:compose-bom:2022.10.00")
     implementation composeBom
     androidTestImplementation composeBom
 
-    // or Material Design 2
-    implementation 'androidx.compose.material:material'
-
+    // Material Design 2
+    implementation "androidx.compose.material:material"
 }

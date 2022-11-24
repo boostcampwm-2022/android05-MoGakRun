@@ -1,7 +1,10 @@
 package com.whyranoid.presentation.util
 
 import android.view.View
+import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
+import com.whyranoid.presentation.R
 import com.whyranoid.presentation.util.networkconnection.NetworkState
 
 @BindingAdapter("networkConnectionVisibility")
@@ -20,4 +23,13 @@ fun View.enableWithNetworkState(networkState: NetworkState) {
         is NetworkState.Connection -> false
         is NetworkState.DisConnection -> true
     }
+}
+
+@BindingAdapter("loadImage")
+fun ImageView.loadImage(uri: String) {
+    Glide.with(this.context)
+        .load(uri)
+        .error(R.drawable.thumbnail_src_small)
+        .circleCrop()
+        .into(this)
 }
