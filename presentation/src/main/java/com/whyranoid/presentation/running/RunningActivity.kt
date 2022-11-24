@@ -20,7 +20,6 @@ internal class RunningActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mapView = binding.mapView
-        mapView
 
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
@@ -32,10 +31,9 @@ internal class RunningActivity :
         naverMap.maxZoom = 18.0
         naverMap.minZoom = 10.0
 
-        Marker()
-
         naverMap.moveCamera(CameraUpdate.scrollAndZoomTo(LatLng(37.498095, 127.027610), 15.0))
-        naverMap.uiSettings.isLocationButtonEnabled = true
+        naverMap.uiSettings.isLocationButtonEnabled = false
+        naverMap.uiSettings.isZoomControlEnabled = false
     }
 
     override fun onStart() {
