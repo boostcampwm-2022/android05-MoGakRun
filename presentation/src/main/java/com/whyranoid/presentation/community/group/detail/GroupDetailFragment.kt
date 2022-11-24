@@ -91,11 +91,13 @@ internal class GroupDetailFragment :
     }
 
     private fun setBindingData() {
-        binding.viewModel = viewModel
-        binding.groupInfo = groupDetailArgs.groupInfo
-        // TODO : uid를 DataStore에서 가져올 수 있도록 변경
-        // TODO : ViewModel로 옮기기
-        binding.isLeader = groupDetailArgs.groupInfo.leader.name == "soopeach"
+        with(binding) {
+            viewModel = viewModel
+            groupInfo = groupDetailArgs.groupInfo
+            // TODO : uid를 DataStore에서 가져올 수 있도록 변경
+            // TODO : ViewModel로 옮기기
+            isLeader = groupDetailArgs.groupInfo.leader.name == "soopeach"
+        }
     }
 
     // TODO : uid를 DataStore에서 가져올 수 있도록 변경
