@@ -6,10 +6,11 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
+import androidx.navigation.fragment.findNavController
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentCommunityItemBinding
+import com.whyranoid.presentation.model.toGroupInfoUiModel
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -62,8 +63,9 @@ internal class CommunityItemFragment :
     private fun handleEvent(event: Event) {
         when (event) {
             is Event.CategoryItemClick -> {
-                Snackbar.make(binding.root, "${event.groupInfo.name} 클릭됨", Snackbar.LENGTH_SHORT)
-                    .show()
+                val action =
+                    CommunityFragmentDirections.actionCommunityFragmentToGroupDetailFragment(event.groupInfo.toGroupInfoUiModel())
+                findNavController().navigate(action)
             }
         }
     }
