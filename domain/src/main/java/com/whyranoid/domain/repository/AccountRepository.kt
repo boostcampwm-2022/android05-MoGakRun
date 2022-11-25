@@ -12,17 +12,17 @@ interface AccountRepository {
     suspend fun loginUser(): Boolean
 
     // 데이터스토어에서 uid 가져오기
-    suspend fun getUid(): Result<String>
+    fun getUid(): Flow<String>
 
     // 데이터스토어에서 닉네임 가져오기
-    suspend fun getNickname(): Flow<String>
+    fun getNickname(): Flow<String>
 
     // 닉네임 수정, 서버에 먼저 보내고 성공하면 로컬에 반영
     // 실패하면 실패 사용자에게 알리기
-    suspend fun updateNickname(newNickName: String): Result<String>
+    suspend fun updateNickname(uid: String, newNickName: String): Result<String>
 
     // 데이터스토어에서 프로필 이미지 가져오기
-    suspend fun getProfileUri(): Flow<String>
+    fun getProfileUri(): Flow<String>
 
     // 프로필 사진 서버에 업데이트
     suspend fun updateProfileUrl(newProfileUrl: String): Boolean

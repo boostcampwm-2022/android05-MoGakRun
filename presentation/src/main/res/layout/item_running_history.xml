@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="runningHistory"
+            type="com.whyranoid.presentation.myrun.RunningHistoryUiModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tv_running_history_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{runningHistory.date}"
+            tools:text="2022/09/11" />
+
+        <TextView
+            android:id="@+id/tv_label_total_running_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="@string/running_history_label_total_running_time"
+            app:layout_constraintBottom_toBottomOf="@id/tv_running_history_date"
+            app:layout_constraintEnd_toStartOf="@id/tv_total_running_time"
+            app:layout_constraintTop_toTopOf="@id/tv_running_history_date" />
+
+        <TextView
+            android:id="@+id/tv_total_running_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{runningHistory.totalRunningTime}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_label_total_running_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_label_total_running_time"
+            tools:text="2시간 22분" />
+
+        <View
+            android:id="@+id/view_vertical_partition_line"
+            android:layout_width="1dp"
+            android:layout_height="100dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_label_total_running_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/black" />
+
+        <View
+            android:id="@+id/view_horizontal_partition_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_label_total_running_time"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/running_history_label_start_running_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_running_history_date"
+            app:layout_constraintBottom_toTopOf="@id/view_horizontal_partition_line" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="17:00"
+            android:text="@{runningHistory.startedAt}"
+            app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
+            app:layout_constraintBottom_toBottomOf="@id/view_horizontal_partition_line"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/running_history_label_finish_running_time"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toStartOf="@id/view_vertical_partition_line"
+            app:layout_constraintTop_toBottomOf="@id/tv_running_history_date"
+            app:layout_constraintBottom_toTopOf="@id/view_horizontal_partition_line" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="19:22"
+            android:text="@{runningHistory.finishedAt}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/view_horizontal_partition_line"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/running_history_label_running_distance"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="11.7km"
+            android:text="@{runningHistory.totalDistance}"
+            app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
+            app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="50dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/running_history_label_running_pace"
+            app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line"
+            app:layout_constraintStart_toStartOf="@id/view_vertical_partition_line"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="6.3km/h"
+            android:text="@{runningHistory.pace}"
+            app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="50dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

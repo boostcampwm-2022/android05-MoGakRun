@@ -27,6 +27,7 @@ buildscript {
         desugarVersion = "2.0.0"
         calendarVersion = "1.0.4"
         glideVersion = "4.14.2"
+        roomVersion = "2.4.3"
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"

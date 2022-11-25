@@ -24,7 +24,6 @@
                 android:layout_height="?attr/actionBarSize"
                 app:titleCentered="true"
                 app:title="@string/my_run_tool_bar_menu_setting"
-                app:navigationIcon="@drawable/navigation_back_button"
                 />
 
         </com.google.android.material.appbar.AppBarLayout>

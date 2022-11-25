@@ -52,4 +52,10 @@ dependencies {
     // datastore
     implementation "androidx.datastore:datastore-preferences:$dataStoreVersion"
     implementation "androidx.datastore:datastore-preferences-core:$dataStoreVersion"
+
+    // Room
+    implementation "androidx.room:room-ktx:$roomVersion"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
 }
