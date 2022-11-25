@@ -45,7 +45,14 @@ class GroupNotificationAdapter(private val myUid: String) :
         abstract fun bind(notification: GroupNotification)
     }
 
-    class MyStartNotificationViewHolder(private val binding: MyStartNotificationItemBinding) :
+    class MyStartNotificationViewHolder(
+        parent: ViewGroup,
+        private val binding: MyStartNotificationItemBinding = MyStartNotificationItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+    ) :
         NotificationViewHolder(binding) {
 
         override fun bind(notification: GroupNotification) {
@@ -55,7 +62,14 @@ class GroupNotificationAdapter(private val myUid: String) :
         }
     }
 
-    class MyFinishNotificationViewHolder(private val binding: MyFinishNotificationItemBinding) :
+    class MyFinishNotificationViewHolder(
+        parent: ViewGroup,
+        private val binding: MyFinishNotificationItemBinding = MyFinishNotificationItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+    ) :
         NotificationViewHolder(binding) {
 
         override fun bind(notification: GroupNotification) {
@@ -65,7 +79,14 @@ class GroupNotificationAdapter(private val myUid: String) :
         }
     }
 
-    class OtherStartNotificationViewHolder(private val binding: OtherStartNotificationItemBinding) :
+    class OtherStartNotificationViewHolder(
+        parent: ViewGroup,
+        private val binding: OtherStartNotificationItemBinding = OtherStartNotificationItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+    ) :
         NotificationViewHolder(binding) {
 
         override fun bind(notification: GroupNotification) {
@@ -75,7 +96,14 @@ class GroupNotificationAdapter(private val myUid: String) :
         }
     }
 
-    class OtherFinishNotificationViewHolder(private val binding: OtherFinishNotificationItemBinding) :
+    class OtherFinishNotificationViewHolder(
+        parent: ViewGroup,
+        private val binding: OtherFinishNotificationItemBinding = OtherFinishNotificationItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+    ) :
         NotificationViewHolder(binding) {
 
         override fun bind(notification: GroupNotification) {
@@ -100,42 +128,10 @@ class GroupNotificationAdapter(private val myUid: String) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
         return when (viewType) {
-            MY_START_NOTIFICATION_TYPE -> {
-                val layoutInflater =
-                    MyStartNotificationItemBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                MyStartNotificationViewHolder(layoutInflater)
-            }
-            MY_FINISH_NOTIFICATION_TYPE -> {
-                val layoutInflater =
-                    MyFinishNotificationItemBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                MyFinishNotificationViewHolder(layoutInflater)
-            }
-            OTHER_START_NOTIFICATION_TYPE -> {
-                val layoutInflater =
-                    OtherStartNotificationItemBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                OtherStartNotificationViewHolder(layoutInflater)
-            }
-            else -> {
-                val layoutInflater =
-                    OtherFinishNotificationItemBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                OtherFinishNotificationViewHolder(layoutInflater)
-            }
+            MY_START_NOTIFICATION_TYPE -> MyStartNotificationViewHolder(parent)
+            MY_FINISH_NOTIFICATION_TYPE -> MyFinishNotificationViewHolder(parent)
+            OTHER_START_NOTIFICATION_TYPE -> OtherStartNotificationViewHolder(parent)
+            else -> OtherFinishNotificationViewHolder(parent)
         }
     }
 
