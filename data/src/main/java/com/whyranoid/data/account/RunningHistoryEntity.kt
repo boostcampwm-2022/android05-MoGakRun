@@ -1,5 +1,6 @@
 package com.whyranoid.data.account
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.whyranoid.domain.model.RunningHistory
@@ -8,11 +9,11 @@ import com.whyranoid.domain.model.RunningHistory
 data class RunningHistoryEntity(
     @PrimaryKey
     val historyId: String,
-    val startedAt: Long,
-    val finishedAt: Long,
-    val totalRunningTime: Int,
-    val pace: Double,
-    val totalDistance: Double
+    @ColumnInfo(name = "started_at") val startedAt: Long,
+    @ColumnInfo(name = "finished_at") val finishedAt: Long,
+    @ColumnInfo(name = "total_running_time") val totalRunningTime: Int,
+    @ColumnInfo(name = "pace") val pace: Double,
+    @ColumnInfo(name = "total_distance") val totalDistance: Double
 )
 
 fun RunningHistoryEntity.toRunningHistory(): RunningHistory {

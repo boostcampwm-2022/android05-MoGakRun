@@ -40,8 +40,10 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
 
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.my_run_setting ->
-                    findNavController().navigate(R.id.action_myRunFragment_to_settingFragment)
+                R.id.my_run_setting -> {
+                    val direction = MyRunFragmentDirections.actionMyRunFragmentToSettingFragment()
+                    findNavController().navigate(direction)
+                }
             }
             true
         }
@@ -77,7 +79,10 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
                 .setPositiveButton(
                     getString(R.string.my_run_edit_nick_name_dialog_positive)
                 ) { dialog, _ ->
-                    viewModel.updateNickName(viewModel.uid.value, dialogView.findViewById<EditText>(R.id.et_change_nick_name).text.toString())
+                    viewModel.updateNickName(
+                        viewModel.uid.value,
+                        dialogView.findViewById<EditText>(R.id.et_change_nick_name).text.toString()
+                    )
                     dialog.dismiss()
                 }
                 .setNegativeButton(

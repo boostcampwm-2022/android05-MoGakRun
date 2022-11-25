@@ -6,7 +6,7 @@
     <data>
         <variable
             name="runningHistory"
-            type="com.whyranoid.presentation.myrun.RunningHistoryUiModel" />
+            type="com.whyranoid.presentation.model.RunningHistoryUiModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class RunningHistoryLocalDataSourceImpl @Inject constructor(
-    private val roomDb: RunningHistoryLocalDataBase
+    private val runningHistoryDao: RunningHistoryDao
 ) : RunningHistoryLocalDataSource {
 
     override fun getRunningHistory(): Flow<List<RunningHistory>> {
-        return roomDb.runningHistoryDao().getRunningHistory().map { runningHistoryList ->
+        return runningHistoryDao.getRunningHistory().map { runningHistoryList ->
             runningHistoryList.map { runningHistoryEntity ->
                 runningHistoryEntity.toRunningHistory()
             }
