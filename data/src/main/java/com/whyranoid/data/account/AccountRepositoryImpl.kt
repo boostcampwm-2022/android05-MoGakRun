@@ -17,19 +17,19 @@ class AccountRepositoryImpl @Inject constructor(
         return true
     }
 
-    override suspend fun getUid(): Result<String> {
-        return Result.success("byeonghee-uid")
+    override fun getUid(): Flow<String> {
+        return accountDataSource.getUserUid()
     }
 
-    override suspend fun getNickname(): Flow<String> {
+    override fun getNickname(): Flow<String> {
         return accountDataSource.getUserNickName()
     }
 
-    override suspend fun updateNickname(newNickName: String): Result<String> {
-        return accountDataSource.updateUserNickName(newNickName)
+    override suspend fun updateNickname(uid: String, newNickName: String): Result<String> {
+        return accountDataSource.updateUserNickName(uid, newNickName)
     }
 
-    override suspend fun getProfileUri(): Flow<String> {
+    override fun getProfileUri(): Flow<String> {
         return accountDataSource.getUserProfileImgUri()
     }
 

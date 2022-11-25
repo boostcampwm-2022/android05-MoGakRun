@@ -11,16 +11,11 @@ class StartRunningUseCase @Inject constructor(
     private val groupRepository: GroupRepository
 ) {
     suspend operator fun invoke(): Boolean {
-        accountRepository.getUid().onSuccess { uid ->
+        accountRepository.getUid().collect { uid ->
             runningRepository.startRunning(uid)
             groupRepository.getMyGroupList(uid).onSuccess { groupInfos ->
                 groupRepository.notifyRunningStart(uid, groupInfos.map { it.groupId })
-                return true
-            }.onFailure {
-                return false
             }
-        }.onFailure {
-            return false
         }
         return false
     }
