@@ -13,7 +13,7 @@
 
         <variable
             name="groupInfo"
-            type="com.whyranoid.domain.model.GroupInfo" />
+            type="com.whyranoid.presentation.model.GroupInfoUiModel" />
 
         <variable
             name="viewModel"

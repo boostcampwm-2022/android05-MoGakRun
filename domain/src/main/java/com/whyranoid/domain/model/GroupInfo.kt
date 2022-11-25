@@ -1,7 +1,5 @@
 package com.whyranoid.domain.model
 
-import java.io.Serializable
-
 data class GroupInfo(
     val name: String,
     val groupId: String,
@@ -9,4 +7,4 @@ data class GroupInfo(
     val rules: List<Rule>,
     val headCount: Int,
     val leader: User
-) : Serializable
+)

@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentCommunityItemBinding
+import com.whyranoid.presentation.model.toGroupInfoUiModel
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -63,7 +64,7 @@ internal class CommunityItemFragment :
         when (event) {
             is Event.CategoryItemClick -> {
                 val action =
-                    CommunityFragmentDirections.actionCommunityFragmentToGroupDetailFragment(event.groupInfo)
+                    CommunityFragmentDirections.actionCommunityFragmentToGroupDetailFragment(event.groupInfo.toGroupInfoUiModel())
                 findNavController().navigate(action)
             }
         }

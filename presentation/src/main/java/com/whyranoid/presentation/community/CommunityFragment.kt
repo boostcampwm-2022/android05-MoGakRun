@@ -68,7 +68,6 @@ internal class CommunityFragment :
     }
 
     override fun onDestroyView() {
-
         // 뷰페이저 메모리 누수 해결
         binding.viewPager.adapter = null
 

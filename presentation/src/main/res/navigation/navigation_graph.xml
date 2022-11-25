@@ -52,7 +52,7 @@
         tools:layout="@layout/fragment_group_detail">
         <argument
             android:name="groupInfo"
-            app:argType="com.whyranoid.domain.model.GroupInfo" />
+            app:argType="com.whyranoid.presentation.model.GroupInfoUiModel" />
     </fragment>
 
 </navigation>
