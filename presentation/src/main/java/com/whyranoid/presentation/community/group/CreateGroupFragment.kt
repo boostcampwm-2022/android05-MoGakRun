@@ -29,13 +29,13 @@ internal class CreateGroupFragment :
 
         setupMenu()
 
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.eventFlow.collect { event ->
                 handleEvent(event)
             }
         }
 
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.rules.collect {
                 println("테스트 $it")
             }
@@ -105,7 +105,7 @@ internal class CreateGroupFragment :
             }
         }
 
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.isButtonEnable.collect { isEnable ->
                 if (isEnable) {
                     binding.topAppBar.menu.setGroupVisible(R.id.ready_to_create, true)
