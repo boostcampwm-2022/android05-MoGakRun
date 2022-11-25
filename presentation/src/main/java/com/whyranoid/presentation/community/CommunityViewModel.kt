@@ -21,10 +21,10 @@ class CommunityViewModel @Inject constructor(
         get() = _eventFlow.asSharedFlow()
 
     fun onCategoryItemClicked(groupInfo: GroupInfo) {
-        event(Event.CategoryItemClick(groupInfo))
+        emitEvent(Event.CategoryItemClick(groupInfo))
     }
 
-    private fun event(event: Event) {
+    private fun emitEvent(event: Event) {
         viewModelScope.launch {
             _eventFlow.emit(event)
         }

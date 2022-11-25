@@ -73,15 +73,15 @@ internal class CommunityItemFragment :
 
     // TODO 카테고리 별 다른 아이템 처리
     private fun setMyGroupAdapter() {
-        val adapter = MyGroupAdapter { groupInfo ->
+        val myGroupAdapter = MyGroupAdapter { groupInfo ->
             viewModel.onCategoryItemClicked(groupInfo)
         }
-        binding.rvCommunity.adapter = adapter
+        binding.rvCommunity.adapter = myGroupAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getMyGroupListUseCase().collect { groupList ->
                 removeShimmer()
-                adapter.submitList(groupList.sortedBy { it.name })
+                myGroupAdapter.submitList(groupList.sortedBy { it.name })
             }
         }
     }
