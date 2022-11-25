@@ -21,10 +21,6 @@ internal class CommunityItemFragment :
 
     private val viewModel: CommunityViewModel by viewModels()
 
-    init {
-        observe()
-    }
-
     private val category by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getSerializable(COMMUNITY_CATEGORY_KEY, CommunityCategory::class.java)
@@ -37,6 +33,8 @@ internal class CommunityItemFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        observeState()
 
         // TODO : 카테고리 별 다른 Shimmer Layout 생성
         when (category) {
@@ -52,7 +50,7 @@ internal class CommunityItemFragment :
         }
     }
 
-    private fun observe() {
+    private fun observeState() {
         repeatWhenUiStarted {
             viewModel.eventFlow.collect { event ->
                 handleEvent(event)
