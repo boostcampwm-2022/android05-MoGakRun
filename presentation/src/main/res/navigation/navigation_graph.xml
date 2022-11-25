@@ -36,11 +36,23 @@
         <action
             android:id="@+id/action_communityFragment_to_createGroupFragment"
             app:destination="@id/createGroupFragment" />
+        <action
+            android:id="@+id/action_communityFragment_to_groupDetailFragment"
+            app:destination="@id/groupDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/createGroupFragment"
         android:name="com.whyranoid.presentation.community.group.CreateGroupFragment"
         android:label="CreateGroupFragment"
         tools:layout="@layout/fragment_create_group"/>
+    <fragment
+        android:id="@+id/groupDetailFragment"
+        android:name="com.whyranoid.presentation.community.group.detail.GroupDetailFragment"
+        android:label="GroupDetailFragment"
+        tools:layout="@layout/fragment_group_detail">
+        <argument
+            android:name="groupInfo"
+            app:argType="com.whyranoid.presentation.model.GroupInfoUiModel" />
+    </fragment>
 
 </navigation>

@@ -50,4 +50,13 @@
     <string name="text_create_group_fail">그룹 생성에 실패하였습니다.</string>
     <string name="text_select_rule">규칙 고르기</string>
 
+    <!-- 그룹 상세보기 화면-->
+    <string name="text_headcount">%d명</string>
+    <string name="text_recruit">홍보하기</string>
+    <string name="text_exit_group">그룹 나가기</string>
+    <string name="text_setting_group">그룹 설정</string>
+    <string name="text_edit_group">그룹 수정하기</string>
+    <string name="text_delete_group">그룹 삭제하기</string>
+    <string name="text_cancel">취소</string>
+
 </resources>
