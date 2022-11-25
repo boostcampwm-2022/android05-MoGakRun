@@ -34,8 +34,11 @@ internal class CommunityItemFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initViews()
         observeState()
+    }
 
+    private fun initViews() {
         // TODO : 카테고리 별 다른 Shimmer Layout 생성
         when (category) {
             CommunityCategory.BOARD -> {
