@@ -5,15 +5,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentCommunityItemBinding
-import com.whyranoid.presentation.model.toGroupInfoUiModel
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 internal class CommunityItemFragment :
@@ -54,7 +51,7 @@ internal class CommunityItemFragment :
     }
 
     private fun observeState() {
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.eventFlow.collect { event ->
                 handleEvent(event)
             }
@@ -65,7 +62,7 @@ internal class CommunityItemFragment :
         when (event) {
             is Event.CategoryItemClick -> {
                 val action =
-                    CommunityFragmentDirections.actionCommunityFragmentToGroupDetailFragment(event.groupInfo.toGroupInfoUiModel())
+                    CommunityFragmentDirections.actionCommunityFragmentToGroupDetailFragment(event.groupInfo)
                 findNavController().navigate(action)
             }
         }
@@ -78,8 +75,8 @@ internal class CommunityItemFragment :
         }
         binding.rvCommunity.adapter = myGroupAdapter
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getMyGroupListUseCase().collect { groupList ->
+        viewLifecycleOwner.repeatWhenUiStarted {
+            viewModel.myGroupList.collect { groupList ->
                 removeShimmer()
                 myGroupAdapter.submitList(groupList.sortedBy { it.name })
             }
@@ -88,10 +85,8 @@ internal class CommunityItemFragment :
 
     private fun removeShimmer() {
         binding.shimmerCommunity.apply {
-            if (isShimmerStarted) {
-                stopShimmer()
-                isVisible = false
-            }
+            stopShimmer()
+            isVisible = false
         }
     }
 

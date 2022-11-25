@@ -1,7 +1,7 @@
 package com.whyranoid.presentation.community
 
-import com.whyranoid.domain.model.GroupInfo
+import com.whyranoid.presentation.model.GroupInfoUiModel
 
 sealed class Event {
-    data class CategoryItemClick(val groupInfo: GroupInfo) : Event()
+    data class CategoryItemClick(val groupInfo: GroupInfoUiModel) : Event()
 }
