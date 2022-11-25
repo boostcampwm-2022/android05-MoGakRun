@@ -15,20 +15,18 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.UUID
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class GroupDataSource @Inject constructor(
     private val db: FirebaseFirestore
 ) {
 
-    // TODO: suspendcancellablecoroutine로 변경
     suspend fun updateGroupInfo(
         groupId: String,
         groupName: String,
         groupIntroduce: String,
         rules: List<Rule>
     ): Boolean {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { cancellableContinuation ->
             db.collection(GROUPS_COLLECTION)
                 .document(groupId)
                 .update(
@@ -41,33 +39,31 @@ class GroupDataSource @Inject constructor(
                     )
                 )
                 .addOnSuccessListener {
-                    continuation.resume(true)
+                    cancellableContinuation.resume(true)
                 }
                 .addOnFailureListener {
-                    continuation.resume(false)
+                    cancellableContinuation.resume(false)
                 }
         }
     }
 
-    // TODO: suspendcancellablecoroutine로 변경
     suspend fun joinGroup(uid: String, groupId: String): Boolean {
-        return suspendCoroutine<Boolean> { continuation ->
+        return suspendCancellableCoroutine { cancellableContinuation ->
             db.collection(GROUPS_COLLECTION)
                 .document(groupId)
                 .update(
                     GROUP_MEMBERS_ID,
                     FieldValue.arrayUnion(uid)
                 ).addOnSuccessListener {
-                    continuation.resume(true)
+                    cancellableContinuation.resume(true)
                 }.addOnFailureListener {
-                    continuation.resume(false)
+                    cancellableContinuation.resume(false)
                 }
         }
     }
 
-    // TODO: suspendcancellablecoroutine로 변경
     suspend fun exitGroup(uid: String, groupId: String): Boolean {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { cancellableContinuation ->
             db.collection(GROUPS_COLLECTION)
                 .document(groupId)
                 .update(
@@ -83,18 +79,17 @@ class GroupDataSource @Inject constructor(
                             )
                         )
                         .addOnSuccessListener {
-                            continuation.resume(true)
+                            cancellableContinuation.resume(true)
                         }
                         .addOnFailureListener {
-                            continuation.resume(false)
+                            cancellableContinuation.resume(false)
                         }
                 }.addOnFailureListener {
-                    continuation.resume(false)
+                    cancellableContinuation.resume(false)
                 }
         }
     }
 
-    // TODO Rule 추가
     suspend fun createGroup(
         groupName: String,
         introduce: String,
