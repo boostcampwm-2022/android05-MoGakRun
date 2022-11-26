@@ -66,7 +66,7 @@ internal class GroupDetailFragment :
     }
 
     private fun handleEvent() {
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     // TODO : 홍보 글 쓰러가기
@@ -105,7 +105,7 @@ internal class GroupDetailFragment :
         val notificationAdapter = GroupNotificationAdapter("hsjeon")
 
         binding.notificationRecyclerView.adapter = notificationAdapter
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.mergedNotifications.collect { notifications ->
                 notificationAdapter.submitList(notifications)
             }
