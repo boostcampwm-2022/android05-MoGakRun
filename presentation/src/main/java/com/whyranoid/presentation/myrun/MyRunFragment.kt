@@ -6,12 +6,19 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.kizitonwose.calendarview.model.CalendarDay
+import com.kizitonwose.calendarview.ui.DayBinder
+import com.kizitonwose.calendarview.ui.ViewContainer
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentMyRunBinding
+import com.whyranoid.presentation.databinding.ItemCalendarDayBinding
 import com.whyranoid.presentation.util.loadImage
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.YearMonth
+import java.time.temporal.WeekFields
+import java.util.Locale
 
 @AndroidEntryPoint
 internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragment_my_run) {
@@ -46,6 +53,28 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
                 }
             }
             true
+        }
+
+        calendarView.dayBinder = object : DayBinder<DayViewContainer> {
+
+            override fun create(view: View) = DayViewContainer(view)
+
+            override fun bind(container: DayViewContainer, day: CalendarDay) {
+                container.day = day
+                val textView = container.binding.tvCalendarDay
+
+                textView.text = day.date.dayOfMonth.toString()
+            }
+        }
+
+        val currentMonth = YearMonth.now()
+        val firstMonth = currentMonth.minusMonths(240)
+        val lastMonth = currentMonth.plusMonths(240)
+        val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
+
+        calendarView.apply {
+            setup(firstMonth, lastMonth, firstDayOfWeek)
+            scrollToMonth(currentMonth)
         }
     }
 
@@ -91,5 +120,10 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
                     dialog.dismiss()
                 }.show()
         }
+    }
+
+    class DayViewContainer(view: View) : ViewContainer(view) {
+        lateinit var day: CalendarDay
+        val binding = ItemCalendarDayBinding.bind(view)
     }
 }

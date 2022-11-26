@@ -5,9 +5,11 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.firebase.firestore.FirebaseFirestore
+import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.email
 import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.nickName
 import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.profileImgUri
 import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.uid
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -37,6 +39,15 @@ class AccountDataSourceImpl @Inject constructor(
         .map { preferences ->
             preferences[uid] ?: EMPTY_STRING
         }
+
+    override fun getEmail(): Flow<Result<String>> {
+        return dataStoreDb.data
+            .map { preferences ->
+                runCatching {
+                    preferences[email] ?: EMPTY_STRING
+                }
+            }
+    }
 
     override suspend fun updateUserNickName(uid: String, newNickName: String) = runCatching {
         // 로컬에 업데이트

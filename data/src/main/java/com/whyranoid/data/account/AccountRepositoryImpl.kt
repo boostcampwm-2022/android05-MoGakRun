@@ -25,6 +25,10 @@ class AccountRepositoryImpl @Inject constructor(
         return accountDataSource.getUserNickName()
     }
 
+    override fun getEmail(): Flow<Result<String>> {
+        return accountDataSource.getEmail()
+    }
+
     override suspend fun updateNickname(uid: String, newNickName: String): Result<String> {
         return accountDataSource.updateUserNickName(uid, newNickName)
     }

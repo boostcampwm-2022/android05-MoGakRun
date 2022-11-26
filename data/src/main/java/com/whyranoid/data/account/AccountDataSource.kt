@@ -6,5 +6,6 @@ interface AccountDataSource {
     fun getUserNickName(): Flow<String>
     fun getUserProfileImgUri(): Flow<String>
     fun getUserUid(): Flow<String>
+    fun getEmail(): Flow<Result<String>>
     suspend fun updateUserNickName(uid: String, newNickName: String): Result<String>
 }
