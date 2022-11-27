@@ -3,6 +3,7 @@ package com.whyranoid.presentation.myrun
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.usecase.GetEmailUseCase
+import com.whyranoid.domain.usecase.SignOutUseCase
 import com.whyranoid.presentation.model.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val getEmailUseCase: GetEmailUseCase
+    private val getEmailUseCase: GetEmailUseCase,
+    private val signOutUseCase: SignOutUseCase
 ) : ViewModel() {
 
     init {
@@ -35,6 +37,12 @@ class SettingViewModel @Inject constructor(
                     _emailState.value = UiState.Failure(throwable)
                 }
             }
+        }
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            signOutUseCase.invoke()
         }
     }
 }

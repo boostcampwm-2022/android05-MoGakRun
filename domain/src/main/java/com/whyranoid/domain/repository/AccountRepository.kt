@@ -29,4 +29,10 @@ interface AccountRepository {
 
     // 프로필 사진 서버에 업데이트
     suspend fun updateProfileUrl(newProfileUrl: String): Boolean
+
+    // 로그아웃
+    suspend fun signOut(): Result<Boolean>
+
+    // 회원탈퇴
+    suspend fun withDrawal(): Result<Boolean>
 }

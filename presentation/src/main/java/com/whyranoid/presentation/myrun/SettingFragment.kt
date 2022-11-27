@@ -18,7 +18,16 @@ internal class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.f
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initViews()
         observeState()
+    }
+
+    private fun initViews() {
+//        binding.tvLogOut.setOnClickListener {
+//            viewModel.signOut()
+//            val intent = Intent(requireActivity(), SignInActivity::class.java)
+//            startActivity(intent)
+//        }
     }
 
     private fun observeState() {

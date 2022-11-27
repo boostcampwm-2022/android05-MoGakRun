@@ -40,4 +40,12 @@ class AccountRepositoryImpl @Inject constructor(
     override suspend fun updateProfileUrl(newProfileUrl: String): Boolean {
         return true
     }
+
+    override suspend fun signOut(): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun withDrawal(): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
 }

@@ -8,4 +8,6 @@ interface AccountDataSource {
     fun getUserUid(): Flow<String>
     fun getEmail(): Flow<Result<String>>
     suspend fun updateUserNickName(uid: String, newNickName: String): Result<String>
+    suspend fun signOut(): Result<Boolean>
+    suspend fun withDrawal(): Result<Boolean>
 }

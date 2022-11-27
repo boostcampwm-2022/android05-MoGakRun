@@ -6,13 +6,9 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.kizitonwose.calendarview.model.CalendarDay
-import com.kizitonwose.calendarview.ui.DayBinder
-import com.kizitonwose.calendarview.ui.ViewContainer
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentMyRunBinding
-import com.whyranoid.presentation.databinding.ItemCalendarDayBinding
 import com.whyranoid.presentation.util.loadImage
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +26,11 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
     }
 
     private val runningHistoryAdapter = MyRunningHistoryAdapter()
+
+    private val currentMonth = YearMonth.now()
+    private val firstMonth = currentMonth.minusMonths(5)
+    private val lastMonth = currentMonth.plusMonths(5)
+    private val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,43 +56,33 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
             true
         }
 
-        calendarView.dayBinder = object : DayBinder<DayViewContainer> {
-
-            override fun create(view: View) = DayViewContainer(view)
-
-            override fun bind(container: DayViewContainer, day: CalendarDay) {
-                container.day = day
-                val textView = container.binding.tvCalendarDay
-
-                textView.text = day.date.dayOfMonth.toString()
-            }
-        }
-
-        val currentMonth = YearMonth.now()
-        val firstMonth = currentMonth.minusMonths(240)
-        val lastMonth = currentMonth.plusMonths(240)
-        val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
-
         calendarView.apply {
+            itemAnimator = null
+            dayBinder = CalendarDayBinder(this)
+            monthScrollListener = { calendarMonth ->
+                onMonthScrolled(calendarMonth.yearMonth)
+            }
+            // 모든 달력 범위 설정
             setup(firstMonth, lastMonth, firstDayOfWeek)
+            // 첫 화면에서 보일 달 설정
             scrollToMonth(currentMonth)
         }
     }
 
     private fun observeInfo() {
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.nickName.collect { nickName ->
                 binding.tvNickName.text = nickName
             }
         }
 
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.profileImgUri.collect { profileImgUri ->
                 binding.ivProfileImage.loadImage(profileImgUri)
             }
         }
 
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.runningHistoryList.collect { runningHistoryList ->
                 runningHistoryAdapter.submitList(runningHistoryList)
             }
@@ -122,8 +113,11 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
         }
     }
 
-    class DayViewContainer(view: View) : ViewContainer(view) {
-        lateinit var day: CalendarDay
-        val binding = ItemCalendarDayBinding.bind(view)
+    private fun onMonthScrolled(currentMonth: YearMonth) {
+        val visibleMonth = binding.calendarView.findFirstVisibleMonth() ?: return
+        binding.tvMonthIndicator.text = visibleMonth.yearMonth.month.toString()
+        if (currentMonth != visibleMonth.yearMonth) {
+            binding.calendarView.smoothScrollToMonth(currentMonth)
+        }
     }
 }
