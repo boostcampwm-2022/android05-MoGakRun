@@ -4,16 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
-            type="com.whyranoid.presentation.community.group.CreateGroupViewModel" />
+            type="com.whyranoid.presentation.community.group.create.CreateGroupViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".community.group.CreateGroupFragment">
+        tools:context=".community.group.create.CreateGroupFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"

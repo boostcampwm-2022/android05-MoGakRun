@@ -1,4 +1,4 @@
-package com.whyranoid.presentation.community.group
+package com.whyranoid.presentation.community.group.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
