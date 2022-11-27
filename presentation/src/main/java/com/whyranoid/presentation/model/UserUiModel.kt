@@ -11,6 +11,13 @@ data class UserUiModel(
     val profileUrl: String?
 ) : Parcelable
 
+fun UserUiModel.toUser() =
+    User(
+        uid = this.uid,
+        name = this.name,
+        profileUrl = this.profileUrl
+    )
+
 fun User.toUserUiModel() =
     UserUiModel(
         uid = this.uid,

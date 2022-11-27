@@ -16,6 +16,13 @@ data class RuleUiModel(
     }
 }
 
+fun RuleUiModel.toRule() =
+    Rule(
+        dayOfWeek = this.dayOfWeek,
+        hour = this.hour,
+        minute = this.minute
+    )
+
 fun Rule.toRuleUiModel() =
     RuleUiModel(
         dayOfWeek = this.dayOfWeek,

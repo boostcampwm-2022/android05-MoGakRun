@@ -14,6 +14,18 @@ data class GroupInfoUiModel(
     val leader: UserUiModel
 ) : Parcelable
 
+fun GroupInfoUiModel.toGroupInfo() =
+    GroupInfo(
+        name = this.name,
+        groupId = this.groupId,
+        introduce = this.introduce,
+        rules = this.rules.map { rule ->
+            rule.toRule()
+        },
+        headCount = this.headCount,
+        leader = this.leader.toUser()
+    )
+
 fun GroupInfo.toGroupInfoUiModel() =
     GroupInfoUiModel(
         name = this.name,
