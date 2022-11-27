@@ -9,9 +9,9 @@ import com.whyranoid.data.constant.Exceptions.NO_USER_EXCEPTION
 import com.whyranoid.data.model.GroupInfoResponse
 import com.whyranoid.data.model.UserResponse
 import com.whyranoid.data.model.toGroupInfo
-import com.whyranoid.data.model.toRule
 import com.whyranoid.data.model.toUser
 import com.whyranoid.domain.model.GroupInfo
+import com.whyranoid.domain.model.toRule
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
