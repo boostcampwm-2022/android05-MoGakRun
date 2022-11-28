@@ -1,113 +1,138 @@
 package com.whyranoid.presentation.running
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
+import android.content.Intent
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Build
+import android.os.Looper
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
-import com.google.android.gms.tasks.CancellationToken
-import com.google.android.gms.tasks.CancellationTokenSource
-import com.google.android.gms.tasks.OnTokenCanceledListener
+import com.whyranoid.presentation.R
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.delay
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @HiltWorker
 class RunningWorker @AssistedInject constructor(
-    @Assisted context: Context,
+    @Assisted private val context: Context,
     @Assisted params: WorkerParameters,
     private val runningRepository: RunningRepository
 ) : CoroutineWorker(context, params) {
 
-    private val fusedLocationClient: FusedLocationProviderClient by lazy {
-        LocationServices.getFusedLocationProviderClient(context)
-    }
+    private val locationManager =
+        context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    private lateinit var locationListener: LocationListener
 
     override suspend fun doWork(): Result {
-        startTracking()
+        if (startTracking().not()) {
+            runningRepository.finishRunning()
+            return Result.failure()
+        }
+
+        setForeground(createForegroundInfo(context.getString(R.string.running_notification_content)))
 
         while ((runningRepository.runningState.value is RunningState.NotRunning).not()) {
             delay(1000)
             when (runningRepository.runningState.value) {
                 is RunningState.NotRunning -> break
                 is RunningState.Paused -> continue
-                is RunningState.Running -> trackRunningData()
+                is RunningState.Running -> runningRepository.tick()
             }
         }
+        locationManager.removeUpdates(locationListener)
         return Result.success()
     }
 
-    private suspend fun startTracking(): Boolean {
-        // TODO: getCurrentLocation을 requestLocationUpdates로 변경
-        return suspendCoroutine { continuation ->
-            try {
-                fusedLocationClient.getCurrentLocation(
-                    Priority.PRIORITY_HIGH_ACCURACY,
-                    object : CancellationToken() {
-                        override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
-                            return CancellationTokenSource().token
-                        }
+    private fun createForegroundInfo(progress: String): ForegroundInfo {
+        val id = context.getString(R.string.running_notification_id)
+        val title = context.getString(R.string.running_notification_title)
 
-                        override fun isCancellationRequested(): Boolean {
-                            return false
-                        }
-                    }
-                ).addOnSuccessListener { location ->
-                    runningRepository.startRunning(
-                        RunningPosition(
-                            location.latitude,
-                            location.longitude
-                        )
-                    )
-                    continuation.resume(true)
-                }.addOnFailureListener {
-                    runningRepository.pauseRunning()
-                    continuation.resume(false)
-                }
-            } catch (exception: SecurityException) {
-                runningRepository.pauseRunning()
-                continuation.resume(false)
-            } catch (e: Exception) {
-                continuation.resume(false)
-            }
+        val intent = Intent(context, RunningActivity::class.java)
+        val pendingIntent =
+            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createChannel()
         }
+
+        val notification = NotificationCompat.Builder(applicationContext, id)
+            .setContentTitle(title)
+            .setTicker(title)
+            .setContentText(progress)
+            .setContentIntent(pendingIntent)
+            .setSmallIcon(R.drawable.kong)
+            .setOngoing(true)
+            .build()
+
+        return ForegroundInfo(NOTIFICATION_ID, notification)
     }
 
-    private fun trackRunningData() {
-        try {
-            fusedLocationClient.getCurrentLocation(
-                Priority.PRIORITY_HIGH_ACCURACY,
-                object : CancellationToken() {
-                    override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
-                        return CancellationTokenSource().token
-                    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createChannel() {
+        val name = context.getString(R.string.running_channel_name)
+        val descriptionText = context.getString(R.string.running_channel_description)
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
+        mChannel.description = descriptionText
+        val notificationManager =
+            context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(mChannel)
+    }
 
-                    override fun isCancellationRequested(): Boolean {
-                        return false
-                    }
-                }
-            ).addOnSuccessListener { location ->
+    private fun startTracking(): Boolean {
+        locationListener = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
                 val lastLatitude = location.latitude
                 val lastLongitude = location.longitude
 
                 runningRepository.setRunningState(
                     RunningPosition(lastLatitude, lastLongitude)
                 )
-            }.addOnFailureListener {
+            }
+
+            override fun onProviderDisabled(provider: String) {
                 runningRepository.pauseRunning()
             }
-        } catch (exception: SecurityException) {
+        }
+
+        try {
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                1000,
+                0f,
+                locationListener,
+                Looper.getMainLooper()
+            )
+            locationManager.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER,
+                1000,
+                0f,
+                locationListener,
+                Looper.getMainLooper()
+            )
+            runningRepository.startRunning()
+            return true
+        } catch (e: SecurityException) {
             runningRepository.pauseRunning()
         } catch (e: Exception) {
             runningRepository.pauseRunning()
         }
+        return false
     }
 
     companion object {
         const val WORKER_NAME = "runningWorker"
+        const val NOTIFICATION_ID = 1000
+        const val CHANNEL_ID = "모각런"
     }
 }

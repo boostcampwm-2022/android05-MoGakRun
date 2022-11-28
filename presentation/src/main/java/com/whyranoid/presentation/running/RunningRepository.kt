@@ -15,7 +15,7 @@ class RunningRepository @Inject constructor() {
     )
     val runningState get() = _runningState.asStateFlow()
 
-    fun startRunning(startPosition: RunningPosition) {
+    fun startRunning() {
         if (runningState.value is RunningState.NotRunning) {
             _runningState.value = RunningState.Running(
                 RunningData(
@@ -23,7 +23,7 @@ class RunningRepository @Inject constructor() {
                     runningTime = 0,
                     totalDistance = 0.0,
                     pace = 0.0,
-                    runningPositionList = listOf(startPosition)
+                    runningPositionList = listOf(emptyList())
                 )
             )
         }
@@ -31,9 +31,11 @@ class RunningRepository @Inject constructor() {
 
     fun pauseRunning() = runCatching {
         if (runningState.value is RunningState.Running) {
-            _runningState.value = RunningState.Paused(
-                runningState.value.runningData
+            val newRunningData = runningState.value.runningData.copy(
+                runningPositionList = runningState.value.runningData.runningPositionList.toMutableList()
+                    .also { it.add(emptyList()) }
             )
+            _runningState.value = RunningState.Paused(newRunningData)
         } else {
             throw Exception("상태가 잘못되었습니다.")
         }
@@ -68,18 +70,23 @@ class RunningRepository @Inject constructor() {
     fun setRunningState(runningPosition: RunningPosition) {
         if (_runningState.value is RunningState.Running) {
             val prevRunningData = _runningState.value.runningData
-            val newRunningTime = prevRunningData.runningTime + 1
+            val newRunningTime = prevRunningData.runningTime
             val distance = FloatArray(1)
+
             Location.distanceBetween(
-                prevRunningData.runningPositionList.last().latitude,
-                prevRunningData.runningPositionList.last().longitude,
+                prevRunningData.runningPositionList.last().lastOrNull()?.latitude
+                    ?: runningPosition.latitude,
+                prevRunningData.runningPositionList.last().lastOrNull()?.longitude
+                    ?: runningPosition.longitude,
                 runningPosition.latitude,
                 runningPosition.longitude,
                 distance
             )
             val newTotalDistance = prevRunningData.totalDistance + distance.first()
             val newPace = newTotalDistance / newRunningTime
-            val newRunningPositionList = prevRunningData.runningPositionList.plus(runningPosition)
+            val newRunningPositionList =
+                prevRunningData.runningPositionList.toList().map { it.toMutableList() }
+                    .also { it[it.lastIndex].add(runningPosition) }
 
             _runningState.value = RunningState.Running(
                 RunningData(
@@ -92,6 +99,12 @@ class RunningRepository @Inject constructor() {
             )
         }
     }
+
+    fun tick() {
+        _runningState.value = _runningState.value.let {
+            it.runningData.copy(runningTime = it.runningData.runningTime + 1)
+        }.let { RunningState.Running(it) }
+    }
 }
 
 // TODO : 모델 파일 분리
@@ -100,12 +113,12 @@ data class RunningData(
     val runningTime: Int = 0,
     val totalDistance: Double = 0.0,
     val pace: Double = 0.0,
-    val runningPositionList: List<RunningPosition> = emptyList()
+    val runningPositionList: List<List<RunningPosition>> = listOf(emptyList())
 )
 
 data class RunningFinishData(
     val runningHistory: RunningHistory,
-    val runningPositionList: List<RunningPosition>
+    val runningPositionList: List<List<RunningPosition>>
 )
 
 sealed interface RunningState {
