@@ -8,4 +8,5 @@ object CollectionId {
     const val GROUP_NOTIFICATIONS_COLLECTION = "GroupNotifications"
     const val START_NOTIFICATION = "start"
     const val FINISH_NOTIFICATION = "finish"
+    const val POST_COLLECTION = "Posts"
 }
