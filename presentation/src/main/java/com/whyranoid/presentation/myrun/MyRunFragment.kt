@@ -9,6 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentMyRunBinding
+import com.whyranoid.presentation.model.RunningHistoryUiModel
+import com.whyranoid.presentation.model.UiState
 import com.whyranoid.presentation.util.loadImage
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,10 +85,25 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
         }
 
         viewLifecycleOwner.repeatWhenUiStarted {
-            viewModel.runningHistoryList.collect { runningHistoryList ->
-                runningHistoryAdapter.submitList(runningHistoryList)
+            viewModel.runningHistoryListState.collect { runningHistoryListState ->
+                when (runningHistoryListState) {
+                    is UiState.UnInitialized -> {
+                    }
+                    is UiState.Loading -> {
+                    }
+                    is UiState.Success<List<RunningHistoryUiModel>> -> initRecyclerView(
+                        runningHistoryListState.value
+                    )
+
+                    is UiState.Failure -> {
+                    }
+                }
             }
         }
+    }
+
+    private fun initRecyclerView(runningHistoryList: List<RunningHistoryUiModel>) {
+        runningHistoryAdapter.submitList(runningHistoryList)
     }
 
     private fun popUpEditNickNameDialog() {
