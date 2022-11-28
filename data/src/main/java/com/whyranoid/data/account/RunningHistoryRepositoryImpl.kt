@@ -8,7 +8,7 @@ import javax.inject.Inject
 class RunningHistoryRepositoryImpl @Inject constructor(
     private val runningHistoryLocalDataSource: RunningHistoryLocalDataSource
 ) : RunningHistoryRepository {
-    override fun getRunningHistory(): Flow<List<RunningHistory>> {
+    override fun getRunningHistory(): Flow<Result<List<RunningHistory>>> {
         return runningHistoryLocalDataSource.getRunningHistory()
     }
 
