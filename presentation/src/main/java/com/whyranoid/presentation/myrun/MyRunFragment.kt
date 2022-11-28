@@ -28,15 +28,15 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
     private val runningHistoryAdapter = MyRunningHistoryAdapter()
 
     private val currentMonth = YearMonth.now()
-    private val firstMonth = currentMonth.minusMonths(5)
-    private val lastMonth = currentMonth.plusMonths(5)
+    private val firstMonth = currentMonth.minusMonths(MONTH_OFFSET)
+    private val lastMonth = currentMonth.plusMonths(MONTH_OFFSET)
     private val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
-        observeInfo()
+        observeState()
     }
 
     private fun initViews() = with(binding) {
@@ -69,7 +69,7 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
         }
     }
 
-    private fun observeInfo() {
+    private fun observeState() {
         viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.nickName.collect { nickName ->
                 binding.tvNickName.text = nickName
@@ -119,5 +119,9 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
         if (currentMonth != visibleMonth.yearMonth) {
             binding.calendarView.smoothScrollToMonth(currentMonth)
         }
+    }
+
+    companion object {
+        private const val MONTH_OFFSET = 120L
     }
 }

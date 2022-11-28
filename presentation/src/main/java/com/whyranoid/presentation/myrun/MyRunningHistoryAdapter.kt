@@ -6,13 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.databinding.ItemRunningHistoryBinding
-import com.whyranoid.presentation.model.toRunningHistoryUiModel
+import com.whyranoid.presentation.model.RunningHistoryUiModel
 
 class MyRunningHistoryAdapter :
-    ListAdapter<RunningHistory, RunningHistoryViewHolder>(
+    ListAdapter<RunningHistoryUiModel, RunningHistoryViewHolder>(
         MyRunningHistoryDiffCallback()
     ) {
 
@@ -27,17 +26,17 @@ class MyRunningHistoryAdapter :
     }
 
     companion object {
-        class MyRunningHistoryDiffCallback : DiffUtil.ItemCallback<RunningHistory>() {
+        class MyRunningHistoryDiffCallback : DiffUtil.ItemCallback<RunningHistoryUiModel>() {
             override fun areItemsTheSame(
-                oldItem: RunningHistory,
-                newItem: RunningHistory
+                oldItem: RunningHistoryUiModel,
+                newItem: RunningHistoryUiModel
             ): Boolean {
                 return oldItem.historyId == newItem.historyId
             }
 
             override fun areContentsTheSame(
-                oldItem: RunningHistory,
-                newItem: RunningHistory
+                oldItem: RunningHistoryUiModel,
+                newItem: RunningHistoryUiModel
             ): Boolean {
                 return oldItem == newItem
             }
@@ -48,7 +47,7 @@ class MyRunningHistoryAdapter :
 class RunningHistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = ItemRunningHistoryBinding.bind(view)
 
-    fun bind(runningHistory: RunningHistory) {
-        binding.runningHistory = runningHistory.toRunningHistoryUiModel()
+    fun bind(runningHistory: RunningHistoryUiModel) {
+        binding.runningHistory = runningHistory
     }
 }

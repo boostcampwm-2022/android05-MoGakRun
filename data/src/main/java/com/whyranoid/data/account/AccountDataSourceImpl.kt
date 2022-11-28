@@ -16,10 +16,10 @@ import javax.inject.Inject
 
 class AccountDataSourceImpl @Inject constructor(
     private val dataStoreDb: DataStore<Preferences>,
-    private val fireBaseDb: FirebaseFirestore
+    private val fireBaseDb: FirebaseFirestore,
+    private val auth: FirebaseAuth
 ) : AccountDataSource {
 
-    private val auth = FirebaseAuth.getInstance()
     private val currentUser = auth.currentUser
 
     private object PreferenceKeys {
@@ -67,12 +67,13 @@ class AccountDataSourceImpl @Inject constructor(
     }
 
     override suspend fun signOut(): Result<Boolean> = runCatching {
-        signOut()
+        auth.signOut()
         true
     }
 
-    override suspend fun withDrawal(): Result<Boolean> {
-        TODO("Not yet implemented")
+    override suspend fun withDrawal(): Result<Boolean> = runCatching {
+        currentUser?.delete()
+        true
     }
 
     companion object {
