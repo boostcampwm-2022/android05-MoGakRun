@@ -29,6 +29,8 @@ buildscript {
         glideVersion = "4.14.2"
         roomVersion = "2.4.3"
         naverMapVersion = "21.0.1"
+        naverMapVersion = "3.16.0"
+        googleLocationVersion = "21.0.1"
         workManagerVersion = "2.7.1"
     }
     dependencies {
