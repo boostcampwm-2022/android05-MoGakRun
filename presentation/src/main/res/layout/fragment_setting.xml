@@ -39,6 +39,7 @@
             android:layout_marginStart="16dp"/>
 
         <TextView
+            android:id="@+id/tv_connected_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="mogakrun@gmail.com"

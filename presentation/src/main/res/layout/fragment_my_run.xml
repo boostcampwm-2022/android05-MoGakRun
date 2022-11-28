@@ -83,18 +83,31 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/tv_nick_name" />
 
+                    <TextView
+                        android:id="@+id/tv_month_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/iv_profile_image"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:textAppearance="@style/MoGakRunText.Bold.Medium"
+                        tools:text="11월"/>
+
                     <com.kizitonwose.calendarview.CalendarView
                         android:id="@+id/calendar_view"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="20dp"
+                        app:cv_orientation="horizontal"
                         app:cv_dayViewResource="@layout/item_calendar_day"
-                        app:cv_hasBoundaries="false"
+                        app:cv_hasBoundaries="true"
                         app:cv_scrollMode="paged"
+                        app:cv_outDateStyle="endOfGrid"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iv_profile_image" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_month_indicator" />
 
                     <TextView
                         android:id="@+id/tv_label_my_running_history"

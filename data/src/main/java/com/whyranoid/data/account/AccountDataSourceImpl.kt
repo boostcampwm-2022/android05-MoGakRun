@@ -4,10 +4,13 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.email
 import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.nickName
 import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.profileImgUri
 import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.uid
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -15,6 +18,9 @@ class AccountDataSourceImpl @Inject constructor(
     private val dataStoreDb: DataStore<Preferences>,
     private val fireBaseDb: FirebaseFirestore
 ) : AccountDataSource {
+
+    private val auth = FirebaseAuth.getInstance()
+    private val currentUser = auth.currentUser
 
     private object PreferenceKeys {
         val uid = stringPreferencesKey(UID_KEY)
@@ -38,6 +44,15 @@ class AccountDataSourceImpl @Inject constructor(
             preferences[uid] ?: EMPTY_STRING
         }
 
+    override fun getEmail(): Flow<Result<String>> {
+        return dataStoreDb.data
+            .map { preferences ->
+                runCatching {
+                    preferences[email] ?: EMPTY_STRING
+                }
+            }
+    }
+
     override suspend fun updateUserNickName(uid: String, newNickName: String) = runCatching {
         // 로컬에 업데이트
         dataStoreDb.edit { preferences ->
@@ -49,6 +64,15 @@ class AccountDataSourceImpl @Inject constructor(
             .document(uid).update(USER_FIELD_NICK_NAME, newNickName)
 
         newNickName
+    }
+
+    override suspend fun signOut(): Result<Boolean> = runCatching {
+        signOut()
+        true
+    }
+
+    override suspend fun withDrawal(): Result<Boolean> {
+        TODO("Not yet implemented")
     }
 
     companion object {

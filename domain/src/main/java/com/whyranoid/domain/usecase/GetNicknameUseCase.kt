@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetNicknameUseCase @Inject constructor(private val accountRepository: AccountRepository) {
-    suspend operator fun invoke(): Flow<String> {
+    operator fun invoke(): Flow<String> {
         return accountRepository.getNickname()
     }
 }

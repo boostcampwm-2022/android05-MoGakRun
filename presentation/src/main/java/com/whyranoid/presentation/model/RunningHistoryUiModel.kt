@@ -1,4 +1,4 @@
-package com.whyranoid.presentation.myrun
+package com.whyranoid.presentation.model
 
 import com.whyranoid.domain.model.RunningHistory
 

@@ -12,6 +12,6 @@ interface RunningHistoryDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun addRunningHistory(runningHistory: RunningHistoryEntity)
 
-    @Query("SELECT * FROM running_history ORDER BY startedAt ASC")
+    @Query("SELECT * FROM running_history ORDER BY started_at ASC")
     fun getRunningHistory(): Flow<List<RunningHistoryEntity>>
 }

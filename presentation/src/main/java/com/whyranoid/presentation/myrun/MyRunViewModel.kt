@@ -30,8 +30,6 @@ class MyRunViewModel @Inject constructor(
         getProfileImgUri()
     }
 
-    private val EMPTY_STRING = ""
-
     private val _uid = MutableStateFlow(EMPTY_STRING)
     val uid: StateFlow<String>
         get() = _uid.asStateFlow()
@@ -88,5 +86,9 @@ class MyRunViewModel @Inject constructor(
                 _runningHistoryList.value = runningHistoryList
             }
         }
+    }
+
+    companion object {
+        private const val EMPTY_STRING = ""
     }
 }

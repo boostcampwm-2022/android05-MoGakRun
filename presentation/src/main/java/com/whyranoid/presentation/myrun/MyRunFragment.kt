@@ -12,6 +12,9 @@ import com.whyranoid.presentation.databinding.FragmentMyRunBinding
 import com.whyranoid.presentation.util.loadImage
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.YearMonth
+import java.time.temporal.WeekFields
+import java.util.Locale
 
 @AndroidEntryPoint
 internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragment_my_run) {
@@ -23,6 +26,11 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
     }
 
     private val runningHistoryAdapter = MyRunningHistoryAdapter()
+
+    private val currentMonth = YearMonth.now()
+    private val firstMonth = currentMonth.minusMonths(5)
+    private val lastMonth = currentMonth.plusMonths(5)
+    private val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,27 +48,41 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
 
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.my_run_setting ->
-                    findNavController().navigate(R.id.action_myRunFragment_to_settingFragment)
+                R.id.my_run_setting -> {
+                    val direction = MyRunFragmentDirections.actionMyRunFragmentToSettingFragment()
+                    findNavController().navigate(direction)
+                }
             }
             true
+        }
+
+        calendarView.apply {
+            itemAnimator = null
+            dayBinder = CalendarDayBinder(this)
+            monthScrollListener = { calendarMonth ->
+                onMonthScrolled(calendarMonth.yearMonth)
+            }
+            // 모든 달력 범위 설정
+            setup(firstMonth, lastMonth, firstDayOfWeek)
+            // 첫 화면에서 보일 달 설정
+            scrollToMonth(currentMonth)
         }
     }
 
     private fun observeInfo() {
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.nickName.collect { nickName ->
                 binding.tvNickName.text = nickName
             }
         }
 
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.profileImgUri.collect { profileImgUri ->
                 binding.ivProfileImage.loadImage(profileImgUri)
             }
         }
 
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.runningHistoryList.collect { runningHistoryList ->
                 runningHistoryAdapter.submitList(runningHistoryList)
             }
@@ -77,7 +99,10 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
                 .setPositiveButton(
                     getString(R.string.my_run_edit_nick_name_dialog_positive)
                 ) { dialog, _ ->
-                    viewModel.updateNickName(viewModel.uid.value, dialogView.findViewById<EditText>(R.id.et_change_nick_name).text.toString())
+                    viewModel.updateNickName(
+                        viewModel.uid.value,
+                        dialogView.findViewById<EditText>(R.id.et_change_nick_name).text.toString()
+                    )
                     dialog.dismiss()
                 }
                 .setNegativeButton(
@@ -85,6 +110,14 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
                 ) { dialog, _ ->
                     dialog.dismiss()
                 }.show()
+        }
+    }
+
+    private fun onMonthScrolled(currentMonth: YearMonth) {
+        val visibleMonth = binding.calendarView.findFirstVisibleMonth() ?: return
+        binding.tvMonthIndicator.text = visibleMonth.yearMonth.month.toString()
+        if (currentMonth != visibleMonth.yearMonth) {
+            binding.calendarView.smoothScrollToMonth(currentMonth)
         }
     }
 }

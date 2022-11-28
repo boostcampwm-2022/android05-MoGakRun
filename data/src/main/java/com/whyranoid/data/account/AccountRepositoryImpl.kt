@@ -25,6 +25,10 @@ class AccountRepositoryImpl @Inject constructor(
         return accountDataSource.getUserNickName()
     }
 
+    override fun getEmail(): Flow<Result<String>> {
+        return accountDataSource.getEmail()
+    }
+
     override suspend fun updateNickname(uid: String, newNickName: String): Result<String> {
         return accountDataSource.updateUserNickName(uid, newNickName)
     }
@@ -35,5 +39,13 @@ class AccountRepositoryImpl @Inject constructor(
 
     override suspend fun updateProfileUrl(newProfileUrl: String): Boolean {
         return true
+    }
+
+    override suspend fun signOut(): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun withDrawal(): Result<Boolean> {
+        TODO("Not yet implemented")
     }
 }
