@@ -1,18 +1,25 @@
 package com.whyranoid.presentation.running
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
-import com.naver.maps.map.overlay.Marker
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseActivity
 import com.whyranoid.presentation.databinding.ActivityRunningBinding
+import com.whyranoid.presentation.util.dateToString
+import com.whyranoid.presentation.util.repeatWhenUiStarted
+import dagger.hilt.android.AndroidEntryPoint
+import java.util.Date
 
+@AndroidEntryPoint
 internal class RunningActivity :
     BaseActivity<ActivityRunningBinding>(R.layout.activity_running), OnMapReadyCallback {
+
+    private val viewModel: RunningViewModel by viewModels()
 
     private lateinit var mapView: MapView
     private lateinit var naverMap: NaverMap
@@ -23,6 +30,20 @@ internal class RunningActivity :
 
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
+        binding.vm = viewModel
+
+        repeatWhenUiStarted {
+            viewModel.runningState.collect { runningState ->
+                with(runningState.runningData) {
+                    binding.tvStartTime.text = Date(startTime).dateToString("hh:mm")
+                    binding.tvRunningTime.text =
+                        String.format("%d:%02d", runningTime / 60, runningTime % 60)
+                    binding.tvTotalDistance.text = String.format("%.4f m", totalDistance)
+                    binding.tvPace.text = String.format("%.4f km/h", pace * 3.6)
+                }
+            }
+        }
     }
 
     override fun onMapReady(naverMap: NaverMap) {
