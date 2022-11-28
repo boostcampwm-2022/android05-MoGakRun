@@ -25,11 +25,19 @@ interface GroupRepository {
     // 그룹 나가기 / 그룹에서 먼저 나간 후 성공하면 User 에 반영하기
     suspend fun exitGroup(uid: String, groupId: String): Boolean
 
+    // 그룹의 정보를 Flow로 가져오기
+    fun getGroupInfoFlow(uid: String, groupId: String): Flow<GroupInfo>
+
     // 혹은 그룹 채팅을 가져오기 + 글 작성하기
     fun getGroupNotifications(groupId: String): Flow<List<GroupNotification>>
 
     suspend fun notifyRunningStart(uid: String, groupIdList: List<String>)
 
     // 그룹 생성하기
-    suspend fun createGroup(groupName: String, introduce: String, rules: List<String>, uid: String): Boolean
+    suspend fun createGroup(
+        groupName: String,
+        introduce: String,
+        rules: List<String>,
+        uid: String
+    ): Boolean
 }

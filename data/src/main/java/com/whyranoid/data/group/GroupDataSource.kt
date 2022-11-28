@@ -10,7 +10,15 @@ import com.whyranoid.data.constant.FieldId.GROUP_NAME
 import com.whyranoid.data.constant.FieldId.JOINED_GROUP_LIST
 import com.whyranoid.data.constant.FieldId.RULES
 import com.whyranoid.data.model.GroupInfoResponse
+import com.whyranoid.data.model.UserResponse
+import com.whyranoid.data.model.toGroupInfo
+import com.whyranoid.data.model.toUser
+import com.whyranoid.domain.model.GroupInfo
 import com.whyranoid.domain.model.Rule
+import com.whyranoid.domain.model.toRule
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.UUID
 import javax.inject.Inject
@@ -115,5 +123,33 @@ class GroupDataSource @Inject constructor(
                     cancellableContinuation.resume(false)
                 }
         }
+    }
+
+    fun getGroupInfoFlow(uid: String, groupId: String): Flow<GroupInfo> = callbackFlow {
+        db.collection(GROUPS_COLLECTION)
+            .document(groupId)
+            .addSnapshotListener { documentSnapshot, _ ->
+                val groupInfoResponse = documentSnapshot?.toObject(GroupInfoResponse::class.java)
+
+                groupInfoResponse?.let {
+                    db.collection(USERS_COLLECTION)
+                        .document(uid)
+                        .addSnapshotListener { documentSnapshot, _ ->
+                            val userResponse = documentSnapshot?.toObject(UserResponse::class.java)
+
+                            userResponse?.let {
+                                trySend(
+                                    groupInfoResponse.toGroupInfo(
+                                        leader = userResponse.toUser(),
+                                        rules = groupInfoResponse.rules.map {
+                                            it.toRule()
+                                        }
+                                    )
+                                )
+                            }
+                        }
+                }
+            }
+        awaitClose()
     }
 }

@@ -38,6 +38,10 @@ class GroupRepositoryImpl @Inject constructor(
         return groupDataSource.joinGroup(uid, groupId)
     }
 
+    override fun getGroupInfoFlow(uid: String, groupId: String): Flow<GroupInfo> {
+        return groupDataSource.getGroupInfoFlow(uid, groupId)
+    }
+
     override fun getGroupNotifications(groupId: String): Flow<List<GroupNotification>> {
         return groupNotificationDataSource.getGroupNotifications(groupId)
     }
@@ -46,7 +50,12 @@ class GroupRepositoryImpl @Inject constructor(
         groupNotificationDataSource.notifyRunningStart(uid, groupIdList)
     }
 
-    override suspend fun createGroup(groupName: String, introduce: String, rules: List<String>, uid: String): Boolean {
+    override suspend fun createGroup(
+        groupName: String,
+        introduce: String,
+        rules: List<String>,
+        uid: String
+    ): Boolean {
         return groupDataSource.createGroup(groupName, introduce, rules, uid)
     }
 }
