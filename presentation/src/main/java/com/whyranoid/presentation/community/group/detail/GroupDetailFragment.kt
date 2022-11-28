@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
@@ -42,7 +43,8 @@ internal class GroupDetailFragment :
                         val dialog = GroupSettingDialog(
                             // TODO : 그룹 수정으로 이동
                             onEditButtonClickListener = {
-                                Toast.makeText(context, "그룹 수정하기", Toast.LENGTH_SHORT).show()
+                                val action = GroupDetailFragmentDirections.actionGroupDetailFragmentToEditGroupFragment(groupDetailArgs.groupInfo)
+                                findNavController().navigate(action)
                             },
                             // TODO : 그룹 삭제
                             onDeleteButtonClickListener = {

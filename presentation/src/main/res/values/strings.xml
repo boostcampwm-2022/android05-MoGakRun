@@ -57,7 +57,7 @@
     <string name="running_history_label_finish_running_time">종료시간</string>
     <string name="running_history_label_running_distance">이동거리</string>
     <string name="running_history_label_running_pace">페이스</string>
-    
+
     <!-- 그룹 상세보기 화면-->
     <string name="text_headcount">%d명</string>
     <string name="text_recruit">홍보하기</string>
@@ -66,5 +66,9 @@
     <string name="text_edit_group">그룹 수정하기</string>
     <string name="text_delete_group">그룹 삭제하기</string>
     <string name="text_cancel">취소</string>
+
+    <!-- 그룹 수정하기 화면-->
+    <string name="text_edit_group_success">그룹이 수정되었습니다!</string>
+    <string name="text_edit_group_fail">그룹 수정이 실패하였습니다.</string>
 
 </resources>
