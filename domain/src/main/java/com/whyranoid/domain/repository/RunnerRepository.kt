@@ -2,7 +2,7 @@ package com.whyranoid.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 
-interface RunningRepository {
+interface RunnerRepository {
 
     // 현재 달리고 있는 사람 카운트 - 리모트
     fun getCurrentRunnerCount(): Flow<Int>
