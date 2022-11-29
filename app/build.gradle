@@ -61,4 +61,8 @@ dependencies {
     // Hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+
+    // Hilt Worker with Kotlin
+    implementation "androidx.hilt:hilt-work:$hiltWorkerVersion"
+    kapt "androidx.hilt:hilt-compiler:$hiltCompilerVersion"
 }

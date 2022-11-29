@@ -1,15 +1,15 @@
 package com.whyranoid.data.running
 
-import com.whyranoid.domain.repository.RunningRepository
+import com.whyranoid.domain.repository.RunnerRepository
 import kotlinx.coroutines.flow.Flow
 
-class RunningRepositoryImpl(private val runningDataSource: RunningDataSource) : RunningRepository {
+class RunnerRepositoryImpl(private val runnerDataSource: RunnerDataSource) : RunnerRepository {
     override fun getCurrentRunnerCount(): Flow<Int> {
-        return runningDataSource.getCurrentRunnerCount()
+        return runnerDataSource.getCurrentRunnerCount()
     }
 
     override suspend fun startRunning(uid: String): Boolean {
-        return runningDataSource.startRunning(uid)
+        return runnerDataSource.startRunning(uid)
     }
 
     override suspend fun finishRunning(uid: String): Boolean {

@@ -5,6 +5,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 fun LifecycleOwner.repeatWhenUiStarted(block: suspend () -> Unit) {
     lifecycleScope.launch {
@@ -12,4 +15,9 @@ fun LifecycleOwner.repeatWhenUiStarted(block: suspend () -> Unit) {
             block.invoke()
         }
     }
+}
+
+fun Date.dateToString(format: String): String {
+    val formatter = SimpleDateFormat(format, Locale.getDefault())
+    return formatter.format(this)
 }

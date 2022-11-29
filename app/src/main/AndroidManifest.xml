@@ -13,6 +13,13 @@
         android:theme="@style/Theme.MoGakRun"
         android:name=".MogakrunApplication"
         tools:targetApi="31">
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove">
+            <meta-data  android:name="com.whyranoid.presentation.running.WorkManagerInitializer"
+                android:value="androidx.startup" />
+        </provider>
         <activity
             android:name="com.whyranoid.signin.SignInActivity"
             android:theme="@style/Theme.MoGakRun.Splash"
@@ -23,7 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.whyranoid.presentation.running.RunningActivity" />
     </application>
 
 </manifest>
