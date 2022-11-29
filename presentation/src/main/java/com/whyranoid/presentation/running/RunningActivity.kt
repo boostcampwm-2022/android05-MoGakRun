@@ -135,10 +135,14 @@ internal class RunningActivity :
     }
 
     private fun updatePathsOverlay(runningState: RunningState) {
-        if (runningState.runningData.runningPositionList.last().size >= 2) {
-            paths.last().coords =
-                runningState.runningData.runningPositionList.last().map { it.toLatLng() }
-            paths.last().map = naverMap
+        runningState.runningData.runningPositionList.let { runningPositionList ->
+            for (index in paths.indices) {
+                if (runningState.runningData.runningPositionList[index].size >= 2) {
+                    paths[index].coords =
+                        runningState.runningData.runningPositionList[index].map { it.toLatLng() }
+                    paths[index].map = naverMap
+                }
+            }
         }
     }
 
