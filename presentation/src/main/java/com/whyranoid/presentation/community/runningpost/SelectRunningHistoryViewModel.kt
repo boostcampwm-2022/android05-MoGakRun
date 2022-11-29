@@ -1,4 +1,4 @@
-package com.whyranoid.presentation.community
+package com.whyranoid.presentation.community.runningpost
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,6 +26,11 @@ class SelectRunningHistoryViewModel @Inject constructor(private val getRunningHi
     val runningHistoryListState: StateFlow<UiState<List<RunningHistoryUiModel>>>
         get() = _runningHistoryListState.asStateFlow()
 
+    // TODO 인증글 작성 넘어가도록 하는 더미데이터 -> 인증글 작성 로직이 완료되면 삭제하겠습니다
+    private val _selectedRunningHistory = MutableStateFlow<RunningHistoryUiModel?>(RunningHistoryUiModel("id", "asdf", "asdf", "asdf", "adsf", "asd", "zcx"))
+    val selectedRunningHistory: StateFlow<RunningHistoryUiModel?>
+        get() = _selectedRunningHistory.asStateFlow()
+
     private fun getRunningHistoryList() {
         viewModelScope.launch {
             _runningHistoryListState.value = UiState.Loading
@@ -39,5 +44,13 @@ class SelectRunningHistoryViewModel @Inject constructor(private val getRunningHi
                 }
             }
         }
+    }
+
+    fun getSelectedRunningHistory(): RunningHistoryUiModel? {
+        return _selectedRunningHistory.value
+    }
+
+    fun setSelectedRunningHistory(runningHistoryUiModel: RunningHistoryUiModel?) {
+        _selectedRunningHistory.value = runningHistoryUiModel
     }
 }

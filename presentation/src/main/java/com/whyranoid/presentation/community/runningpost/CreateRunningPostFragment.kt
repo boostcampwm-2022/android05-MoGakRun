@@ -1,4 +1,4 @@
-package com.whyranoid.presentation.community
+package com.whyranoid.presentation.community.runningpost
 
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment

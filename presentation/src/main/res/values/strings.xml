@@ -24,6 +24,9 @@
     <string name="community_label_running_history">운동 내역</string>
     <string name="community_select_running_history_title">운동 내역 선택</string>
     <string name="community_select_running_history_helper_text">인증글을 작성할 운동 기록을 하나 선택하세요</string>
+    <string name="community_running_post_complete">인증글 작성 완료</string>
+    <string name="community_select_running_history">운동 내역 선택 완료</string>
+    <string name="community_select_running_history_snack_bar">운동을 하나 선택해주세요!</string>
 
     <!-- 마이런 탭 화면 -->
     <string name="my_run_tool_bar_menu_setting">설정</string>
