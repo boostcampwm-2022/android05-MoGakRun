@@ -1,6 +1,5 @@
 package com.whyranoid.domain.repository
 
-import com.whyranoid.domain.model.GroupInfo
 import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.model.User
@@ -21,9 +20,9 @@ interface PostRepository {
     ): Boolean
 
     suspend fun createRecruitPost(
-        author: User,
-        updatedAt: Long = 0L,
-        groupInfo: GroupInfo
+        authorUid: String,
+        updatedAt: Long,
+        groupUid: String
     ): Boolean
 
     // 글 삭제하기 - 리모트

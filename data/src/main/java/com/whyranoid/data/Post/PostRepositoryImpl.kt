@@ -1,6 +1,5 @@
 package com.whyranoid.data.Post
 
-import com.whyranoid.domain.model.GroupInfo
 import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.model.User
@@ -27,11 +26,11 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createRecruitPost(
-        author: User,
+        authorUid: String,
         updatedAt: Long,
-        groupInfo: GroupInfo
+        groupUid: String
     ): Boolean {
-        return postDataSource.createRecruitPost(author, updatedAt, groupInfo)
+        return postDataSource.createRecruitPost(authorUid, updatedAt, groupUid)
     }
 
     override suspend fun deletePost(postId: String): Boolean {
