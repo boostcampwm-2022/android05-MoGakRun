@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class RunningDataSourceImpl(private val db: FirebaseFirestore) : RunningDataSource {
+class RunnerDataSourceImpl(private val db: FirebaseFirestore) : RunnerDataSource {
 
     override fun getCurrentRunnerCount(): Flow<Int> = callbackFlow {
         db.collection("Runners")

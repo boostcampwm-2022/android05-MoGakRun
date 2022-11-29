@@ -1,10 +1,10 @@
 package com.whyranoid.data.di
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.whyranoid.data.running.RunningDataSource
-import com.whyranoid.data.running.RunningDataSourceImpl
-import com.whyranoid.data.running.RunningRepositoryImpl
-import com.whyranoid.domain.repository.RunningRepository
+import com.whyranoid.data.running.RunnerDataSource
+import com.whyranoid.data.running.RunnerDataSourceImpl
+import com.whyranoid.data.running.RunnerRepositoryImpl
+import com.whyranoid.domain.repository.RunnerRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,13 +17,13 @@ class RunningModule {
 
     @Provides
     @Singleton
-    fun provideRunningDataSource(db: FirebaseFirestore): RunningDataSource {
-        return RunningDataSourceImpl(db)
+    fun provideRunningDataSource(db: FirebaseFirestore): RunnerDataSource {
+        return RunnerDataSourceImpl(db)
     }
 
     @Provides
     @Singleton
-    fun provideRunningRepository(runningDataSource: RunningDataSource): RunningRepository {
-        return RunningRepositoryImpl(runningDataSource)
+    fun provideRunningRepository(runnerDataSource: RunnerDataSource): RunnerRepository {
+        return RunnerRepositoryImpl(runnerDataSource)
     }
 }

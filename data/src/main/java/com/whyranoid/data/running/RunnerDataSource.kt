@@ -2,7 +2,7 @@ package com.whyranoid.data.running
 
 import kotlinx.coroutines.flow.Flow
 
-interface RunningDataSource {
+interface RunnerDataSource {
 
     fun getCurrentRunnerCount(): Flow<Int>
 

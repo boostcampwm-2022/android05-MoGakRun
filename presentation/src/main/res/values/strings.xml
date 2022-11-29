@@ -71,4 +71,13 @@
     <string name="text_edit_group_success">그룹이 수정되었습니다!</string>
     <string name="text_edit_group_fail">그룹 수정이 실패하였습니다.</string>
 
+    <!-- 러닝 화면 -->
+    <string name="running_pause_or_resume">일시정지/재개</string>
+    <string name="running_finish">정지</string>
+    <string name="running_notification_content">모여서 각자 러닝 중!</string>
+    <string name="running_notification_id">모각런</string>
+    <string name="running_notification_title">달려~ 달려~</string>
+    <string name="running_channel_name">활동 추적</string>
+    <string name="running_channel_description">달리기 활동을 추적하는 알림 채널입니다.</string>
+
 </resources>

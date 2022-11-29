@@ -23,8 +23,8 @@ fun View.networkConnectionVisibility(networkState: NetworkState) {
 fun View.enableWithNetworkState(networkState: NetworkState) {
     isEnabled = when (networkState) {
         is NetworkState.UnInitialized -> true
-        is NetworkState.Connection -> false
-        is NetworkState.DisConnection -> true
+        is NetworkState.Connection -> true
+        is NetworkState.DisConnection -> false
     }
 }
 
