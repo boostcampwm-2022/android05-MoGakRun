@@ -70,6 +70,9 @@
     <string name="text_edit_group">그룹 수정하기</string>
     <string name="text_delete_group">그룹 삭제하기</string>
     <string name="text_cancel">취소</string>
+    <string name="text_check_recruit">정말 홍보하시겠어요?</string>
+    <string name="text_recruit_success">홍보 글이 작성되었습니다!</string>
+    <string name="text_recruit_fail">홍보 글 작성이 실패하였습니다!</string>
 
     <!-- 그룹 수정하기 화면-->
     <string name="text_edit_group_success">그룹이 수정되었습니다!</string>

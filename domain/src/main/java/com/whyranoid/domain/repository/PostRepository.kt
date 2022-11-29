@@ -21,7 +21,6 @@ interface PostRepository {
 
     suspend fun createRecruitPost(
         authorUid: String,
-        updatedAt: Long,
         groupUid: String
     ): Boolean
 

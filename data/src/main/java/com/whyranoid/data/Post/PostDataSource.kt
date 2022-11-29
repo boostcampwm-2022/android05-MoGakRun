@@ -20,7 +20,6 @@ class PostDataSource @Inject constructor(
 
     suspend fun createRecruitPost(
         authorUid: String,
-        updatedAt: Long,
         groupUid: String
     ): Boolean {
         val postId = UUID.randomUUID().toString()
@@ -48,7 +47,7 @@ class PostDataSource @Inject constructor(
                             RecruitPost(
                                 postId = postId,
                                 author = author,
-                                updatedAt = updatedAt,
+                                updatedAt = System.currentTimeMillis(),
                                 groupInfo = groupInfo.toGroupInfo(
                                     leader = author,
                                     rules = groupInfo.rules.map { it.toRule() }

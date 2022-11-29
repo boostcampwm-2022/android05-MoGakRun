@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.model.FinishNotification
 import com.whyranoid.domain.model.GroupNotification
 import com.whyranoid.domain.model.StartNotification
+import com.whyranoid.domain.usecase.CreateRecruitPostUseCase
 import com.whyranoid.domain.usecase.GetGroupInfoUseCase
 import com.whyranoid.domain.usecase.GetGroupNotificationsUseCase
 import com.whyranoid.presentation.model.GroupInfoUiModel
@@ -26,10 +27,12 @@ import javax.inject.Inject
 class GroupDetailViewModel @Inject constructor(
     getGroupInfoUseCase: GetGroupInfoUseCase,
     getGroupNotificationsUseCase: GetGroupNotificationsUseCase,
+    private val createRecruitPostUseCase: CreateRecruitPostUseCase,
     stateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val groupId = requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")).groupId
+    private val userId = requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")).leader.name
 
     private var _groupInfo =
         MutableStateFlow(requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")))
@@ -37,8 +40,7 @@ class GroupDetailViewModel @Inject constructor(
         get() = _groupInfo.asStateFlow()
 
     // TODO : 데이터 스토어에 저장된 Uid와 비교해야함.
-    val isLeader =
-        requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")).leader.name == "soopeach"
+    val isLeader = userId == "soopeach"
 
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow: SharedFlow<Event>
@@ -84,10 +86,23 @@ class GroupDetailViewModel @Inject constructor(
         emitEvent(Event.ExitGroupButtonClick)
     }
 
+    // TODO : uid는 알아서 가져오도록 변경
+    fun onRecruitSnackBarButtonClick() {
+        viewModelScope.launch {
+            val isCreateRecruitPostSuccess = createRecruitPostUseCase("hsjeon", groupId)
+            if (isCreateRecruitPostSuccess) {
+                emitEvent(Event.RecruitSnackBarButtonClick())
+            } else {
+                emitEvent(Event.RecruitSnackBarButtonClick(false))
+            }
+        }
+    }
+
     private fun emitEvent(event: Event) {
         when (event) {
             Event.RecruitButtonClick,
-            Event.ExitGroupButtonClick -> {
+            Event.ExitGroupButtonClick,
+            is Event.RecruitSnackBarButtonClick -> {
                 viewModelScope.launch {
                     _eventFlow.emit(event)
                 }
