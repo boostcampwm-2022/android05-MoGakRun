@@ -29,16 +29,16 @@ class GroupDetailViewModel @Inject constructor(
     stateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val groupId = stateHandle.get<GroupInfoUiModel>("groupInfo")?.groupId ?: ""
+    private val groupId = requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")).groupId
+
+    private var _groupInfo =
+        MutableStateFlow(requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")))
+    val groupInfo: StateFlow<GroupInfoUiModel>
+        get() = _groupInfo.asStateFlow()
 
     // TODO : 데이터 스토어에 저장된 Uid와 비교해야함.
     val isLeader =
-        stateHandle.get<GroupInfoUiModel>("groupInfo")?.leader?.name == "soopeach"
-
-    private var _groupInfo =
-        MutableStateFlow<GroupInfoUiModel>(stateHandle.get<GroupInfoUiModel>("groupInfo")!!)
-    val groupInfo: StateFlow<GroupInfoUiModel>
-        get() = _groupInfo.asStateFlow()
+        requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")).leader.name == "soopeach"
 
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow: SharedFlow<Event>
