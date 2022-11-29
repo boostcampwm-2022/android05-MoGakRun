@@ -9,6 +9,7 @@ import android.content.Intent
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
 import android.os.Build
 import android.os.Looper
 import androidx.annotation.RequiresApi
@@ -74,6 +75,9 @@ class RunningWorker @AssistedInject constructor(
             .setOngoing(true)
             .build()
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return ForegroundInfo(NOTIFICATION_ID, notification, FOREGROUND_SERVICE_TYPE_LOCATION)
+        }
         return ForegroundInfo(NOTIFICATION_ID, notification)
     }
 
