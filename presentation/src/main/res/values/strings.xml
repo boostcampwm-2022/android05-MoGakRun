@@ -85,6 +85,7 @@
 
     <!-- 러닝 화면 -->
     <string name="running_pause_or_resume">일시정지/재개</string>
+    <string name="running_total_time">운동시간</string>
     <string name="running_finish">정지</string>
     <string name="running_notification_content">모여서 각자 러닝 중!</string>
     <string name="running_notification_id">모각런</string>
