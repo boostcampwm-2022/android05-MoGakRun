@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="recruitPost"
+            type="com.whyranoid.domain.model.RecruitPost" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_leader_profile"
+            loadImage="@{recruitPost.author.profileUrl}"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_leader_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@{recruitPost.author.name}"
+            app:layout_constraintStart_toEndOf="@id/iv_leader_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="수피치" />
+
+        <TextView
+            android:id="@+id/tv_group_name"
+            style="@style/MoGakRunText.ExtraBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@{recruitPost.groupInfo.name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_leader_name"
+            tools:text="수피치와 함께 춤을\n출까 말까" />
+
+        <TextView
+            android:id="@+id/tv_group_introduce"
+            style="@style/MoGakRunText.Bold.Large"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:text="@{recruitPost.groupInfo.introduce}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_group_name"
+            tools:text="우리 그룹은요\n이러쿵\n저러쿵\n이렇고요\n저렇고요" />
+
+        <TextView
+            android:id="@+id/tv_rules"
+            style="@style/MoGakRunText.Bold.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:text="@{recruitPost.groupInfo.rules.toString()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_group_introduce"
+            tools:text="규칙들\n이 적히게\n됩니다." />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_join_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/text_join_group"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_rules" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

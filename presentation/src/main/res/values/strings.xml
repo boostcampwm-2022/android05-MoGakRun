@@ -86,5 +86,6 @@
     <string name="running_notification_title">달려~ 달려~</string>
     <string name="running_channel_name">활동 추적</string>
     <string name="running_channel_description">달리기 활동을 추적하는 알림 채널입니다.</string>
+    <string name="text_join_group">그룹 가입하기</string>
 
 </resources>
