@@ -1,4 +1,4 @@
-package com.whyranoid.presentation.community.group
+package com.whyranoid.presentation.community.group.create
 
 sealed class Event {
     data class CreateGroupButtonClick(val isSuccess: Boolean = true) : Event()

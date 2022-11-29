@@ -1,6 +1,5 @@
 package com.whyranoid.domain.repository
 
-import androidx.paging.PagingData
 import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.model.User
@@ -8,8 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
 
+    // TODO : 페이징 처리
     // 글(홍보 / 인증) 페이징으로 가져오기 - 리모트
-    fun getPagingPosts(): Flow<PagingData<Post>>
+    fun getPagingPosts(): Flow<List<Post>>
 
     // 글 작성하기 - 리모트
     suspend fun createPost(
@@ -17,6 +17,12 @@ interface PostRepository {
         postContent: String,
         runningHistory: RunningHistory,
         updatedAt: Long
+    ): Boolean
+
+    suspend fun createRecruitPost(
+        authorUid: String,
+        updatedAt: Long,
+        groupUid: String
     ): Boolean
 
     // 글 삭제하기 - 리모트

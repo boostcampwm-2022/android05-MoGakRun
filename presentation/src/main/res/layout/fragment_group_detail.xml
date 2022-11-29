@@ -8,14 +8,6 @@
         <import type="android.view.View" />
 
         <variable
-            name="isLeader"
-            type="Boolean" />
-
-        <variable
-            name="groupInfo"
-            type="com.whyranoid.presentation.model.GroupInfoUiModel" />
-
-        <variable
             name="viewModel"
             type="com.whyranoid.presentation.community.group.detail.GroupDetailViewModel" />
     </data>
@@ -35,7 +27,7 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:title="@{groupInfo.name}"
+                app:title="@{viewModel.groupInfo.name}"
                 tools:title ="수피치 그룹"/>
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -61,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:gravity="center"
-                    android:text="@{groupInfo.name}"
+                    android:text="@{viewModel.groupInfo.name}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -74,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:gravity="center"
-                    android:text="@{groupInfo.introduce}"
+                    android:text="@{viewModel.groupInfo.introduce}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_group_name"
@@ -87,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:gravity="center"
-                    android:text="@{groupInfo.rules.toString()}"
+                    android:text="@{viewModel.groupInfo.rules.toString()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_group_introduce"
@@ -100,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:gravity="center"
-                    android:text="@{@string/text_headcount(groupInfo.headCount)}"
+                    android:text="@{@string/text_headcount(viewModel.groupInfo.headCount)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_rules"
                     tools:text="40명" />
@@ -112,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:gravity="center"
-                    android:text="@{groupInfo.leader.name}"
+                    android:text="@{viewModel.groupInfo.leader.name}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_rules"
                     tools:text="수피치" />
@@ -124,7 +116,7 @@
                     android:layout_margin="16dp"
                     android:text="@string/text_recruit"
                     android:onClick="@{() -> viewModel.onRecruitButtonClicked()}"
-                    android:visibility="@{isLeader ? View.VISIBLE : View.INVISIBLE}"
+                    android:visibility="@{viewModel.isLeader ? View.VISIBLE : View.INVISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_head_count" />
 
@@ -135,7 +127,7 @@
                     android:layout_margin="16dp"
                     android:text="@string/text_exit_group"
                     android:onClick="@{() -> viewModel.onExitGroupButtonClicked()}"
-                    android:visibility="@{isLeader ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{viewModel.isLeader ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_head_count" />
 

@@ -1,4 +1,4 @@
-package com.whyranoid.presentation.community.group
+package com.whyranoid.presentation.community.group.create
 
 import android.os.Bundle
 import android.view.View

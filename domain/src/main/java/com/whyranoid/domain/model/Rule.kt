@@ -10,6 +10,15 @@ data class Rule(
     }
 }
 
+fun String.toRule(): Rule {
+    val ruleString = this.split("-")
+    return Rule(
+        dayOfWeek = DayOfWeek.values().find { it.dayResId == ruleString[0] } ?: DayOfWeek.SUN,
+        hour = ruleString[1].toInt(),
+        minute = ruleString[2].toInt()
+    )
+}
+
 enum class DayOfWeek(val dayResId: String) {
     MON("월"),
     TUE("화"),

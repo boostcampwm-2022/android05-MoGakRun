@@ -1,16 +1,22 @@
 package com.whyranoid.presentation.community.group.detail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.model.FinishNotification
 import com.whyranoid.domain.model.GroupNotification
 import com.whyranoid.domain.model.StartNotification
+import com.whyranoid.domain.usecase.GetGroupInfoUseCase
 import com.whyranoid.domain.usecase.GetGroupNotificationsUseCase
+import com.whyranoid.presentation.model.GroupInfoUiModel
+import com.whyranoid.presentation.model.toGroupInfoUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -18,8 +24,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GroupDetailViewModel @Inject constructor(
-    getGroupNotificationsUseCase: GetGroupNotificationsUseCase
+    getGroupInfoUseCase: GetGroupInfoUseCase,
+    getGroupNotificationsUseCase: GetGroupNotificationsUseCase,
+    stateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val groupId = requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")).groupId
+
+    private var _groupInfo =
+        MutableStateFlow(requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")))
+    val groupInfo: StateFlow<GroupInfoUiModel>
+        get() = _groupInfo.asStateFlow()
+
+    // TODO : 데이터 스토어에 저장된 Uid와 비교해야함.
+    val isLeader =
+        requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")).leader.name == "soopeach"
 
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow: SharedFlow<Event>
@@ -30,6 +49,13 @@ class GroupDetailViewModel @Inject constructor(
     val mergedNotifications = MutableStateFlow<List<GroupNotification>>(emptyList())
 
     init {
+
+        // TODO : uid를 DataStore에서 가져오도록 변경
+        getGroupInfoUseCase("hsjeon", groupId).onEach { groupInfo ->
+            println("테스트 $groupInfo")
+            _groupInfo.value = groupInfo.toGroupInfoUiModel()
+        }.launchIn(viewModelScope)
+
         // TODO : 그룹 아이디를 프레그먼트에서 받아오도록 변경
         getGroupNotificationsUseCase("수피치 그룹1").onEach { notifications ->
 

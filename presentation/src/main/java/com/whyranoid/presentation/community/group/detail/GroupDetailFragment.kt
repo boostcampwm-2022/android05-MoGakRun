@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
@@ -31,9 +32,7 @@ internal class GroupDetailFragment :
     private fun setupMenu() {
         with(binding.topAppBar) {
             // TODO : uid를 DataStore에서 가져올 수 있도록 변경
-            if (groupDetailArgs.groupInfo.leader.name == "soopeach") {
-                inflateMenu(R.menu.group_detail_menu)
-            }
+            if (viewModel.isLeader) inflateMenu(R.menu.group_detail_menu)
 
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
@@ -42,7 +41,11 @@ internal class GroupDetailFragment :
                         val dialog = GroupSettingDialog(
                             // TODO : 그룹 수정으로 이동
                             onEditButtonClickListener = {
-                                Toast.makeText(context, "그룹 수정하기", Toast.LENGTH_SHORT).show()
+                                val action =
+                                    GroupDetailFragmentDirections.actionGroupDetailFragmentToEditGroupFragment(
+                                        groupDetailArgs.groupInfo
+                                    )
+                                findNavController().navigate(action)
                             },
                             // TODO : 그룹 삭제
                             onDeleteButtonClickListener = {
@@ -91,13 +94,7 @@ internal class GroupDetailFragment :
     }
 
     private fun setBindingData() {
-        with(binding) {
-            viewModel = viewModel
-            groupInfo = groupDetailArgs.groupInfo
-            // TODO : uid를 DataStore에서 가져올 수 있도록 변경
-            // TODO : ViewModel로 옮기기
-            isLeader = groupDetailArgs.groupInfo.leader.name == "soopeach"
-        }
+        binding.viewModel = viewModel
     }
 
     // TODO : uid를 DataStore에서 가져올 수 있도록 변경
