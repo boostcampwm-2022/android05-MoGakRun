@@ -6,9 +6,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
 import android.os.Build
 import android.os.Looper
@@ -18,6 +15,11 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.whyranoid.presentation.R
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -30,9 +32,10 @@ class RunningWorker @AssistedInject constructor(
     private val runningRepository: RunningRepository
 ) : CoroutineWorker(context, params) {
 
-    private val locationManager =
-        context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    private lateinit var locationListener: LocationListener
+    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    private val locationRequest =
+        LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, UPDATE_INTERVAL_MS).build()
+    private lateinit var locationCallback: LocationCallback
 
     override suspend fun doWork(): Result {
         if (startTracking().not()) {
@@ -43,14 +46,14 @@ class RunningWorker @AssistedInject constructor(
         setForeground(createForegroundInfo(context.getString(R.string.running_notification_content)))
 
         while ((runningRepository.runningState.value is RunningState.NotRunning).not()) {
-            delay(1000)
+            delay(UPDATE_INTERVAL_MS)
             when (runningRepository.runningState.value) {
                 is RunningState.NotRunning -> break
                 is RunningState.Paused -> continue
                 is RunningState.Running -> runningRepository.tick()
             }
         }
-        locationManager.removeUpdates(locationListener)
+        fusedLocationClient.removeLocationUpdates(locationCallback)
         return Result.success()
     }
 
@@ -94,34 +97,20 @@ class RunningWorker @AssistedInject constructor(
     }
 
     private fun startTracking(): Boolean {
-        locationListener = object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                val lastLatitude = location.latitude
-                val lastLongitude = location.longitude
-
-                runningRepository.setRunningState(
-                    RunningPosition(lastLatitude, lastLongitude)
-                )
-            }
-
-            override fun onProviderDisabled(provider: String) {
-                runningRepository.pauseRunning()
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult.lastLocation?.let { location ->
+                    runningRepository.setRunningState(location)
+                } ?: run {
+                    runningRepository.pauseRunning()
+                }
             }
         }
 
         try {
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                1000,
-                0f,
-                locationListener,
-                Looper.getMainLooper()
-            )
-            locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER,
-                1000,
-                0f,
-                locationListener,
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
                 Looper.getMainLooper()
             )
             runningRepository.startRunning()
@@ -138,5 +127,6 @@ class RunningWorker @AssistedInject constructor(
         const val WORKER_NAME = "runningWorker"
         const val NOTIFICATION_ID = 1000
         const val CHANNEL_ID = "모각런"
+        const val UPDATE_INTERVAL_MS = 1000L
     }
 }
