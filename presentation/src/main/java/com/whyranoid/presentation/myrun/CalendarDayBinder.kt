@@ -14,7 +14,7 @@ import java.time.LocalDate
 class CalendarDayBinder(
     private val calendarView: CalendarView
 ) : DayBinder<CalendarDayBinder.DayContainer> {
-    private var calendar: Pair<LocalDate?, LocalDate?> = null to null
+    private var calendar: CalendarRange = CalendarRange(null, null)
 
     class DayContainer(
         val binding: ItemCalendarDayBinding
@@ -50,6 +50,7 @@ class CalendarDayBinder(
                     R.color.black
                 )
             )
+            container.binding.root.background = null
         }
 
         if (isInRange(day.date)) {
@@ -83,3 +84,8 @@ class CalendarDayBinder(
         return startDate == date || endDate == date || (startDate != null && endDate != null && startDate < date && date < endDate)
     }
 }
+
+data class CalendarRange(
+    val startDate: LocalDate?,
+    val endDate: LocalDate?
+)

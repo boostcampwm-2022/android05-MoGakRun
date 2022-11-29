@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetRunningHistoryUseCase @Inject constructor(private val runningHistoryRepository: RunningHistoryRepository) {
-    operator fun invoke(): Flow<List<RunningHistory>> {
+    operator fun invoke(): Flow<Result<List<RunningHistory>>> {
         return runningHistoryRepository.getRunningHistory()
     }
 }

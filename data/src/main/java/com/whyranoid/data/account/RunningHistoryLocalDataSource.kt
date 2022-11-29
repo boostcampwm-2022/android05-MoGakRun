@@ -4,5 +4,5 @@ import com.whyranoid.domain.model.RunningHistory
 import kotlinx.coroutines.flow.Flow
 
 interface RunningHistoryLocalDataSource {
-    fun getRunningHistory(): Flow<List<RunningHistory>>
+    fun getRunningHistory(): Flow<Result<List<RunningHistory>>>
 }

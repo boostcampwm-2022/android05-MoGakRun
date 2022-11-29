@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface RunningHistoryRepository {
 
     // 운동 내역 가져오기 - 로컬
-    fun getRunningHistory(): Flow<List<RunningHistory>>
+    fun getRunningHistory(): Flow<Result<List<RunningHistory>>>
 
     // 글 안쓴 운동 내역 가져오기 - 로컬
     suspend fun getUnpostedRunningHistory(): List<RunningHistory>

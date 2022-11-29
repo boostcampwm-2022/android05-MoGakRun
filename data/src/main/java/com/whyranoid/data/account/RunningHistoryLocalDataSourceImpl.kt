@@ -9,10 +9,12 @@ class RunningHistoryLocalDataSourceImpl @Inject constructor(
     private val runningHistoryDao: RunningHistoryDao
 ) : RunningHistoryLocalDataSource {
 
-    override fun getRunningHistory(): Flow<List<RunningHistory>> {
+    override fun getRunningHistory(): Flow<Result<List<RunningHistory>>> {
         return runningHistoryDao.getRunningHistory().map { runningHistoryList ->
-            runningHistoryList.map { runningHistoryEntity ->
-                runningHistoryEntity.toRunningHistory()
+            runCatching {
+                runningHistoryList.map { runningHistoryEntity ->
+                    runningHistoryEntity.toRunningHistory()
+                }
             }
         }
     }

@@ -2,12 +2,14 @@ package com.whyranoid.presentation.myrun
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.usecase.GetNicknameUseCase
 import com.whyranoid.domain.usecase.GetProfileUriUseCase
 import com.whyranoid.domain.usecase.GetRunningHistoryUseCase
 import com.whyranoid.domain.usecase.GetUidUseCase
 import com.whyranoid.domain.usecase.UpdateNicknameUseCase
+import com.whyranoid.presentation.model.RunningHistoryUiModel
+import com.whyranoid.presentation.model.UiState
+import com.whyranoid.presentation.model.toRunningHistoryUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,9 +44,10 @@ class MyRunViewModel @Inject constructor(
     val profileImgUri: StateFlow<String>
         get() = _profileImgUri.asStateFlow()
 
-    private val _runningHistoryList = MutableStateFlow<List<RunningHistory>>(emptyList())
-    val runningHistoryList: StateFlow<List<RunningHistory>>
-        get() = _runningHistoryList.asStateFlow()
+    private val _runningHistoryListState =
+        MutableStateFlow<UiState<List<RunningHistoryUiModel>>>(UiState.UnInitialized)
+    val runningHistoryListState: StateFlow<UiState<List<RunningHistoryUiModel>>>
+        get() = _runningHistoryListState.asStateFlow()
 
     private fun getUid() {
         viewModelScope.launch {
@@ -82,8 +85,15 @@ class MyRunViewModel @Inject constructor(
 
     private fun getRunningHistoryList() {
         viewModelScope.launch {
-            getRunningHistoryUseCase().collect { runningHistoryList ->
-                _runningHistoryList.value = runningHistoryList
+            _runningHistoryListState.value = UiState.Loading
+
+            getRunningHistoryUseCase().collect { runningHistoryListResult ->
+                runningHistoryListResult.onSuccess { runningHistoryList ->
+                    _runningHistoryListState.value =
+                        UiState.Success(runningHistoryList.map { runningHistory -> runningHistory.toRunningHistoryUiModel() })
+                }.onFailure { throwable ->
+                    _runningHistoryListState.value = UiState.Failure(throwable)
+                }
             }
         }
     }
