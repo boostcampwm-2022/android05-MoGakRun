@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    android:id="@+id/layout_root"
+<layout android:id="@+id/layout_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:binds="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="selectedRunningHistory"
+            type="com.whyranoid.presentation.model.RunningHistoryUiModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,6 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            binds:runningHistory="@{selectedRunningHistory}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_label_running_history"/>
