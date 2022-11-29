@@ -40,6 +40,7 @@ internal class CommunityItemFragment :
         when (category) {
             CommunityCategory.BOARD -> {
                 // TODO: Adapter 설정
+                setPostAdapter()
             }
             CommunityCategory.MY_GROUP -> {
                 setMyGroupAdapter()
@@ -64,6 +65,19 @@ internal class CommunityItemFragment :
                 val action =
                     CommunityFragmentDirections.actionCommunityFragmentToGroupDetailFragment(event.groupInfo)
                 findNavController().navigate(action)
+            }
+        }
+    }
+
+    private fun setPostAdapter() {
+        // TODO uid를 데이터 소스에서 가져오도록 수정
+        val postAdapter = PostAdapter("hsjeon")
+        binding.rvCommunity.adapter = postAdapter
+
+        viewLifecycleOwner.repeatWhenUiStarted {
+            viewModel.postList.collect { postList ->
+                removeShimmer()
+                postAdapter.submitList(postList)
             }
         }
     }

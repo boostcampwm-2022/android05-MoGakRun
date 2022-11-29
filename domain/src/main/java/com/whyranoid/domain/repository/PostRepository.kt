@@ -11,6 +11,8 @@ interface PostRepository {
     // 글(홍보 / 인증) 페이징으로 가져오기 - 리모트
     fun getPagingPosts(): Flow<List<Post>>
 
+    fun getAllPostFlow(): Flow<List<Post>>
+
     // 글 작성하기 - 리모트
     suspend fun createPost(
         user: User,

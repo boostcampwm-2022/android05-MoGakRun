@@ -16,6 +16,10 @@ class PostRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override fun getAllPostFlow(): Flow<List<Post>> {
+        return postDataSource.getAllPostFlow()
+    }
+
     override suspend fun createPost(
         user: User,
         postContent: String,
