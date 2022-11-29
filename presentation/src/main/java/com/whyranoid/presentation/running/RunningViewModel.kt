@@ -26,12 +26,12 @@ class RunningViewModel @Inject constructor(
     val runningState = runningRepository.runningState
 
     init {
-        startRunningWorker(context)
         if (runningRepository.runningState.value is RunningState.NotRunning) {
             viewModelScope.launch {
                 startRunningUseCase()
             }
         }
+        startRunningWorker(context)
     }
 
     private fun startRunningWorker(context: Context): LiveData<WorkInfo> {
