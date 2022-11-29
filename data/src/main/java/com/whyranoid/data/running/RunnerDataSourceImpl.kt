@@ -24,6 +24,7 @@ class RunnerDataSourceImpl(private val db: FirebaseFirestore) : RunnerDataSource
     }
 
     override suspend fun startRunning(uid: String): Boolean {
+        if (uid.isBlank()) return false
         return suspendCoroutine { continuation ->
             db.collection("Runners")
                 .document("runnersId")
