@@ -17,7 +17,7 @@ import com.whyranoid.presentation.databinding.ActivityRunningBinding
 import com.whyranoid.presentation.util.dateToString
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Date
+import java.util.*
 
 @AndroidEntryPoint
 internal class RunningActivity :
@@ -85,8 +85,8 @@ internal class RunningActivity :
     }
 
     override fun onPause() {
-        super.onPause()
         mapView.onPause()
+        super.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -95,13 +95,13 @@ internal class RunningActivity :
     }
 
     override fun onStop() {
-        super.onStop()
         mapView.onStop()
+        super.onStop()
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         mapView.onDestroy()
+        super.onDestroy()
     }
 
     override fun onLowMemory() {
