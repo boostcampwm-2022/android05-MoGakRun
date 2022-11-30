@@ -48,3 +48,9 @@ fun TextView.finishLongToDate(long: Long) {
     val formatter = SimpleDateFormat("yyyy.MM.dd / HH 시 mm 분 운동 종료", Locale.KOREA)
     text = formatter.format(Date(long))
 }
+
+@BindingAdapter("LongToTime")
+fun TextView.longToTime(long: Long) {
+    val formatter = SimpleDateFormat("HH : mm", Locale.KOREA)
+    text = formatter.format(Date(long))
+}
