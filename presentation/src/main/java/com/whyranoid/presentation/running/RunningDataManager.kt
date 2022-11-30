@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RunningRepository @Inject constructor() {
+class RunningDataManager @Inject constructor() {
     private var _runningState = MutableStateFlow<RunningState>(
         RunningState.NotRunning()
     )

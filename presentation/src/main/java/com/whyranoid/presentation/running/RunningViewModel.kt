@@ -24,10 +24,10 @@ import javax.inject.Inject
 class RunningViewModel @Inject constructor(
     @ApplicationContext context: Context,
     startRunningUseCase: StartRunningUseCase,
-    private val runningRepository: RunningRepository
+    private val runningDataManager: RunningDataManager
 ) : ViewModel() {
 
-    val runningState = runningRepository.runningState
+    val runningState = runningDataManager.runningState
 
     private val _trackingModeState = MutableStateFlow(TrackingMode.FOLLOW)
     val trackingModeState get() = _trackingModeState.asStateFlow()
@@ -36,7 +36,7 @@ class RunningViewModel @Inject constructor(
     val eventFlow get() = _eventFlow.asSharedFlow()
 
     init {
-        if (runningRepository.runningState.value is RunningState.NotRunning) {
+        if (runningDataManager.runningState.value is RunningState.NotRunning) {
             viewModelScope.launch {
                 startRunningUseCase()
             }
@@ -67,7 +67,7 @@ class RunningViewModel @Inject constructor(
     }
 
     fun onCheckingPauseOrResume() {
-        when (runningRepository.runningState.value) {
+        when (runningDataManager.runningState.value) {
             is RunningState.Running -> onPauseButtonClicked()
             is RunningState.Paused -> onResumeButtonClicked()
             else -> return
@@ -93,11 +93,11 @@ class RunningViewModel @Inject constructor(
     }
 
     private fun onPauseButtonClicked() {
-        runningRepository.pauseRunning()
+        runningDataManager.pauseRunning()
     }
 
     private fun onResumeButtonClicked() {
-        runningRepository.resumeRunning()
+        runningDataManager.resumeRunning()
     }
 
     private fun emitEvent(event: Event) {
@@ -108,7 +108,7 @@ class RunningViewModel @Inject constructor(
 
     fun onFinishButtonClicked() {
         // TODO: 액티비티에 이벤트 알려주기
-        runningRepository.finishRunning()
+        runningDataManager.finishRunning()
     }
 
     companion object {

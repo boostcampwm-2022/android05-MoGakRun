@@ -29,7 +29,7 @@ import kotlinx.coroutines.delay
 class RunningWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted params: WorkerParameters,
-    private val runningRepository: RunningRepository
+    private val runningDataManager: RunningDataManager
 ) : CoroutineWorker(context, params) {
 
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -39,18 +39,18 @@ class RunningWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         if (startTracking().not()) {
-            runningRepository.finishRunning()
+            runningDataManager.finishRunning()
             return Result.failure()
         }
 
         setForeground(createForegroundInfo(context.getString(R.string.running_notification_content)))
 
-        while ((runningRepository.runningState.value is RunningState.NotRunning).not()) {
+        while ((runningDataManager.runningState.value is RunningState.NotRunning).not()) {
             delay(UPDATE_INTERVAL_MS)
-            when (runningRepository.runningState.value) {
+            when (runningDataManager.runningState.value) {
                 is RunningState.NotRunning -> break
                 is RunningState.Paused -> continue
-                is RunningState.Running -> runningRepository.tick()
+                is RunningState.Running -> runningDataManager.tick()
             }
         }
         fusedLocationClient.removeLocationUpdates(locationCallback)
@@ -100,9 +100,9 @@ class RunningWorker @AssistedInject constructor(
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult.lastLocation?.let { location ->
-                    runningRepository.setRunningState(location)
+                    runningDataManager.setRunningState(location)
                 } ?: run {
-                    runningRepository.pauseRunning()
+                    runningDataManager.pauseRunning()
                 }
             }
         }
@@ -113,12 +113,12 @@ class RunningWorker @AssistedInject constructor(
                 locationCallback,
                 Looper.getMainLooper()
             )
-            runningRepository.startRunning()
+            runningDataManager.startRunning()
             return true
         } catch (e: SecurityException) {
-            runningRepository.pauseRunning()
+            runningDataManager.pauseRunning()
         } catch (e: Exception) {
-            runningRepository.pauseRunning()
+            runningDataManager.pauseRunning()
         }
         return false
     }
