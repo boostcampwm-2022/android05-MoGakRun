@@ -66,13 +66,17 @@ internal class RunningStartFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
 
-        repeatWhenUiStarted {
+        observeState()
+    }
+
+    private fun observeState() {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.runnerCount.collect { runnerCount ->
                 binding.tvRunnerCountNumber.text = runnerCount.toString()
             }
         }
 
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.eventFlow.collect { event ->
                 handleEvent(event)
             }
