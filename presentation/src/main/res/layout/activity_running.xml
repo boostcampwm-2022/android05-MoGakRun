@@ -17,9 +17,21 @@
         <com.naver.maps.map.MapView
             android:id="@+id/map_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:navermap_tiltGesturesEnabled="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_map_location"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="@string/running_map_location_button"
+            android:onClick="@{() -> vm.onTrackingButtonClicked()}"
+            app:layout_constraintBottom_toTopOf="@id/panel_running_data"
+            app:layout_constraintRight_toRightOf="@id/panel_running_data" />
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/panel_running_data"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
@@ -27,6 +39,7 @@
             android:clickable="false"
             android:paddingHorizontal="12dp"
             android:paddingVertical="8dp"
+            android:elevation="@dimen/cardview_default_elevation"
             app:layout_constraintBottom_toTopOf="@+id/btn_pause_or_resume"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">

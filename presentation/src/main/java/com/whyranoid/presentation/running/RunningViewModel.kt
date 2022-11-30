@@ -13,6 +13,10 @@ import androidx.work.WorkManager
 import com.whyranoid.domain.usecase.StartRunningUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,6 +28,12 @@ class RunningViewModel @Inject constructor(
 ) : ViewModel() {
 
     val runningState = runningRepository.runningState
+
+    private val _trackingModeState = MutableStateFlow(TrackingMode.FOLLOW)
+    val trackingModeState get() = _trackingModeState.asStateFlow()
+
+    private val _eventFlow = MutableSharedFlow<Event>()
+    val eventFlow get() = _eventFlow.asSharedFlow()
 
     init {
         if (runningRepository.runningState.value is RunningState.NotRunning) {
@@ -64,12 +74,36 @@ class RunningViewModel @Inject constructor(
         }
     }
 
+    fun onTrackingButtonClicked() {
+        when (trackingModeState.value) {
+            TrackingMode.NONE -> {
+                _trackingModeState.value = TrackingMode.NO_FOLLOW
+            }
+            TrackingMode.NO_FOLLOW -> {
+                _trackingModeState.value = TrackingMode.FOLLOW
+            }
+            TrackingMode.FOLLOW -> {
+                _trackingModeState.value = TrackingMode.NONE
+            }
+        }
+    }
+
+    fun onTrackingCanceledByGesture() {
+        _trackingModeState.value = TrackingMode.NONE
+    }
+
     private fun onPauseButtonClicked() {
         runningRepository.pauseRunning()
     }
 
     private fun onResumeButtonClicked() {
         runningRepository.resumeRunning()
+    }
+
+    private fun emitEvent(event: Event) {
+        viewModelScope.launch {
+            _eventFlow.emit(event)
+        }
     }
 
     fun onFinishButtonClicked() {

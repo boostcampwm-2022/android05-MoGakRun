@@ -2,6 +2,10 @@ package com.whyranoid.presentation.running
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.LocationSource
+import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -50,6 +54,13 @@ internal class RunningActivity :
             locationOverlay.icon = OverlayImage.fromResource(R.drawable.kong)
             locationOverlay.iconWidth = MAP_ICON_SIZE
             locationOverlay.iconHeight = MAP_ICON_SIZE
+        }
+
+        observeStateOnMapReady()
+        naverMap.addOnCameraChangeListener { reason, animated ->
+            if (reason == CameraUpdate.REASON_GESTURE) {
+                viewModel.onTrackingCanceledByGesture()
+            }
         }
 
         paths = mutableListOf()
@@ -129,6 +140,26 @@ internal class RunningActivity :
         }
     }
 
+    private fun observeStateOnMapReady() {
+        repeatWhenUiStarted {
+            viewModel.trackingModeState.collect { trackingMode ->
+                when (trackingMode) {
+                    TrackingMode.NONE -> {
+                        naverMap.locationTrackingMode = LocationTrackingMode.NoFollow
+                    }
+                    TrackingMode.NO_FOLLOW -> {
+                        viewModel.runningState.value.runningData.lastLocation?.let { location ->
+                            naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(location)))
+                        }
+                    }
+                    TrackingMode.FOLLOW -> {
+                        naverMap.locationTrackingMode = LocationTrackingMode.Follow
+                    }
+                }
+            }
+        }
+    }
+
     private fun provideMogakrunPath(): PathOverlay {
         return PathOverlay().apply {
             color = getColor(R.color.mogakrun_secondary_light)
@@ -171,6 +202,6 @@ internal class RunningActivity :
     companion object {
         const val MAP_MAX_ZOOM = 18.0
         const val MAP_MIN_ZOOM = 10.0
-        const val MAP_ICON_SIZE = 80
+        const val MAP_ICON_SIZE = 50
     }
 }
