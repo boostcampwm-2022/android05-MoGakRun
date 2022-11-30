@@ -99,10 +99,10 @@ class GroupNotificationDataSource @Inject constructor(
                                             )
                                         )
                                     }
+                                    trySend(finishNotificationList)
                                 }
                         }
                     }
-                    trySend(finishNotificationList)
                 }
 
             awaitClose()
