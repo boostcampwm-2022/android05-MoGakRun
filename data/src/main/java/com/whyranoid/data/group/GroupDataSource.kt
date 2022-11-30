@@ -20,6 +20,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
 import java.util.UUID
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -151,5 +152,14 @@ class GroupDataSource @Inject constructor(
                 }
             }
         awaitClose()
+    }
+
+    suspend fun isDuplicatedGroupName(groupName: String): Boolean {
+        return db.collection(GROUPS_COLLECTION)
+            .whereEqualTo(GROUP_NAME, groupName)
+            .get()
+            .await()
+            .isEmpty
+            .not()
     }
 }
