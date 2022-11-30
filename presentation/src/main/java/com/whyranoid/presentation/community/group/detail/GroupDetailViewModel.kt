@@ -54,7 +54,6 @@ class GroupDetailViewModel @Inject constructor(
 
         // TODO : uid를 DataStore에서 가져오도록 변경
         getGroupInfoUseCase("hsjeon", groupId).onEach { groupInfo ->
-            println("테스트 $groupInfo")
             _groupInfo.value = groupInfo.toGroupInfoUiModel()
         }.launchIn(viewModelScope)
 

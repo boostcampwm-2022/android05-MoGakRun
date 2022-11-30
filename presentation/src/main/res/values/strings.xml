@@ -89,5 +89,6 @@
     <string name="text_join_group">그룹 가입하기</string>
     <string name="text_duplicated_group_name">중복된 그룹 이름입니다. 변경해주세요!</string>
     <string name="text_un_duplicated_group_name">사용 가능한 그룹 이름입니다!</string>
+    <string name="text_like_count">좋아요 %d개</string>
 
 </resources>
