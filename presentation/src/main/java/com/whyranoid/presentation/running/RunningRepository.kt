@@ -1,10 +1,10 @@
 package com.whyranoid.presentation.running
 
 import android.location.Location
-import com.whyranoid.domain.model.RunningHistory
+import com.whyranoid.presentation.model.RunningHistoryUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -120,9 +120,9 @@ data class RunningData(
 )
 
 data class RunningFinishData(
-    val runningHistory: RunningHistory,
+    val runningHistory: RunningHistoryUiModel,
     val runningPositionList: List<List<RunningPosition>>
-)
+) : java.io.Serializable
 
 sealed interface RunningState {
     val runningData: RunningData
@@ -136,13 +136,14 @@ sealed interface RunningState {
 
 fun RunningData.toRunningFinishData() =
     RunningFinishData(
-        RunningHistory(
+        RunningHistoryUiModel(
             historyId = UUID.randomUUID().toString(),
-            startedAt = startTime,
-            finishedAt = System.currentTimeMillis(),
-            totalRunningTime = runningTime,
-            pace = pace,
-            totalDistance = totalDistance
+            date = "date",
+            startedAt = startTime.toString(),
+            finishedAt = System.currentTimeMillis().toString(),
+            totalRunningTime = runningTime.toString(),
+            pace = pace.toString(),
+            totalDistance = totalDistance.toString()
         ),
         runningPositionList
     )
