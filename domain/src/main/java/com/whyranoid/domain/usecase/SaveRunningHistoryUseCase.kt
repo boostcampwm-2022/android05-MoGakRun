@@ -6,6 +6,7 @@ import javax.inject.Inject
 
 class SaveRunningHistoryUseCase @Inject constructor(private val runningHistoryRepository: RunningHistoryRepository) {
     suspend operator fun invoke(
+        historyId: String,
         startedAt: Long,
         finishedAt: Long,
         totalRunningTime: Int,
@@ -13,6 +14,7 @@ class SaveRunningHistoryUseCase @Inject constructor(private val runningHistoryRe
         totalDistance: Double
     ): Result<RunningHistory> {
         return runningHistoryRepository.saveRunningHistory(
+            historyId = historyId,
             startedAt = startedAt,
             finishedAt = finishedAt,
             totalRunningTime = totalRunningTime,

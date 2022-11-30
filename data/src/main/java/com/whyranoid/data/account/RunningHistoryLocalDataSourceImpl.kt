@@ -1,5 +1,7 @@
 package com.whyranoid.data.account
 
+import com.whyranoid.data.model.RunningHistoryEntity
+import com.whyranoid.data.model.toRunningHistory
 import com.whyranoid.domain.model.RunningHistory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -16,6 +18,13 @@ class RunningHistoryLocalDataSourceImpl @Inject constructor(
                     runningHistoryEntity.toRunningHistory()
                 }
             }
+        }
+    }
+
+    override suspend fun saveRunningHistory(runningHistoryEntity: RunningHistoryEntity): Result<RunningHistory> {
+        return kotlin.runCatching {
+            runningHistoryDao.addRunningHistory(runningHistoryEntity)
+            runningHistoryEntity.toRunningHistory()
         }
     }
 }

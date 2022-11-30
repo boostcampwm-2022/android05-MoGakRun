@@ -13,6 +13,7 @@ interface RunningHistoryRepository {
 
     // 운동한 기록 저장하기 - 로컬
     suspend fun saveRunningHistory(
+        historyId: String,
         startedAt: Long,
         finishedAt: Long,
         totalRunningTime: Int,
