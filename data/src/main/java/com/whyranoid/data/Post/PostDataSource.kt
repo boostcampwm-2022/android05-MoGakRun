@@ -1,6 +1,7 @@
 package com.whyranoid.data.Post
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.whyranoid.data.constant.CollectionId
 import com.whyranoid.data.model.GroupInfoResponse
 import com.whyranoid.data.model.RecruitPostResponse
@@ -26,6 +27,7 @@ class PostDataSource @Inject constructor(
     fun getAllPostFlow(): Flow<List<Post>> =
         callbackFlow {
             db.collection(CollectionId.POST_COLLECTION)
+                .orderBy("updatedAt", Query.Direction.DESCENDING)
                 .addSnapshotListener { snapshot, _ ->
                     val recruitPostList = mutableListOf<Post>()
                     snapshot?.forEach { docuemnt ->
