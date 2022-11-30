@@ -138,12 +138,12 @@ fun RunningData.toRunningFinishData() =
     RunningFinishData(
         RunningHistoryUiModel(
             historyId = UUID.randomUUID().toString(),
-            date = "date",
-            startedAt = startTime.toString(),
-            finishedAt = System.currentTimeMillis().toString(),
-            totalRunningTime = runningTime.toString(),
-            pace = pace.toString(),
-            totalDistance = totalDistance.toString()
+            date = startTime,
+            startedAt = startTime,
+            finishedAt = System.currentTimeMillis(),
+            totalRunningTime = runningTime,
+            pace = pace,
+            totalDistance = totalDistance
         ),
         runningPositionList
     )
