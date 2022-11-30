@@ -3,12 +3,14 @@ package com.whyranoid.data.groupnotification
 import com.google.firebase.firestore.FirebaseFirestore
 import com.whyranoid.data.constant.CollectionId.FINISH_NOTIFICATION
 import com.whyranoid.data.constant.CollectionId.GROUP_NOTIFICATIONS_COLLECTION
+import com.whyranoid.data.constant.CollectionId.RUNNING_HISTORY_COLLECTION
 import com.whyranoid.data.constant.CollectionId.START_NOTIFICATION
 import com.whyranoid.data.model.FinishNotificationResponse
 import com.whyranoid.data.model.StartNotificationResponse
-import com.whyranoid.data.model.toFinishNotification
 import com.whyranoid.data.model.toStartNotification
+import com.whyranoid.domain.model.FinishNotification
 import com.whyranoid.domain.model.GroupNotification
+import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.model.StartNotification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -79,9 +81,26 @@ class GroupNotificationDataSource @Inject constructor(
                 .addSnapshotListener { snapshot, error ->
                     val finishNotificationList = mutableListOf<GroupNotification>()
                     snapshot?.forEach { document ->
-                        val finishNotification =
+                        val finishNotificationResponse =
                             document.toObject(FinishNotificationResponse::class.java)
-                        finishNotificationList.add(finishNotification.toFinishNotification())
+
+                        finishNotificationResponse.let { finishNotificationResponse ->
+                            db.collection(RUNNING_HISTORY_COLLECTION)
+                                .document(finishNotificationResponse.historyId)
+                                .get()
+                                .addOnSuccessListener {
+                                    val runningHistory = it.toObject(RunningHistory::class.java)
+
+                                    runningHistory?.let {
+                                        finishNotificationList.add(
+                                            FinishNotification(
+                                                uid = finishNotificationResponse.uid,
+                                                runningHistory = runningHistory
+                                            )
+                                        )
+                                    }
+                                }
+                        }
                     }
                     trySend(finishNotificationList)
                 }

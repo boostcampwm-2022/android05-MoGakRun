@@ -9,4 +9,5 @@ object CollectionId {
     const val START_NOTIFICATION = "start"
     const val FINISH_NOTIFICATION = "finish"
     const val POST_COLLECTION = "Posts"
+    const val RUNNING_HISTORY_COLLECTION = "RunningHistory"
 }
