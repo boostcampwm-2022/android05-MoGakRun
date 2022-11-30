@@ -51,6 +51,22 @@ internal class EditGroupFragment :
                     ).show()
                 }
             }
+            is Event.DuplicateCheckButtonClick -> {
+                if (event.isDuplicatedGroupName) {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_duplicated_group_name),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_un_duplicated_group_name),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    binding.etGroupName.isEnabled = false
+                }
+            }
             is Event.WarningButtonClick -> {
                 Snackbar.make(
                     binding.root,
@@ -69,7 +85,7 @@ internal class EditGroupFragment :
         }
 
         viewLifecycleOwner.repeatWhenUiStarted {
-            viewModel.isButtonEnable.collect { isEnable ->
+            viewModel.isGroupCreateButtonEnable.collect { isEnable ->
                 if (isEnable) {
                     binding.topAppBar.menu.setGroupVisible(R.id.ready_to_create, true)
                     binding.topAppBar.menu.setGroupVisible(R.id.not_ready_to_create, false)
