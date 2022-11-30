@@ -76,9 +76,11 @@ internal class GroupDetailFragment :
                     Event.RecruitButtonClick -> {
                         Snackbar.make(
                             binding.root,
-                            getString(R.string.text_recruit),
+                            getString(R.string.text_check_recruit),
                             Snackbar.LENGTH_SHORT
-                        ).show()
+                        ).setAction(R.string.text_recruit) {
+                            viewModel.onRecruitSnackBarButtonClick()
+                        }.show()
                     }
                     // TODO : 그룹 나가기
                     Event.ExitGroupButtonClick -> {
@@ -87,6 +89,21 @@ internal class GroupDetailFragment :
                             getString(R.string.text_exit_group),
                             Snackbar.LENGTH_SHORT
                         ).show()
+                    }
+                    is Event.RecruitSnackBarButtonClick -> {
+                        if (event.isSuccess) {
+                            Snackbar.make(
+                                binding.root,
+                                getString(R.string.text_recruit_success),
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Snackbar.make(
+                                binding.root,
+                                getString(R.string.text_recruit_fail),
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             }

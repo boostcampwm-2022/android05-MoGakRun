@@ -16,6 +16,10 @@ class PostRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override fun getAllPostFlow(): Flow<List<Post>> {
+        return postDataSource.getAllPostFlow()
+    }
+
     override suspend fun createPost(
         user: User,
         postContent: String,
@@ -27,10 +31,9 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun createRecruitPost(
         authorUid: String,
-        updatedAt: Long,
         groupUid: String
     ): Boolean {
-        return postDataSource.createRecruitPost(authorUid, updatedAt, groupUid)
+        return postDataSource.createRecruitPost(authorUid, groupUid)
     }
 
     override suspend fun deletePost(postId: String): Boolean {
