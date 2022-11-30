@@ -58,4 +58,8 @@ class GroupRepositoryImpl @Inject constructor(
     ): Boolean {
         return groupDataSource.createGroup(groupName, introduce, rules, uid)
     }
+
+    override suspend fun isDuplicatedGroupName(groupName: String): Boolean {
+        return groupDataSource.isDuplicatedGroupName(groupName)
+    }
 }

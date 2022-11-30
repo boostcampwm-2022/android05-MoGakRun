@@ -40,4 +40,6 @@ interface GroupRepository {
         rules: List<String>,
         uid: String
     ): Boolean
+
+    suspend fun isDuplicatedGroupName(groupName: String): Boolean
 }

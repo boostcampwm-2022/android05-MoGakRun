@@ -2,6 +2,7 @@ package com.whyranoid.presentation.community.group.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.whyranoid.domain.usecase.CheckIsDuplicatedGroupNameUseCase
 import com.whyranoid.domain.usecase.CreateGroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateGroupViewModel @Inject constructor(
-    private val createGroupUseCase: CreateGroupUseCase
+    private val createGroupUseCase: CreateGroupUseCase,
+    private val checkIsDuplicatedGroupNameUseCase: CheckIsDuplicatedGroupNameUseCase
 ) : ViewModel() {
 
     val groupName = MutableStateFlow<String?>(null)
@@ -29,6 +31,8 @@ class CreateGroupViewModel @Inject constructor(
 
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow = _eventFlow.asSharedFlow()
+
+    private val isNotDuplicate = MutableStateFlow(false)
 
     fun onOpenDialogClicked() {
         _showDialog.value = true
@@ -43,7 +47,7 @@ class CreateGroupViewModel @Inject constructor(
         _showDialog.value = false
     }
 
-    val isButtonEnable: StateFlow<Boolean>
+    val isDoubleCheckButtonEnable: StateFlow<Boolean>
         get() = groupName.combine(groupIntroduce) { name, introduce ->
             name?.trim()?.isNotEmpty() ?: false && introduce?.trim()?.isNotEmpty() ?: false
         }.stateIn(
@@ -52,8 +56,25 @@ class CreateGroupViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000)
         )
 
-    // TODO 그룹명 중복확인 로직
+    val isGroupCreateButtonEnable: StateFlow<Boolean>
+        get() = combine(
+            isDoubleCheckButtonEnable,
+            isNotDuplicate
+        ) { isDoubleCheckButtonEnable, isNotDuplicate ->
+            isDoubleCheckButtonEnable && isNotDuplicate
+        }.stateIn(
+            scope = viewModelScope,
+            initialValue = false,
+            started = SharingStarted.WhileSubscribed(5000)
+        )
+
     fun onDuplicateCheckButtonClicked() {
+        viewModelScope.launch {
+            val isDuplicatedGroupName =
+                checkIsDuplicatedGroupNameUseCase(groupName.value ?: "")
+            emitEvent(Event.DuplicateCheckButtonClick(isDuplicatedGroupName))
+            isNotDuplicate.value = isDuplicatedGroupName.not()
+        }
     }
 
     fun onAddRuleButtonClicked() {
@@ -73,6 +94,13 @@ class CreateGroupViewModel @Inject constructor(
                         _eventFlow.emit(event)
                     } else {
                         _eventFlow.emit(event.copy(isSuccess = false))
+                    }
+                }
+                is Event.DuplicateCheckButtonClick -> {
+                    if (event.isDuplicatedGroupName) {
+                        _eventFlow.emit(event.copy(isDuplicatedGroupName = true))
+                    } else {
+                        _eventFlow.emit(event)
                     }
                 }
                 is Event.WarningButtonClick -> {

@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:enabled="@{viewModel.isButtonEnable()}"
+            android:enabled="@{viewModel.isDoubleCheckButtonEnable()}"
             android:onClick="@{() -> viewModel.onDuplicateCheckButtonClicked()}"
             android:text="@string/text_duplicate_check"
             app:layout_constraintBottom_toTopOf="@id/time_and_date_picker"

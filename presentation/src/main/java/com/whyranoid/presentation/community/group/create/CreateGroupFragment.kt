@@ -34,12 +34,6 @@ internal class CreateGroupFragment :
                 handleEvent(event)
             }
         }
-
-        viewLifecycleOwner.repeatWhenUiStarted {
-            viewModel.rules.collect {
-                println("테스트 $it")
-            }
-        }
     }
 
     private fun handleEvent(event: Event) {
@@ -58,6 +52,22 @@ internal class CreateGroupFragment :
                         getString(R.string.text_create_group_fail),
                         Snackbar.LENGTH_SHORT
                     ).show()
+                }
+            }
+            is Event.DuplicateCheckButtonClick -> {
+                if (event.isDuplicatedGroupName) {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_duplicated_group_name),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_un_duplicated_group_name),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    binding.etGroupName.isEnabled = false
                 }
             }
             is Event.WarningButtonClick -> {
@@ -106,7 +116,7 @@ internal class CreateGroupFragment :
         }
 
         viewLifecycleOwner.repeatWhenUiStarted {
-            viewModel.isButtonEnable.collect { isEnable ->
+            viewModel.isGroupCreateButtonEnable.collect { isEnable ->
                 if (isEnable) {
                     binding.topAppBar.menu.setGroupVisible(R.id.ready_to_create, true)
                     binding.topAppBar.menu.setGroupVisible(R.id.not_ready_to_create, false)
