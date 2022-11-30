@@ -28,6 +28,10 @@ internal class CommunityFragment :
             // TODO 게시글, 내가 쓴 글 추가 필요
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
+                    CommunityCategory.BOARD.ordinal -> {
+                        binding.topAppBar.inflateMenu(R.menu.community_go_to_create_running_post_menu)
+                    }
+
                     CommunityCategory.MY_GROUP.ordinal -> {
                         binding.topAppBar.inflateMenu(R.menu.my_group_menu)
                     }
@@ -38,6 +42,9 @@ internal class CommunityFragment :
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
                     CommunityCategory.MY_GROUP.ordinal -> {
+                        binding.topAppBar.menu.clear()
+                    }
+                    CommunityCategory.BOARD.ordinal -> {
                         binding.topAppBar.menu.clear()
                     }
                 }
@@ -60,6 +67,14 @@ internal class CommunityFragment :
                     findNavController().navigate(action)
                     true
                 }
+
+                R.id.go_to_create_running_post -> {
+                    val action =
+                        CommunityFragmentDirections.actionCommunityFragmentToSelectRunningHistoryFragment()
+                    findNavController().navigate(action)
+                    true
+                }
+
                 else -> {
                     false
                 }

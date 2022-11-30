@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group
-        android:id="@+id/not_ready_to_create"
+        android:id="@+id/not_ready_to_create_running_post"
         android:visible="false">
         <item
             android:id="@+id/warning_about_create_running_post_button"
@@ -14,7 +14,7 @@
     </group>
 
     <group
-        android:id="@+id/ready_to_create"
+        android:id="@+id/ready_to_create_running_post"
         android:visible="false">
         <item
             android:id="@+id/create_running_post_button"
