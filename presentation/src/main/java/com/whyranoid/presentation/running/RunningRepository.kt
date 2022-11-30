@@ -67,8 +67,9 @@ class RunningRepository @Inject constructor() {
         finishData
     }
 
-    fun setRunningState(runningPosition: RunningPosition) {
+    fun setRunningState(location: Location) {
         if (_runningState.value is RunningState.Running) {
+            val runningPosition = RunningPosition(location.latitude, location.longitude)
             val prevRunningData = _runningState.value.runningData
             val newRunningTime = prevRunningData.runningTime
             val distance = FloatArray(1)
@@ -94,7 +95,8 @@ class RunningRepository @Inject constructor() {
                     runningTime = newRunningTime,
                     totalDistance = newTotalDistance,
                     pace = newPace,
-                    runningPositionList = newRunningPositionList
+                    runningPositionList = newRunningPositionList,
+                    lastLocation = location
                 )
             )
         }
@@ -113,7 +115,8 @@ data class RunningData(
     val runningTime: Int = 0,
     val totalDistance: Double = 0.0,
     val pace: Double = 0.0,
-    val runningPositionList: List<List<RunningPosition>> = listOf(emptyList())
+    val runningPositionList: List<List<RunningPosition>> = listOf(emptyList()),
+    val lastLocation: Location? = null
 )
 
 data class RunningFinishData(
