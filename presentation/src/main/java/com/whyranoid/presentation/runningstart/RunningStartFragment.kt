@@ -51,12 +51,15 @@ internal class RunningStartFragment :
                     RUNNING_FINISH_DATA_KEY
                 )
 
-            // 결과 넘겨주기
-            val direction =
-                RunningStartFragmentDirections.actionRunningStartFragmentToRunningFinish(
-                    runningFinishData
-                )
-            findNavController().navigate(direction)
+            runningFinishData?.let {
+                // 결과 넘겨주기
+                val direction =
+                    RunningStartFragmentDirections.actionRunningStartFragmentToRunningFinish(
+                        runningFinishData
+                    )
+                findNavController().navigate(direction)
+            } ?: Snackbar.make(binding.root, "러닝 도중 에러가 발생했어요! 죄송해요..", Snackbar.LENGTH_SHORT)
+                .show()
         }
     }
 

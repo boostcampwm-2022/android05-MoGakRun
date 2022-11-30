@@ -1,5 +1,6 @@
 package com.whyranoid.presentation.running
 
 sealed interface Event {
-    data class TrackingButtonClick(val mode: TrackingMode) : Event
+    data class FinishButtonClick(val runningFinishData: RunningFinishData) : Event
+    object RunningFinishFailure : Event
 }

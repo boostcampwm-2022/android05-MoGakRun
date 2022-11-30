@@ -107,8 +107,11 @@ class RunningViewModel @Inject constructor(
     }
 
     fun onFinishButtonClicked() {
-        // TODO: 액티비티에 이벤트 알려주기
-        runningDataManager.finishRunning()
+        runningDataManager.finishRunning().onSuccess { runningFinishData ->
+            emitEvent(Event.FinishButtonClick(runningFinishData))
+        }.onFailure {
+            emitEvent(Event.RunningFinishFailure)
+        }
     }
 
     companion object {

@@ -1,5 +1,6 @@
 package com.whyranoid.presentation.running
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.naver.maps.geometry.LatLng
@@ -138,6 +139,15 @@ internal class RunningActivity :
                 }
             }
         }
+
+        repeatWhenUiStarted {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is Event.FinishButtonClick -> handleRunningFinishSuccessState(event.runningFinishData)
+                    is Event.RunningFinishFailure -> handleRunningFinishFailureState()
+                }
+            }
+        }
     }
 
     private fun observeStateOnMapReady() {
@@ -197,6 +207,15 @@ internal class RunningActivity :
                 }
             }
         }
+    }
+
+    private fun handleRunningFinishSuccessState(runningFinishData: RunningFinishData) {
+        setResult(RESULT_OK, Intent().putExtra(RunningViewModel.RUNNING_FINISH_DATA_KEY, runningFinishData))
+        finish()
+    }
+
+    private fun handleRunningFinishFailureState() {
+        finish()
     }
 
     companion object {
