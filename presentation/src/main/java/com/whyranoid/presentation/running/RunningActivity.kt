@@ -136,7 +136,7 @@ internal class RunningActivity :
 
     private fun updatePathsOverlay(runningState: RunningState) {
         runningState.runningData.runningPositionList.let { runningPositionList ->
-            for (index in paths.indices) {
+            for (index in 0 until paths.size.coerceAtMost(runningPositionList.size)) {
                 if (runningState.runningData.runningPositionList[index].size >= 2) {
                     paths[index].coords =
                         runningState.runningData.runningPositionList[index].map { it.toLatLng() }
