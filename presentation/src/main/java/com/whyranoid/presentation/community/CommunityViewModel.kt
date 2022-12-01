@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.usecase.GetMyGroupListUseCase
 import com.whyranoid.domain.usecase.GetPostsUseCase
+import com.whyranoid.domain.usecase.GetUidUseCase
 import com.whyranoid.presentation.model.GroupInfoUiModel
 import com.whyranoid.presentation.model.toGroupInfoUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CommunityViewModel @Inject constructor(
     getMyGroupListUseCase: GetMyGroupListUseCase,
-    getPostsUseCase: GetPostsUseCase
+    getPostsUseCase: GetPostsUseCase,
+    val getMyUseCase: GetUidUseCase
 ) : ViewModel() {
 
     private val _postList = MutableStateFlow<List<Post>>(emptyList())
@@ -48,11 +50,13 @@ class CommunityViewModel @Inject constructor(
     }
 
     init {
-        getMyGroupListUseCase().onEach { groupInfoList ->
-            _myGroupList.value = groupInfoList.map { groupInfo ->
-                groupInfo.toGroupInfoUiModel()
-            }
-        }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            getMyGroupListUseCase().onEach { groupInfoList ->
+                _myGroupList.value = groupInfoList.map { groupInfo ->
+                    groupInfo.toGroupInfoUiModel()
+                }
+            }.launchIn(this)
+        }
 
         getPostsUseCase().onEach { postList ->
             _postList.value = postList

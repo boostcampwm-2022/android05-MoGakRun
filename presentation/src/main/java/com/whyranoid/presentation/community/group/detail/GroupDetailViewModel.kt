@@ -9,6 +9,7 @@ import com.whyranoid.domain.model.StartNotification
 import com.whyranoid.domain.usecase.CreateRecruitPostUseCase
 import com.whyranoid.domain.usecase.GetGroupInfoUseCase
 import com.whyranoid.domain.usecase.GetGroupNotificationsUseCase
+import com.whyranoid.domain.usecase.GetUidUseCase
 import com.whyranoid.presentation.model.GroupInfoUiModel
 import com.whyranoid.presentation.model.toGroupInfoUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,19 +29,18 @@ class GroupDetailViewModel @Inject constructor(
     getGroupInfoUseCase: GetGroupInfoUseCase,
     getGroupNotificationsUseCase: GetGroupNotificationsUseCase,
     private val createRecruitPostUseCase: CreateRecruitPostUseCase,
+    val getUidUseCase: GetUidUseCase,
     stateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val groupId = requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")).groupId
-    private val userId = requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")).leader.name
+    val leaderId =
+        requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")?.leader?.uid)
 
     private var _groupInfo =
         MutableStateFlow(requireNotNull(stateHandle.get<GroupInfoUiModel>("groupInfo")))
     val groupInfo: StateFlow<GroupInfoUiModel>
         get() = _groupInfo.asStateFlow()
-
-    // TODO : 데이터 스토어에 저장된 Uid와 비교해야함.
-    val isLeader = userId == "soopeach"
 
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow: SharedFlow<Event>
@@ -52,13 +52,14 @@ class GroupDetailViewModel @Inject constructor(
 
     init {
 
-        // TODO : uid를 DataStore에서 가져오도록 변경
-        getGroupInfoUseCase("hsjeon", groupId).onEach { groupInfo ->
-            _groupInfo.value = groupInfo.toGroupInfoUiModel()
-        }.launchIn(viewModelScope)
+        viewModelScope.launch {
 
-        // TODO : 그룹 아이디를 프레그먼트에서 받아오도록 변경
-        getGroupNotificationsUseCase("수피치 그룹1").onEach { notifications ->
+            getGroupInfoUseCase(leaderId, groupId).onEach { groupInfo ->
+                _groupInfo.value = groupInfo.toGroupInfoUiModel()
+            }.launchIn(this)
+        }
+
+        getGroupNotificationsUseCase(groupId).onEach { notifications ->
 
             if (notifications.isNotEmpty() && notifications.first() is StartNotification) {
                 startNotification.value = notifications
@@ -85,10 +86,9 @@ class GroupDetailViewModel @Inject constructor(
         emitEvent(Event.ExitGroupButtonClick)
     }
 
-    // TODO : uid는 알아서 가져오도록 변경
     fun onRecruitSnackBarButtonClick() {
         viewModelScope.launch {
-            val isCreateRecruitPostSuccess = createRecruitPostUseCase("hsjeon", groupId)
+            val isCreateRecruitPostSuccess = createRecruitPostUseCase(groupId)
             if (isCreateRecruitPostSuccess) {
                 emitEvent(Event.RecruitSnackBarButtonClick())
             } else {

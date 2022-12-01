@@ -116,7 +116,7 @@
                     android:layout_margin="16dp"
                     android:text="@string/text_recruit"
                     android:onClick="@{() -> viewModel.onRecruitButtonClicked()}"
-                    android:visibility="@{viewModel.isLeader ? View.VISIBLE : View.INVISIBLE}"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_head_count" />
 
@@ -127,7 +127,7 @@
                     android:layout_margin="16dp"
                     android:text="@string/text_exit_group"
                     android:onClick="@{() -> viewModel.onExitGroupButtonClicked()}"
-                    android:visibility="@{viewModel.isLeader ? View.GONE : View.VISIBLE}"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_head_count" />
 

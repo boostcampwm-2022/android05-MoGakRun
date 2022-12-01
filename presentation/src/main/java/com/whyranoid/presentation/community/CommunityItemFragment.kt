@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentCommunityItemBinding
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 internal class CommunityItemFragment :
@@ -39,7 +41,6 @@ internal class CommunityItemFragment :
         // TODO : 카테고리 별 다른 Shimmer Layout 생성
         when (category) {
             CommunityCategory.BOARD -> {
-                // TODO: Adapter 설정
                 setPostAdapter()
             }
             CommunityCategory.MY_GROUP -> {
@@ -70,14 +71,17 @@ internal class CommunityItemFragment :
     }
 
     private fun setPostAdapter() {
-        // TODO uid를 데이터 소스에서 가져오도록 수정
-        val postAdapter = PostAdapter("hsjeon")
-        binding.rvCommunity.adapter = postAdapter
+        viewLifecycleOwner.lifecycleScope.launch {
+            val uid = viewModel.getMyUseCase()
 
-        viewLifecycleOwner.repeatWhenUiStarted {
-            viewModel.postList.collect { postList ->
-                removeShimmer()
-                postAdapter.submitList(postList)
+            val postAdapter = PostAdapter(uid)
+            binding.rvCommunity.adapter = postAdapter
+
+            viewLifecycleOwner.repeatWhenUiStarted {
+                viewModel.postList.collect { postList ->
+                    removeShimmer()
+                    postAdapter.submitList(postList)
+                }
             }
         }
     }

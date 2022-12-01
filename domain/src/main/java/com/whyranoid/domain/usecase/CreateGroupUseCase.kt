@@ -1,13 +1,15 @@
 package com.whyranoid.domain.usecase
 
+import com.whyranoid.domain.repository.AccountRepository
 import com.whyranoid.domain.repository.GroupRepository
 import javax.inject.Inject
 
 class CreateGroupUseCase @Inject constructor(
+    private val accountRepository: AccountRepository,
     private val groupRepository: GroupRepository
 ) {
-    // TODO AccountRepository에서 uid를 가져와야함.
     suspend operator fun invoke(groupName: String, introduce: String, rules: List<String>): Boolean {
-        return groupRepository.createGroup(groupName, introduce, rules = rules, uid = "hsjeon")
+        val uid = accountRepository.getUid()
+        return groupRepository.createGroup(groupName, introduce, rules = rules, uid = uid)
     }
 }

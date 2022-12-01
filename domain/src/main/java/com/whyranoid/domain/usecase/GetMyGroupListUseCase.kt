@@ -10,8 +10,8 @@ class GetMyGroupListUseCase @Inject constructor(
     private val groupRepository: GroupRepository,
     private val accountRepository: AccountRepository
 ) {
-    // TODO accountRepository에서 uid를 받아온 후 동작하도록 수정
-    operator fun invoke(): Flow<List<GroupInfo>> {
-        return groupRepository.getMyGroupListFlow("hsjeon")
+    suspend operator fun invoke(): Flow<List<GroupInfo>> {
+        val uid = accountRepository.getUid()
+        return groupRepository.getMyGroupListFlow(uid)
     }
 }
