@@ -58,13 +58,23 @@ class GroupDataSource @Inject constructor(
 
     suspend fun joinGroup(uid: String, groupId: String): Boolean {
         return suspendCancellableCoroutine { cancellableContinuation ->
-            db.collection(GROUPS_COLLECTION)
-                .document(groupId)
+
+            db.collection(USERS_COLLECTION)
+                .document(uid)
                 .update(
-                    GROUP_MEMBERS_ID,
-                    FieldValue.arrayUnion(uid)
+                    JOINED_GROUP_LIST,
+                    FieldValue.arrayUnion(groupId)
                 ).addOnSuccessListener {
-                    cancellableContinuation.resume(true)
+                    db.collection(GROUPS_COLLECTION)
+                        .document(groupId)
+                        .update(
+                            GROUP_MEMBERS_ID,
+                            FieldValue.arrayUnion(uid)
+                        ).addOnSuccessListener {
+                            cancellableContinuation.resume(true)
+                        }.addOnFailureListener {
+                            cancellableContinuation.resume(false)
+                        }
                 }.addOnFailureListener {
                     cancellableContinuation.resume(false)
                 }
