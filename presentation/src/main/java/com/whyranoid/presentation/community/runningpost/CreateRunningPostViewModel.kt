@@ -36,7 +36,12 @@ class CreateRunningPostViewModel @Inject constructor(
 
     fun createRunningPost() {
         viewModelScope.launch {
-            selectedRunningHistory?.let { createRunningPostUseCase("kjlk", it.toRunningHistory()) }
+            selectedRunningHistory?.let { runningHistory ->
+                createRunningPostUseCase(
+                    runningPostContent.value.toString(),
+                    runningHistory.historyId
+                )
+            }
         }
     }
 

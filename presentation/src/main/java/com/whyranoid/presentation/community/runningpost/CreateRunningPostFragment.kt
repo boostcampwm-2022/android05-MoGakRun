@@ -51,7 +51,7 @@ internal class CreateRunningPostFragment :
                         true
                     }
                     R.id.warning_about_create_running_post_button -> {
-                        Snackbar.make(binding.root, "내용을 1글자 이상 입력하세요", Snackbar.LENGTH_SHORT)
+                        Snackbar.make(binding.root, getString(R.string.community_warning_running_post), Snackbar.LENGTH_SHORT)
                             .show()
                         true
                     }

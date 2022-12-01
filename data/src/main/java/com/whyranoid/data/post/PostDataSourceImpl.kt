@@ -1,6 +1,5 @@
 package com.whyranoid.data.post
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.whyranoid.data.constant.CollectionId
@@ -149,11 +148,11 @@ class PostDataSourceImpl @Inject constructor(
 
     suspend fun createRunningPost(
         authorUid: String,
-        runningHistory: RunningHistory,
+        runningHistoryId: String,
         content: String
     ): Result<Boolean> {
         val postId = UUID.randomUUID().toString()
-        Log.d("createRunningPost: 파이어베이스 성공", "ㅛㅅ")
+
         return runCatching {
             suspendCancellableCoroutine { cancellableContinuation ->
 
@@ -161,17 +160,15 @@ class PostDataSourceImpl @Inject constructor(
                     .document(postId)
                     .set(
                         RunningPostResponse(
-                            postId = "seungmin_post_id",
-                            authorId = "seungmin",
-                            updatedAt = 879696,
-                            runningHistoryId = "asdf",
-                            content = "jkkjkjg"
+                            postId = postId,
+                            authorId = authorUid,
+                            updatedAt = System.currentTimeMillis(),
+                            runningHistoryId = runningHistoryId,
+                            content = content
                         )
                     ).addOnSuccessListener {
-                        Log.d("createRunningPost: 파이어베이스 성공", "ㅛㅅ")
                         cancellableContinuation.resume(true)
                     }.addOnFailureListener {
-                        Log.d("createRunningPost: 파이어베이스 실패", "ㅛㅅ")
                         cancellableContinuation.resume(false)
                     }
             }

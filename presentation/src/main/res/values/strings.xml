@@ -28,6 +28,7 @@
     <string name="community_select_running_history">운동 내역 선택 완료</string>
     <string name="community_select_running_history_snack_bar">운동을 하나 선택해주세요!</string>
     <string name="community_go_to_create_running_post">인증글 생성하러 가기</string>
+    <string name="community_warning_running_post">내용을 1글자 이상 입력하세요</string>
 
     <!-- 마이런 탭 화면 -->
     <string name="my_run_tool_bar_menu_setting">설정</string>

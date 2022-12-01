@@ -1,7 +1,6 @@
 package com.whyranoid.data.post
 
 import com.whyranoid.domain.model.Post
-import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -21,10 +20,10 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun createRunningPost(
         authorUid: String,
-        runningHistory: RunningHistory,
+        runningHistoryId: String,
         content: String
     ): Result<Boolean> {
-        return postDataSourceImpl.createRunningPost(authorUid, runningHistory, content)
+        return postDataSourceImpl.createRunningPost(authorUid, runningHistoryId, content)
     }
 
     override suspend fun createRecruitPost(
