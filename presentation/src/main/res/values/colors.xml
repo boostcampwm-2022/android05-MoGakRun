@@ -5,18 +5,21 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF010101</color>
+    <color name="black">#6d6d6d</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="mogakrun_primary">#F5FFD9</color>
-    <color name="mogakrun_primary_light">#F3F8E9</color>
-    <color name="mogakrun_primary_dark">#c2cca7</color>
-    <color name="mogakrun_on_primary">#6d8f5a</color>
+    <color name="mogakrun_primary">#FFFFFF</color>
+    <color name="mogakrun_primary_light">#FFFFFF</color>
+    <color name="mogakrun_primary_dark">#E6E4DD</color>
+    <color name="mogakrun_on_primary">#60AD73</color>
 
-    <color name="mogakrun_secondary">#9cbf87</color>
-    <color name="mogakrun_secondary_light">#cdf2b7</color>
-    <color name="mogakrun_secondary_dark">#6d8f5a</color>
-    <color name="mogakrun_on_secondary">#f5ffd9</color>
+    <color name="mogakrun_secondary">#FFF3D0</color>
+    <color name="mogakrun_secondary_light">#FFF9DA</color>
+    <color name="mogakrun_secondary_dark">#FDEDBB</color>
+    <color name="mogakrun_on_secondary">#787878</color>
+
+    <color name="mogakrun_background">#F3F2ED</color>
+    <color name="mogakrun_onBackground">#6d6d6d</color>
 
     <color name="mogakrun_bottom_navigation_menu_grey">#666666</color>
     <color name="gray">#cccccc</color>

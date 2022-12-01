@@ -11,7 +11,12 @@
         <item name="colorOnSecondary">@color/mogakrun_on_secondary</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <!-- TabLayout color. -->
+        <item name="tabSelectedTextColor">@color/mogakrun_on_primary</item>
+        <!-- Base color. -->
+        <item name="android:windowBackground">@color/mogakrun_background</item>
+        <item name="android:textColor">@color/mogakrun_onBackground</item>
+        <item name="colorOnSurface">@color/mogakrun_onBackground</item>
     </style>
 
     <style name="Theme.MoGakRun.Splash" parent="Theme.SplashScreen">
