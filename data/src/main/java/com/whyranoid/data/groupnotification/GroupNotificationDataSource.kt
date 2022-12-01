@@ -86,7 +86,6 @@ class GroupNotificationDataSource @Inject constructor(
                     .document(UUID.randomUUID().toString())
                     .set(
                         FinishNotificationResponse(
-                            type = "finish",
                             uid = uid,
                             historyId = runningHistory.historyId
                         )
