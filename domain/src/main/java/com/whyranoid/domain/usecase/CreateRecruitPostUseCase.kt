@@ -8,11 +8,10 @@ class CreateRecruitPostUseCase @Inject constructor(
     private val postRepository: PostRepository,
     private val accountRepository: AccountRepository
 ) {
-    // TODO : accountRepository에서 User를 가져오도록 수정
     suspend operator fun invoke(
-        authorUid: String,
         groupUid: String
     ): Boolean {
-        return postRepository.createRecruitPost(authorUid, groupUid)
+        val uid = accountRepository.getUid()
+        return postRepository.createRecruitPost(uid, groupUid)
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
@@ -12,6 +13,7 @@ import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentGroupDetailBinding
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 internal class GroupDetailFragment :
@@ -30,38 +32,46 @@ internal class GroupDetailFragment :
     }
 
     private fun setupMenu() {
-        with(binding.topAppBar) {
-            // TODO : uid를 DataStore에서 가져올 수 있도록 변경
-            if (viewModel.isLeader) inflateMenu(R.menu.group_detail_menu)
+        viewLifecycleOwner.lifecycleScope.launch {
+            with(binding.topAppBar) {
+                val myUid = viewModel.getUidUseCase()
 
-            setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.setting_group -> {
-                        // TODO : BottomSheetDialog Material Theme 적용
-                        val dialog = GroupSettingDialog(
-                            // TODO : 그룹 수정으로 이동
-                            onEditButtonClickListener = {
-                                val action =
-                                    GroupDetailFragmentDirections.actionGroupDetailFragmentToEditGroupFragment(
-                                        groupDetailArgs.groupInfo
-                                    )
-                                findNavController().navigate(action)
-                            },
-                            // TODO : 그룹 삭제
-                            onDeleteButtonClickListener = {
-                                Toast.makeText(context, "그룹 삭제하기", Toast.LENGTH_SHORT).show()
-                            }
-                        )
+                if (viewModel.leaderId == myUid) {
+                    inflateMenu(R.menu.group_detail_menu)
+                    binding.btnRecruit.visibility = View.VISIBLE
+                } else {
+                    binding.btnExitGroup.visibility = View.VISIBLE
+                }
 
-                        dialog.show(
-                            requireActivity().supportFragmentManager,
-                            GroupSettingDialog.TAG
-                        )
+                setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.setting_group -> {
+                            // TODO : BottomSheetDialog Material Theme 적용
+                            val dialog = GroupSettingDialog(
+                                // TODO : 그룹 수정으로 이동
+                                onEditButtonClickListener = {
+                                    val action =
+                                        GroupDetailFragmentDirections.actionGroupDetailFragmentToEditGroupFragment(
+                                            groupDetailArgs.groupInfo
+                                        )
+                                    findNavController().navigate(action)
+                                },
+                                // TODO : 그룹 삭제
+                                onDeleteButtonClickListener = {
+                                    Toast.makeText(context, "그룹 삭제하기", Toast.LENGTH_SHORT).show()
+                                }
+                            )
 
-                        true
-                    }
-                    else -> {
-                        false
+                            dialog.show(
+                                requireActivity().supportFragmentManager,
+                                GroupSettingDialog.TAG
+                            )
+
+                            true
+                        }
+                        else -> {
+                            false
+                        }
                     }
                 }
             }
@@ -114,14 +124,16 @@ internal class GroupDetailFragment :
         binding.viewModel = viewModel
     }
 
-    // TODO : uid를 DataStore에서 가져올 수 있도록 변경
     private fun setNotificationAdapter() {
-        val notificationAdapter = GroupNotificationAdapter("hsjeon")
+        viewLifecycleOwner.lifecycleScope.launch {
+            val uid = viewModel.getUidUseCase()
+            val notificationAdapter = GroupNotificationAdapter(uid)
 
-        binding.notificationRecyclerView.adapter = notificationAdapter
-        viewLifecycleOwner.repeatWhenUiStarted {
-            viewModel.mergedNotifications.collect { notifications ->
-                notificationAdapter.submitList(notifications)
+            binding.notificationRecyclerView.adapter = notificationAdapter
+            viewLifecycleOwner.repeatWhenUiStarted {
+                viewModel.mergedNotifications.collect { notifications ->
+                    notificationAdapter.submitList(notifications)
+                }
             }
         }
     }
