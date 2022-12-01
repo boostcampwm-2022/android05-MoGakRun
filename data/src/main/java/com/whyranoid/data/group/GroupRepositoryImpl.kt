@@ -5,6 +5,7 @@ import com.whyranoid.data.user.UserDataSource
 import com.whyranoid.domain.model.GroupInfo
 import com.whyranoid.domain.model.GroupNotification
 import com.whyranoid.domain.model.Rule
+import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.repository.GroupRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -48,6 +49,14 @@ class GroupRepositoryImpl @Inject constructor(
 
     override suspend fun notifyRunningStart(uid: String, groupIdList: List<String>) {
         groupNotificationDataSource.notifyRunningStart(uid, groupIdList)
+    }
+
+    override suspend fun notifyRunningFinish(
+        uid: String,
+        runningHistory: RunningHistory,
+        groupIdList: List<String>
+    ) {
+        groupNotificationDataSource.notifyRunningFinish(uid, runningHistory, groupIdList)
     }
 
     override suspend fun createGroup(

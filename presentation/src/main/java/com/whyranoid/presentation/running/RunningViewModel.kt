@@ -10,7 +10,9 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import com.whyranoid.domain.usecase.FinishRunningUseCase
 import com.whyranoid.domain.usecase.StartRunningUseCase
+import com.whyranoid.presentation.model.toRunningHistory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,6 +26,7 @@ import javax.inject.Inject
 class RunningViewModel @Inject constructor(
     @ApplicationContext context: Context,
     startRunningUseCase: StartRunningUseCase,
+    private val finishRunningUseCase: FinishRunningUseCase,
     private val runningDataManager: RunningDataManager
 ) : ViewModel() {
 
@@ -108,6 +111,9 @@ class RunningViewModel @Inject constructor(
 
     fun onFinishButtonClicked() {
         runningDataManager.finishRunning().onSuccess { runningFinishData ->
+            viewModelScope.launch {
+                finishRunningUseCase(runningFinishData.runningHistory.toRunningHistory())
+            }
             emitEvent(Event.FinishButtonClick(runningFinishData))
         }.onFailure {
             emitEvent(Event.RunningFinishFailure)

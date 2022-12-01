@@ -73,6 +73,28 @@ class GroupNotificationDataSource @Inject constructor(
         }
     }
 
+    suspend fun notifyRunningFinish(
+        uid: String,
+        runningHistory: RunningHistory,
+        groupIdList: List<String>
+    ) {
+        withContext(Dispatchers.IO) {
+            groupIdList.forEach { groupId ->
+                db.collection(GROUP_NOTIFICATIONS_COLLECTION)
+                    .document(groupId)
+                    .collection(FINISH_NOTIFICATION)
+                    .document(UUID.randomUUID().toString())
+                    .set(
+                        FinishNotificationResponse(
+                            type = "finish",
+                            uid = uid,
+                            historyId = runningHistory.historyId
+                        )
+                    )
+            }
+        }
+    }
+
     private fun getGroupFinishNotifications(groupId: String): Flow<List<GroupNotification>> =
         callbackFlow {
             db.collection(GROUP_NOTIFICATIONS_COLLECTION)

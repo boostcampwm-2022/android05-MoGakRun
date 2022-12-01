@@ -24,3 +24,14 @@ fun RunningHistory.toRunningHistoryUiModel(): RunningHistoryUiModel {
         pace = pace
     )
 }
+
+fun RunningHistoryUiModel.toRunningHistory(): RunningHistory {
+    return RunningHistory(
+        historyId = historyId,
+        startedAt = startedAt,
+        finishedAt = finishedAt,
+        totalRunningTime = totalRunningTime,
+        pace = pace,
+        totalDistance = totalDistance
+    )
+}
