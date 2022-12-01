@@ -91,7 +91,7 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
                     }
                     is UiState.Loading -> {
                     }
-                    is UiState.Success<List<RunningHistoryUiModel>> -> initRecyclerView(
+                    is UiState.Success<List<RunningHistoryUiModel>> -> handleRunningHistorySuccessState(
                         runningHistoryListState.value
                     )
 
@@ -102,7 +102,7 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
         }
     }
 
-    private fun initRecyclerView(runningHistoryList: List<RunningHistoryUiModel>) {
+    private fun handleRunningHistorySuccessState(runningHistoryList: List<RunningHistoryUiModel>) {
         runningHistoryAdapter.submitList(runningHistoryList)
     }
 

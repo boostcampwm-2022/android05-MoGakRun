@@ -39,6 +39,8 @@ class CommunityRunningHistoryViewHolder(
     fun bind(runningHistory: RunningHistoryUiModel) {
         // 아이템이 선택된 개체인지 확인
 
+        binding.runningHistory = runningHistory
+
         binding.root.setBackgroundColor(Color.TRANSPARENT)
 
         binding.root.setOnClickListener {
