@@ -40,7 +40,7 @@ class CommunityViewModel @Inject constructor(
         get() = _eventFlow.asSharedFlow()
 
     fun onCategoryItemClicked(groupInfo: GroupInfoUiModel) {
-        emitEvent(Event.CategoryItemClick(groupInfo))
+        emitEvent(Event.GroupItemClick(groupInfo))
     }
 
     private fun emitEvent(event: Event) {
@@ -59,7 +59,9 @@ class CommunityViewModel @Inject constructor(
         }
 
         getPostsUseCase().onEach { postList ->
-            _postList.value = postList
+            _postList.value = postList.sortedByDescending { post ->
+                post.updatedAt
+            }
         }.launchIn(viewModelScope)
     }
 }

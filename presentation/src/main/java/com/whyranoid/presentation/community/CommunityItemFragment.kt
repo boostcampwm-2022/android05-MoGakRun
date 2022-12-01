@@ -62,7 +62,7 @@ internal class CommunityItemFragment :
 
     private fun handleEvent(event: Event) {
         when (event) {
-            is Event.CategoryItemClick -> {
+            is Event.GroupItemClick -> {
                 val action =
                     CommunityFragmentDirections.actionCommunityFragmentToGroupDetailFragment(event.groupInfo)
                 findNavController().navigate(action)
