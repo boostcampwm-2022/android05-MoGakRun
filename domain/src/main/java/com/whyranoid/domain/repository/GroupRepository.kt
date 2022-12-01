@@ -3,6 +3,7 @@ package com.whyranoid.domain.repository
 import com.whyranoid.domain.model.GroupInfo
 import com.whyranoid.domain.model.GroupNotification
 import com.whyranoid.domain.model.Rule
+import com.whyranoid.domain.model.RunningHistory
 import kotlinx.coroutines.flow.Flow
 
 interface GroupRepository {
@@ -32,6 +33,12 @@ interface GroupRepository {
     fun getGroupNotifications(groupId: String): Flow<List<GroupNotification>>
 
     suspend fun notifyRunningStart(uid: String, groupIdList: List<String>)
+
+    suspend fun notifyRunningFinish(
+        uid: String,
+        runningHistory: RunningHistory,
+        groupIdList: List<String>
+    )
 
     // 그룹 생성하기
     suspend fun createGroup(

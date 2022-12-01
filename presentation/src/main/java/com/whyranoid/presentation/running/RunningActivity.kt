@@ -1,7 +1,12 @@
 package com.whyranoid.presentation.running
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.LocationSource
+import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -13,17 +18,20 @@ import com.whyranoid.presentation.databinding.ActivityRunningBinding
 import com.whyranoid.presentation.util.dateToString
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Date
+import java.util.*
 
 @AndroidEntryPoint
 internal class RunningActivity :
-    BaseActivity<ActivityRunningBinding>(R.layout.activity_running), OnMapReadyCallback {
+    BaseActivity<ActivityRunningBinding>(R.layout.activity_running),
+    OnMapReadyCallback,
+    LocationSource {
 
     private val viewModel: RunningViewModel by viewModels()
 
     private lateinit var mapView: MapView
     private lateinit var naverMap: NaverMap
     private lateinit var paths: MutableList<PathOverlay>
+    private var listener: LocationSource.OnLocationChangedListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,14 +44,24 @@ internal class RunningActivity :
         this.naverMap = naverMap
 
         with(naverMap) {
+            locationSource = this@RunningActivity
             maxZoom = MAP_MAX_ZOOM
             minZoom = MAP_MIN_ZOOM
-            uiSettings.isLocationButtonEnabled = false
+            uiSettings.isCompassEnabled = false
             uiSettings.isZoomControlEnabled = false
+            uiSettings.isLocationButtonEnabled = false
+            uiSettings.setLogoMargin(0, 0, 0, -10)
             locationOverlay.isVisible = true
             locationOverlay.icon = OverlayImage.fromResource(R.drawable.kong)
             locationOverlay.iconWidth = MAP_ICON_SIZE
             locationOverlay.iconHeight = MAP_ICON_SIZE
+        }
+
+        observeStateOnMapReady()
+        naverMap.addOnCameraChangeListener { reason, animated ->
+            if (reason == CameraUpdate.REASON_GESTURE) {
+                viewModel.onTrackingCanceledByGesture()
+            }
         }
 
         paths = mutableListOf()
@@ -68,8 +86,8 @@ internal class RunningActivity :
     }
 
     override fun onPause() {
-        super.onPause()
         mapView.onPause()
+        super.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -78,18 +96,26 @@ internal class RunningActivity :
     }
 
     override fun onStop() {
-        super.onStop()
         mapView.onStop()
+        super.onStop()
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         mapView.onDestroy()
+        super.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
+    }
+
+    override fun activate(listener: LocationSource.OnLocationChangedListener) {
+        this.listener = listener
+    }
+
+    override fun deactivate() {
+        this.listener = null
     }
 
     private fun initViews(savedInstanceState: Bundle?) {
@@ -113,6 +139,35 @@ internal class RunningActivity :
                 }
             }
         }
+
+        repeatWhenUiStarted {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is Event.FinishButtonClick -> handleRunningFinishSuccessState(event.runningFinishData)
+                    is Event.RunningFinishFailure -> handleRunningFinishFailureState()
+                }
+            }
+        }
+    }
+
+    private fun observeStateOnMapReady() {
+        repeatWhenUiStarted {
+            viewModel.trackingModeState.collect { trackingMode ->
+                when (trackingMode) {
+                    TrackingMode.NONE -> {
+                        naverMap.locationTrackingMode = LocationTrackingMode.NoFollow
+                    }
+                    TrackingMode.NO_FOLLOW -> {
+                        viewModel.runningState.value.runningData.lastLocation?.let { location ->
+                            naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(location)))
+                        }
+                    }
+                    TrackingMode.FOLLOW -> {
+                        naverMap.locationTrackingMode = LocationTrackingMode.Follow
+                    }
+                }
+            }
+        }
     }
 
     private fun provideMogakrunPath(): PathOverlay {
@@ -129,22 +184,43 @@ internal class RunningActivity :
     }
 
     private fun updateRunnerPosition(runningState: RunningState) {
-        runningState.runningData.runningPositionList.last().lastOrNull()?.let {
-            naverMap.locationOverlay.position = it.toLatLng()
+        runningState.runningData.lastLocation?.let { location ->
+            listener?.onLocationChanged(location) ?: run {
+                naverMap.let {
+                    val locationOverlay = it.locationOverlay
+                    locationOverlay.isVisible = true
+                    locationOverlay.position = LatLng(location)
+                    locationOverlay.bearing = (locationOverlay.bearing + 30) % 360
+                    locationOverlay.circleRadius = 100
+                }
+            }
         }
     }
 
     private fun updatePathsOverlay(runningState: RunningState) {
-        if (runningState.runningData.runningPositionList.last().size >= 2) {
-            paths.last().coords =
-                runningState.runningData.runningPositionList.last().map { it.toLatLng() }
-            paths.last().map = naverMap
+        runningState.runningData.runningPositionList.let { runningPositionList ->
+            for (index in 0 until paths.size.coerceAtMost(runningPositionList.size)) {
+                if (runningState.runningData.runningPositionList[index].size >= 2) {
+                    paths[index].coords =
+                        runningState.runningData.runningPositionList[index].map { it.toLatLng() }
+                    paths[index].map = naverMap
+                }
+            }
         }
+    }
+
+    private fun handleRunningFinishSuccessState(runningFinishData: RunningFinishData) {
+        setResult(RESULT_OK, Intent().putExtra(RunningViewModel.RUNNING_FINISH_DATA_KEY, runningFinishData))
+        finish()
+    }
+
+    private fun handleRunningFinishFailureState() {
+        finish()
     }
 
     companion object {
         const val MAP_MAX_ZOOM = 18.0
         const val MAP_MIN_ZOOM = 10.0
-        const val MAP_ICON_SIZE = 80
+        const val MAP_ICON_SIZE = 50
     }
 }

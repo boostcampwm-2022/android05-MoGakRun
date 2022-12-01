@@ -1,4 +1,4 @@
-package com.whyranoid.data.account
+package com.whyranoid.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

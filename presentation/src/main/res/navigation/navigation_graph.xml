@@ -23,7 +23,11 @@
         android:id="@+id/runningStartFragment"
         android:name="com.whyranoid.presentation.runningstart.RunningStartFragment"
         android:label="RunningStartFragment"
-        tools:layout="@layout/fragment_running_start"/>
+        tools:layout="@layout/fragment_running_start">
+        <action
+            android:id="@+id/action_runningStartFragment_to_runningFinish"
+            app:destination="@id/runningFinishFragment" />
+    </fragment>
     <fragment
         android:id="@+id/communityFragment"
         android:name="com.whyranoid.presentation.community.CommunityFragment"
@@ -82,6 +86,14 @@
         <argument
             android:name="selectedRunningHistory"
             app:argType="com.whyranoid.presentation.model.RunningHistoryUiModel" />
+    </fragment>
+    <fragment
+        android:id="@+id/runningFinishFragment"
+        android:name="com.whyranoid.presentation.runningfinish.RunningFinishFragment">
+        <argument
+            android:name="runningFinishData"
+            app:argType="com.whyranoid.presentation.running.RunningFinishData"
+            app:nullable="true" />
     </fragment>
 
 </navigation>

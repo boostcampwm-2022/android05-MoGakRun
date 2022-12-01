@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="@{runningHistory.date}"
+            android:text="@{Long.toString(runningHistory.date)}"
             tools:text="2022/09/11" />
 
         <TextView
@@ -37,7 +37,7 @@
             android:id="@+id/tv_total_running_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{runningHistory.totalRunningTime}"
+            android:text="@{Integer.toString(runningHistory.totalRunningTime)}"
             app:layout_constraintBottom_toBottomOf="@id/tv_label_total_running_time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_label_total_running_time"
@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="17:00"
-            android:text="@{runningHistory.startedAt}"
+            android:text="@{Long.toString(runningHistory.startedAt)}"
             app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
             app:layout_constraintBottom_toBottomOf="@id/view_horizontal_partition_line"
             android:layout_marginEnd="50dp"
@@ -98,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="19:22"
-            android:text="@{runningHistory.finishedAt}"
+            android:text="@{Long.toString(runningHistory.finishedAt)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/view_horizontal_partition_line"
             android:layout_marginEnd="50dp"
@@ -116,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="11.7km"
-            android:text="@{runningHistory.totalDistance}"
+            android:text="@{Double.toString(runningHistory.totalDistance)}"
             app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
             app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line"
             android:layout_marginTop="24dp"
@@ -135,12 +135,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="6.3km/h"
-            android:text="@{runningHistory.pace}"
+            android:text="@{Double.toString(runningHistory.pace)}"
             app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="50dp" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

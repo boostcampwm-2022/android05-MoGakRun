@@ -10,9 +10,15 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import com.whyranoid.domain.usecase.FinishRunningUseCase
 import com.whyranoid.domain.usecase.StartRunningUseCase
+import com.whyranoid.presentation.model.toRunningHistory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,18 +26,25 @@ import javax.inject.Inject
 class RunningViewModel @Inject constructor(
     @ApplicationContext context: Context,
     startRunningUseCase: StartRunningUseCase,
-    private val runningRepository: RunningRepository
+    private val finishRunningUseCase: FinishRunningUseCase,
+    private val runningDataManager: RunningDataManager
 ) : ViewModel() {
 
-    val runningState = runningRepository.runningState
+    val runningState = runningDataManager.runningState
+
+    private val _trackingModeState = MutableStateFlow(TrackingMode.FOLLOW)
+    val trackingModeState get() = _trackingModeState.asStateFlow()
+
+    private val _eventFlow = MutableSharedFlow<Event>()
+    val eventFlow get() = _eventFlow.asSharedFlow()
 
     init {
-        startRunningWorker(context)
-        if (runningRepository.runningState.value is RunningState.NotRunning) {
+        if (runningDataManager.runningState.value is RunningState.NotRunning) {
             viewModelScope.launch {
                 startRunningUseCase()
             }
         }
+        startRunningWorker(context)
     }
 
     private fun startRunningWorker(context: Context): LiveData<WorkInfo> {
@@ -57,23 +70,57 @@ class RunningViewModel @Inject constructor(
     }
 
     fun onCheckingPauseOrResume() {
-        when (runningRepository.runningState.value) {
+        when (runningDataManager.runningState.value) {
             is RunningState.Running -> onPauseButtonClicked()
             is RunningState.Paused -> onResumeButtonClicked()
             else -> return
         }
     }
 
+    fun onTrackingButtonClicked() {
+        when (trackingModeState.value) {
+            TrackingMode.NONE -> {
+                _trackingModeState.value = TrackingMode.NO_FOLLOW
+            }
+            TrackingMode.NO_FOLLOW -> {
+                _trackingModeState.value = TrackingMode.FOLLOW
+            }
+            TrackingMode.FOLLOW -> {
+                _trackingModeState.value = TrackingMode.NONE
+            }
+        }
+    }
+
+    fun onTrackingCanceledByGesture() {
+        _trackingModeState.value = TrackingMode.NONE
+    }
+
     private fun onPauseButtonClicked() {
-        runningRepository.pauseRunning()
+        runningDataManager.pauseRunning()
     }
 
     private fun onResumeButtonClicked() {
-        runningRepository.resumeRunning()
+        runningDataManager.resumeRunning()
+    }
+
+    private fun emitEvent(event: Event) {
+        viewModelScope.launch {
+            _eventFlow.emit(event)
+        }
     }
 
     fun onFinishButtonClicked() {
-        // TODO: 액티비티에 이벤트 알려주기
-        runningRepository.finishRunning()
+        runningDataManager.finishRunning().onSuccess { runningFinishData ->
+            viewModelScope.launch {
+                finishRunningUseCase(runningFinishData.runningHistory.toRunningHistory())
+            }
+            emitEvent(Event.FinishButtonClick(runningFinishData))
+        }.onFailure {
+            emitEvent(Event.RunningFinishFailure)
+        }
+    }
+
+    companion object {
+        const val RUNNING_FINISH_DATA_KEY = "runningFinishData"
     }
 }

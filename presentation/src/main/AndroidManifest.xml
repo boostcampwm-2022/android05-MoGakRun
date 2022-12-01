@@ -21,6 +21,10 @@
             <meta-data  android:name="com.whyranoid.presentation.running.WorkManagerInitializer"
                 android:value="androidx.startup" />
         </provider>
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="location"
+            tools:node="merge" />
     </application>
 
 </manifest>

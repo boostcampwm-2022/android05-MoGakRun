@@ -1,15 +1,15 @@
 package com.whyranoid.presentation.running
 
 import android.location.Location
-import com.whyranoid.domain.model.RunningHistory
+import com.whyranoid.presentation.model.RunningHistoryUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RunningRepository @Inject constructor() {
+class RunningDataManager @Inject constructor() {
     private var _runningState = MutableStateFlow<RunningState>(
         RunningState.NotRunning()
     )
@@ -67,8 +67,9 @@ class RunningRepository @Inject constructor() {
         finishData
     }
 
-    fun setRunningState(runningPosition: RunningPosition) {
+    fun setRunningState(location: Location) {
         if (_runningState.value is RunningState.Running) {
+            val runningPosition = RunningPosition(location.latitude, location.longitude)
             val prevRunningData = _runningState.value.runningData
             val newRunningTime = prevRunningData.runningTime
             val distance = FloatArray(1)
@@ -94,7 +95,8 @@ class RunningRepository @Inject constructor() {
                     runningTime = newRunningTime,
                     totalDistance = newTotalDistance,
                     pace = newPace,
-                    runningPositionList = newRunningPositionList
+                    runningPositionList = newRunningPositionList,
+                    lastLocation = location
                 )
             )
         }
@@ -113,13 +115,14 @@ data class RunningData(
     val runningTime: Int = 0,
     val totalDistance: Double = 0.0,
     val pace: Double = 0.0,
-    val runningPositionList: List<List<RunningPosition>> = listOf(emptyList())
+    val runningPositionList: List<List<RunningPosition>> = listOf(emptyList()),
+    val lastLocation: Location? = null
 )
 
 data class RunningFinishData(
-    val runningHistory: RunningHistory,
+    val runningHistory: RunningHistoryUiModel,
     val runningPositionList: List<List<RunningPosition>>
-)
+) : java.io.Serializable
 
 sealed interface RunningState {
     val runningData: RunningData
@@ -133,8 +136,9 @@ sealed interface RunningState {
 
 fun RunningData.toRunningFinishData() =
     RunningFinishData(
-        RunningHistory(
+        RunningHistoryUiModel(
             historyId = UUID.randomUUID().toString(),
+            date = startTime,
             startedAt = startTime,
             finishedAt = System.currentTimeMillis(),
             totalRunningTime = runningTime,

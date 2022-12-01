@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.whyranoid.presentation.runningfinish.RunningFinishViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/top_app_bar"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/running_finish_tool_bar"
+                app:titleCentered="true" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/running_history_item"
+            app:layout_constraintTop_toBottomOf="@id/tool_bar">
+
+            <fragment xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/map_fragment"
+                android:name="com.naver.maps.map.MapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:navermap_compassEnabled="false"
+                app:navermap_locationButtonEnabled="false"
+                app:navermap_rotateGesturesEnabled="false"
+                app:navermap_scrollGesturesEnabled="false"
+                app:navermap_stopGesturesEnabled="false"
+                app:navermap_tiltGesturesEnabled="false"
+                app:navermap_zoomControlEnabled="false"
+                app:navermap_zoomGesturesEnabled="false" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/running_history_item"
+            layout="@layout/item_running_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/btn_positive" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_positive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:onClick="@{() -> vm.onPositiveButtonClicked()}"
+            android:text="@string/running_finish_positive_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_negative"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_negative"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:onClick="@{() -> vm.onNegativeButtonClicked()}"
+            android:text="@string/running_finish_negative_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_positive" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -13,6 +13,6 @@ class RunnerRepositoryImpl(private val runnerDataSource: RunnerDataSource) : Run
     }
 
     override suspend fun finishRunning(uid: String): Boolean {
-        return true
+        return runnerDataSource.finishRunning(uid)
     }
 }

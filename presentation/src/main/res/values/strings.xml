@@ -85,15 +85,22 @@
 
     <!-- 러닝 화면 -->
     <string name="running_pause_or_resume">일시정지/재개</string>
+    <string name="running_total_time">운동시간</string>
     <string name="running_finish">정지</string>
     <string name="running_notification_content">모여서 각자 러닝 중!</string>
     <string name="running_notification_id">모각런</string>
     <string name="running_notification_title">달려~ 달려~</string>
     <string name="running_channel_name">활동 추적</string>
     <string name="running_channel_description">달리기 활동을 추적하는 알림 채널입니다.</string>
+    <string name="running_map_location_button">🎯</string>
     <string name="text_join_group">그룹 가입하기</string>
     <string name="text_duplicated_group_name">중복된 그룹 이름입니다. 변경해주세요!</string>
     <string name="text_un_duplicated_group_name">사용 가능한 그룹 이름입니다!</string>
     <string name="text_like_count">좋아요 %d개</string>
+
+    <!--라닝 종료 화면-->
+    <string name="running_finish_tool_bar">러닝 종료</string>
+    <string name="running_finish_positive_btn">자랑할래요</string>
+    <string name="running_finish_negative_btn">괜찮아요</string>
 
 </resources>

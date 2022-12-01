@@ -1,6 +1,7 @@
 package com.whyranoid.presentation.runningstart
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -9,12 +10,16 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentRunningStartBinding
 import com.whyranoid.presentation.running.RunningActivity
+import com.whyranoid.presentation.running.RunningFinishData
+import com.whyranoid.presentation.running.RunningViewModel.Companion.RUNNING_FINISH_DATA_KEY
+import com.whyranoid.presentation.util.getSerializableData
 import com.whyranoid.presentation.util.gpsstate.GPSState
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,13 +28,38 @@ import dagger.hilt.android.AndroidEntryPoint
 internal class RunningStartFragment :
     BaseFragment<FragmentRunningStartBinding>(R.layout.fragment_running_start) {
 
+    // 위치 권한 요청
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            startActivity(Intent(requireContext(), RunningActivity::class.java))
+            runningActivityLauncher.launch(Intent(requireContext(), RunningActivity::class.java))
         } else {
             showPermissionRequestDialog()
+        }
+    }
+
+    // Running Activity 로 이동 런쳐(운동 결과를 받고 종료 화면으로 이동)
+    private val runningActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { activityResult ->
+        if (activityResult.resultCode == Activity.RESULT_OK) {
+
+            // 결과 받아오기
+            val runningFinishData =
+                activityResult.data?.getSerializableData<RunningFinishData>(
+                    RUNNING_FINISH_DATA_KEY
+                )
+
+            runningFinishData?.let {
+                // 결과 넘겨주기
+                val direction =
+                    RunningStartFragmentDirections.actionRunningStartFragmentToRunningFinish(
+                        runningFinishData
+                    )
+                findNavController().navigate(direction)
+            } ?: Snackbar.make(binding.root, "러닝 도중 에러가 발생했어요! 죄송해요..", Snackbar.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -39,13 +69,17 @@ internal class RunningStartFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
 
-        repeatWhenUiStarted {
+        observeState()
+    }
+
+    private fun observeState() {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.runnerCount.collect { runnerCount ->
                 binding.tvRunnerCountNumber.text = runnerCount.toString()
             }
         }
 
-        repeatWhenUiStarted {
+        viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.eventFlow.collect { event ->
                 handleEvent(event)
             }
@@ -70,7 +104,12 @@ internal class RunningStartFragment :
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
-                startActivity(Intent(requireContext(), RunningActivity::class.java))
+                runningActivityLauncher.launch(
+                    Intent(
+                        requireContext(),
+                        RunningActivity::class.java
+                    )
+                )
             }
             shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
                 // 다이얼로그 띄우기, 거부된 상태
