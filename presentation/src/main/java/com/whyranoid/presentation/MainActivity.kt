@@ -1,6 +1,7 @@
 package com.whyranoid.presentation
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -21,6 +22,15 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.communityFragment, R.id.runningStartFragment, R.id.myRunFragment ->
+                    binding.bottomNavigation.visibility = View.VISIBLE
+
+                else -> binding.bottomNavigation.visibility = View.GONE
+            }
+        }
 
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
     }
