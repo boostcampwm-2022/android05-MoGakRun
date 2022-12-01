@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="runningPost"
+            type="com.whyranoid.domain.model.RunningPost" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_leader_profile"
+            loadImage="@{runningPost.author.profileUrl}"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_leader_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@{runningPost.author.name}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_leader_profile"
+            app:layout_constraintStart_toEndOf="@id/iv_leader_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="수피치" />
+
+        <TextView
+            android:id="@+id/tv_running_history_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@{runningPost.runningHistory.historyId}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_leader_profile"
+            tools:text="2022/09/11" />
+
+        <TextView
+            android:id="@+id/tv_label_total_running_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="@string/running_history_label_total_running_time"
+            app:layout_constraintBottom_toBottomOf="@id/tv_running_history_date"
+            app:layout_constraintEnd_toStartOf="@id/tv_total_running_time"
+            app:layout_constraintTop_toTopOf="@id/tv_running_history_date" />
+
+        <TextView
+            android:id="@+id/tv_total_running_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{Integer.toString(runningPost.runningHistory.totalRunningTime)}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_label_total_running_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_label_total_running_time"
+            tools:text="2시간 22분" />
+
+        <View
+            android:id="@+id/view_vertical_partition_line"
+            android:layout_width="1dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_label_total_running_time" />
+
+        <View
+            android:id="@+id/view_horizontal_partition_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/view_vertical_partition_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_vertical_partition_line" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/running_history_label_start_running_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_running_history_date" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="20dp"
+            app:LongToTime="@{runningPost.runningHistory.startedAt}"
+            app:layout_constraintBottom_toBottomOf="@id/view_horizontal_partition_line"
+            app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
+            tools:text="17:00" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/running_history_label_finish_running_time"
+            app:layout_constraintStart_toStartOf="@id/view_vertical_partition_line"
+            app:layout_constraintTop_toBottomOf="@id/tv_running_history_date" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="20dp"
+            app:LongToTime="@{runningPost.runningHistory.finishedAt}"
+            app:layout_constraintBottom_toBottomOf="@id/view_horizontal_partition_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="19:22" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/running_history_label_running_distance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="50dp"
+            android:text="@{Double.toString(runningPost.runningHistory.totalDistance)}"
+            app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
+            app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line"
+            tools:text="11.7km" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/running_history_label_running_pace"
+            app:layout_constraintStart_toStartOf="@id/view_vertical_partition_line"
+            app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="50dp"
+            android:text="@{Double.toString(runningPost.runningHistory.pace)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line"
+            tools:text="6.3km/h" />
+
+        <TextView
+            android:id="@+id/tv_like_cnt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@{@string/text_like_count(runningPost.likeCount)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_vertical_partition_line"
+            tools:text="좋아요 0개" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@{runningPost.content}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_like_cnt"
+            tools:text="컨\n투더\n텐\n투더\n츠" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
