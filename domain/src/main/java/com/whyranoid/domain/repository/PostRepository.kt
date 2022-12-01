@@ -2,7 +2,6 @@ package com.whyranoid.domain.repository
 
 import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.model.RunningHistory
-import com.whyranoid.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
@@ -14,12 +13,11 @@ interface PostRepository {
     fun getAllPostFlow(): Flow<List<Post>>
 
     // 글 작성하기 - 리모트
-    suspend fun createPost(
-        user: User,
-        postContent: String,
+    suspend fun createRunningPost(
+        authorUid: String,
         runningHistory: RunningHistory,
-        updatedAt: Long
-    ): Boolean
+        content: String
+    ): Result<Boolean>
 
     suspend fun createRecruitPost(
         authorUid: String,

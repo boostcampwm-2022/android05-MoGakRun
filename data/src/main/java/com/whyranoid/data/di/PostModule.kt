@@ -1,6 +1,6 @@
 package com.whyranoid.data.di
 
-import com.whyranoid.data.Post.PostRepositoryImpl
+import com.whyranoid.data.post.PostRepositoryImpl
 import com.whyranoid.domain.repository.PostRepository
 import dagger.Binds
 import dagger.Module

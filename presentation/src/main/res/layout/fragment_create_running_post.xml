@@ -8,6 +8,10 @@
         <variable
             name="selectedRunningHistory"
             type="com.whyranoid.presentation.model.RunningHistoryUiModel" />
+
+        <variable
+            name="vm"
+            type="com.whyranoid.presentation.community.runningpost.CreateRunningPostViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +29,6 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:menu="@menu/community_create_running_post_menu"
                 app:title="@string/community_create_running_post_title" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -58,6 +61,8 @@
             android:layout_height="300dp"
             android:layout_marginHorizontal="12dp"
             android:inputType="textMultiLine"
+            android:gravity="top|start"
+            android:text="@={vm.runningPostContent}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/item_view_running_history"/>

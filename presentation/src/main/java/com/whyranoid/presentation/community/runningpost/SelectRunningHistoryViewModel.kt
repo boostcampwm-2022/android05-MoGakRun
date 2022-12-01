@@ -27,7 +27,7 @@ class SelectRunningHistoryViewModel @Inject constructor(private val getRunningHi
         get() = _runningHistoryListState.asStateFlow()
 
     // TODO 인증글 작성 넘어가도록 하는 더미데이터 -> 인증글 작성 로직이 완료되면 삭제하겠습니다
-    private val _selectedRunningHistory = MutableStateFlow<RunningHistoryUiModel?>(RunningHistoryUiModel("id", "asdf", "asdf", "asdf", "adsf", "asd", "zcx"))
+    private val _selectedRunningHistory = MutableStateFlow<RunningHistoryUiModel?>(RunningHistoryUiModel("seungmin_history_id", "8995875", "2452", "24524", "134", "124", "23"))
     val selectedRunningHistory: StateFlow<RunningHistoryUiModel?>
         get() = _selectedRunningHistory.asStateFlow()
 

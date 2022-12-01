@@ -12,7 +12,7 @@ interface AccountRepository {
     suspend fun loginUser(): Boolean
 
     // 데이터스토어에서 uid 가져오기
-    fun getUid(): Flow<String>
+    suspend fun getUid(): String
 
     // 데이터스토어에서 닉네임 가져오기
     fun getNickname(): Flow<String>

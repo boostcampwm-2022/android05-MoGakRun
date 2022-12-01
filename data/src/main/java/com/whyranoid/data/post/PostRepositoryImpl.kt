@@ -1,14 +1,13 @@
-package com.whyranoid.data.Post
+package com.whyranoid.data.post
 
 import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.model.RunningHistory
-import com.whyranoid.domain.model.User
 import com.whyranoid.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
-    private val postDataSource: PostDataSource
+    private val postDataSourceImpl: PostDataSourceImpl
 ) : PostRepository {
 
     // TODO : 페이징처리하기
@@ -17,23 +16,22 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override fun getAllPostFlow(): Flow<List<Post>> {
-        return postDataSource.getAllPostFlow()
+        return postDataSourceImpl.getAllPostFlow()
     }
 
-    override suspend fun createPost(
-        user: User,
-        postContent: String,
+    override suspend fun createRunningPost(
+        authorUid: String,
         runningHistory: RunningHistory,
-        updatedAt: Long
-    ): Boolean {
-        TODO("Not yet implemented")
+        content: String
+    ): Result<Boolean> {
+        return postDataSourceImpl.createRunningPost(authorUid, runningHistory, content)
     }
 
     override suspend fun createRecruitPost(
         authorUid: String,
         groupUid: String
     ): Boolean {
-        return postDataSource.createRecruitPost(authorUid, groupUid)
+        return postDataSourceImpl.createRecruitPost(authorUid, groupUid)
     }
 
     override suspend fun deletePost(postId: String): Boolean {

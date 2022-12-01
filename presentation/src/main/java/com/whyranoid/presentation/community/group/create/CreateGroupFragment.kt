@@ -118,11 +118,11 @@ internal class CreateGroupFragment :
         viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.isGroupCreateButtonEnable.collect { isEnable ->
                 if (isEnable) {
-                    binding.topAppBar.menu.setGroupVisible(R.id.ready_to_create_running_post, true)
-                    binding.topAppBar.menu.setGroupVisible(R.id.not_ready_to_create_running_post, false)
+                    binding.topAppBar.menu.setGroupVisible(R.id.ready_to_create, true)
+                    binding.topAppBar.menu.setGroupVisible(R.id.not_ready_to_create, false)
                 } else {
-                    binding.topAppBar.menu.setGroupVisible(R.id.ready_to_create_running_post, false)
-                    binding.topAppBar.menu.setGroupVisible(R.id.not_ready_to_create_running_post, true)
+                    binding.topAppBar.menu.setGroupVisible(R.id.ready_to_create, false)
+                    binding.topAppBar.menu.setGroupVisible(R.id.not_ready_to_create, true)
                 }
             }
         }

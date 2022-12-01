@@ -1,5 +1,6 @@
-package com.whyranoid.data.Post
+package com.whyranoid.data.post
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.whyranoid.data.constant.CollectionId
@@ -24,7 +25,7 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
-class PostDataSource @Inject constructor(
+class PostDataSourceImpl @Inject constructor(
     private val db: FirebaseFirestore
 ) {
 
@@ -143,6 +144,37 @@ class PostDataSource @Inject constructor(
                 }.addOnFailureListener {
                     cancellableContinuation.resume(false)
                 }
+        }
+    }
+
+    suspend fun createRunningPost(
+        authorUid: String,
+        runningHistory: RunningHistory,
+        content: String
+    ): Result<Boolean> {
+        val postId = UUID.randomUUID().toString()
+        Log.d("createRunningPost: 파이어베이스 성공", "ㅛㅅ")
+        return runCatching {
+            suspendCancellableCoroutine { cancellableContinuation ->
+
+                db.collection(CollectionId.POST_COLLECTION)
+                    .document(postId)
+                    .set(
+                        RunningPostResponse(
+                            postId = "seungmin_post_id",
+                            authorId = "seungmin",
+                            updatedAt = 879696,
+                            runningHistoryId = "asdf",
+                            content = "jkkjkjg"
+                        )
+                    ).addOnSuccessListener {
+                        Log.d("createRunningPost: 파이어베이스 성공", "ㅛㅅ")
+                        cancellableContinuation.resume(true)
+                    }.addOnFailureListener {
+                        Log.d("createRunningPost: 파이어베이스 실패", "ㅛㅅ")
+                        cancellableContinuation.resume(false)
+                    }
+            }
         }
     }
 }

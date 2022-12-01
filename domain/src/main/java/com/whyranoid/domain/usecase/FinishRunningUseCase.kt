@@ -9,9 +9,7 @@ class FinishRunningUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
     suspend operator fun invoke(): Boolean {
-        accountRepository.getUid().collect { uid ->
-            runnerRepository.finishRunning(uid)
-        }
+        runnerRepository.finishRunning(accountRepository.getUid())
         return true
     }
 }

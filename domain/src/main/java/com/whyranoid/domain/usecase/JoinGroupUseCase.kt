@@ -9,9 +9,7 @@ class JoinGroupUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
     suspend operator fun invoke(groupId: String): Boolean {
-        accountRepository.getUid().collect { uid ->
-            groupRepository.joinGroup(uid, groupId)
-        }
+        groupRepository.joinGroup(accountRepository.getUid(), groupId)
         return true
     }
 }
