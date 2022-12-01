@@ -3,7 +3,6 @@ package com.whyranoid.presentation.community.runningpost
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.usecase.CreateRunningPostUseCase
 import com.whyranoid.presentation.model.RunningHistoryUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateRunningPostViewModel @Inject constructor(
     private val createRunningPostUseCase: CreateRunningPostUseCase,
-    private val savedState: SavedStateHandle
+    savedState: SavedStateHandle
 ) : ViewModel() {
 
     val selectedRunningHistory =
@@ -47,16 +46,5 @@ class CreateRunningPostViewModel @Inject constructor(
 
     companion object {
         private const val RUNNING_HISTORY_SAFE_ARGS_KEY = "selectedRunningHistory"
-    }
-
-    fun RunningHistoryUiModel.toRunningHistory(): RunningHistory {
-        return RunningHistory(
-            historyId = historyId,
-            startedAt = startedAt.toLong(),
-            finishedAt = finishedAt.toLong(),
-            totalRunningTime = totalRunningTime.toInt(),
-            pace = pace.toDouble(),
-            totalDistance = totalDistance.toDouble()
-        )
     }
 }
