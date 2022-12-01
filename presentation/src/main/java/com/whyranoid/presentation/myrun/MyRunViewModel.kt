@@ -30,6 +30,7 @@ class MyRunViewModel @Inject constructor(
         getUid()
         getNickName()
         getProfileImgUri()
+        getRunningHistoryList()
     }
 
     private val _uid = MutableStateFlow(EMPTY_STRING)
