@@ -29,6 +29,8 @@
     <string name="community_select_running_history_snack_bar">운동을 하나 선택해주세요!</string>
     <string name="community_go_to_create_running_post">인증글 생성하러 가기</string>
     <string name="community_warning_running_post">내용을 1글자 이상 입력하세요</string>
+    <string name="community_fail_create_running_post">인증글 작성에 실패했습니다</string>
+    <string name="community_success_create_running_post">인증글이 등록되었습니다!</string>
 
     <!-- 마이런 탭 화면 -->
     <string name="my_run_tool_bar_menu_setting">설정</string>

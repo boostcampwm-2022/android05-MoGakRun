@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.usecase.CreateRunningPostUseCase
 import com.whyranoid.presentation.model.RunningHistoryUiModel
+import com.whyranoid.presentation.model.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -33,13 +35,23 @@ class CreateRunningPostViewModel @Inject constructor(
             scope = viewModelScope
         )
 
+    private val _createPostState = MutableStateFlow<UiState<Boolean>>(UiState.UnInitialized)
+    val createPostState: StateFlow<UiState<Boolean>>
+        get() = _createPostState.asStateFlow()
+
     fun createRunningPost() {
         viewModelScope.launch {
+            _createPostState.value = UiState.Loading
+
             selectedRunningHistory?.let { runningHistory ->
                 createRunningPostUseCase(
                     runningPostContent.value.toString(),
                     runningHistory.historyId
-                )
+                ).onSuccess { createPostResult ->
+                    _createPostState.value = UiState.Success(createPostResult)
+                }.onFailure { throwable ->
+                    _createPostState.value = UiState.Failure(throwable)
+                }
             }
         }
     }
