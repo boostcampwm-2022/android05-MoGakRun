@@ -11,6 +11,7 @@ import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.nickName
 import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.profileImgUri
 import com.whyranoid.data.account.AccountDataSourceImpl.PreferenceKeys.uid
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -39,10 +40,10 @@ class AccountDataSourceImpl @Inject constructor(
             preferences[profileImgUri] ?: EMPTY_STRING
         }
 
-    override fun getUserUid() = dataStoreDb.data
+    override suspend fun getUserUid(): String = dataStoreDb.data
         .map { preferences ->
             preferences[uid] ?: EMPTY_STRING
-        }
+        }.first()
 
     override fun getEmail(): Flow<Result<String>> {
         return dataStoreDb.data

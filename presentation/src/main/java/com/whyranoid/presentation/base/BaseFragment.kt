@@ -28,7 +28,7 @@ internal abstract class BaseFragment<VDB : ViewDataBinding>(
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 }

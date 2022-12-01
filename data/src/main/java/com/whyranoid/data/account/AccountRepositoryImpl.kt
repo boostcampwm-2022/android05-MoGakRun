@@ -17,7 +17,7 @@ class AccountRepositoryImpl @Inject constructor(
         return true
     }
 
-    override fun getUid(): Flow<String> {
+    override suspend fun getUid(): String {
         return accountDataSource.getUserUid()
     }
 

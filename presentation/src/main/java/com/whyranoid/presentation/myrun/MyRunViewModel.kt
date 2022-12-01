@@ -51,9 +51,7 @@ class MyRunViewModel @Inject constructor(
 
     private fun getUid() {
         viewModelScope.launch {
-            getUidUseCase().collect {
-                _uid.value = it
-            }
+            _uid.value = getUidUseCase()
         }
     }
 

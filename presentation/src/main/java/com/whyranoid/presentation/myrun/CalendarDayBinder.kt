@@ -37,11 +37,10 @@ class CalendarDayBinder(
             )
             // day.day와 day.date.monthValue를 지정해서 특정 월, 일에 달렸다는 콩 표시 가능
         } else if (day.day == 10 && day.date.monthValue == 11) {
-            container.binding.root.background = (
+            container.binding.root.background =
                 ContextCompat.getDrawable(
                     calendarView.context,
                     R.drawable.calendar_kong
-                )
                 )
         } else {
             container.binding.tvCalendarDay.setTextColor(
@@ -63,18 +62,16 @@ class CalendarDayBinder(
         }
 
         if (startDate == day.date) {
-            container.binding.root.background = (
+            container.binding.root.background =
                 ContextCompat.getDrawable(
                     calendarView.context,
                     R.drawable.thumbnail_src_small
-                )
                 )
         } else if (endDate == day.date) {
-            container.binding.root.background = (
+            container.binding.root.background =
                 ContextCompat.getDrawable(
                     calendarView.context,
                     R.drawable.thumbnail_src_small
-                )
                 )
         }
     }

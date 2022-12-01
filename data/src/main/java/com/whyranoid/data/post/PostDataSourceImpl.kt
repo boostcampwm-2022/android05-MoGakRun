@@ -1,4 +1,4 @@
-package com.whyranoid.data.Post
+package com.whyranoid.data.post
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -24,7 +24,7 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
-class PostDataSource @Inject constructor(
+class PostDataSourceImpl @Inject constructor(
     private val db: FirebaseFirestore
 ) {
 
@@ -143,6 +143,35 @@ class PostDataSource @Inject constructor(
                 }.addOnFailureListener {
                     cancellableContinuation.resume(false)
                 }
+        }
+    }
+
+    suspend fun createRunningPost(
+        authorUid: String,
+        runningHistoryId: String,
+        content: String
+    ): Result<Boolean> {
+        val postId = UUID.randomUUID().toString()
+
+        return runCatching {
+            suspendCancellableCoroutine { cancellableContinuation ->
+
+                db.collection(CollectionId.POST_COLLECTION)
+                    .document(postId)
+                    .set(
+                        RunningPostResponse(
+                            postId = postId,
+                            authorId = authorUid,
+                            updatedAt = System.currentTimeMillis(),
+                            runningHistoryId = runningHistoryId,
+                            content = content
+                        )
+                    ).addOnSuccessListener {
+                        cancellableContinuation.resume(true)
+                    }.addOnFailureListener {
+                        cancellableContinuation.resume(false)
+                    }
+            }
         }
     }
 }

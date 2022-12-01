@@ -10,12 +10,18 @@ internal abstract class BaseActivity<VDB : ViewDataBinding>(
     @LayoutRes val layoutRes: Int
 ) : AppCompatActivity() {
 
-    protected lateinit var binding: VDB
+    private var _binding: VDB? = null
+    protected val binding get() = requireNotNull(_binding)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, layoutRes)
+        _binding = DataBindingUtil.setContentView(this, layoutRes)
         binding.lifecycleOwner = this
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }

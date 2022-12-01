@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_communityFragment_to_groupDetailFragment"
             app:destination="@id/groupDetailFragment" />
+        <action
+            android:id="@+id/action_communityFragment_to_selectRunningHistoryFragment"
+            app:destination="@id/selectRunningHistoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/createGroupFragment"
@@ -61,6 +64,24 @@
         <argument
             android:name="groupInfo"
             app:argType="com.whyranoid.presentation.model.GroupInfoUiModel" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectRunningHistoryFragment"
+        android:name="com.whyranoid.presentation.community.runningpost.SelectRunningHistoryFragment"
+        android:label="SelectRunningHistoryFragment"
+        tools:layout="@layout/fragment_select_running_history">
+        <action
+            android:id="@+id/action_selectRunningHistoryFragment_to_createRunningPostFragment"
+            app:destination="@id/createRunningPostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createRunningPostFragment"
+        android:name="com.whyranoid.presentation.community.runningpost.CreateRunningPostFragment"
+        android:label="CreateRunningPostFragment"
+        tools:layout="@layout/fragment_create_running_post">
+        <argument
+            android:name="selectedRunningHistory"
+            app:argType="com.whyranoid.presentation.model.RunningHistoryUiModel" />
     </fragment>
 
 </navigation>
