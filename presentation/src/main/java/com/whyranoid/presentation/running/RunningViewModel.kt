@@ -110,4 +110,8 @@ class RunningViewModel @Inject constructor(
         // TODO: 액티비티에 이벤트 알려주기
         runningRepository.finishRunning()
     }
+
+    companion object {
+        const val RUNNING_FINISH_DATA_KEY = "runningFinishData"
+    }
 }
