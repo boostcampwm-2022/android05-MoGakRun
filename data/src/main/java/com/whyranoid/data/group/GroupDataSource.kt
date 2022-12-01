@@ -14,6 +14,7 @@ import com.whyranoid.data.model.UserResponse
 import com.whyranoid.data.model.toGroupInfo
 import com.whyranoid.data.model.toUser
 import com.whyranoid.domain.model.GroupInfo
+import com.whyranoid.domain.model.MoGakRunException
 import com.whyranoid.domain.model.Rule
 import com.whyranoid.domain.model.toRule
 import kotlinx.coroutines.channels.awaitClose
@@ -126,32 +127,44 @@ class GroupDataSource @Inject constructor(
         }
     }
 
-    fun getGroupInfoFlow(uid: String, groupId: String): Flow<GroupInfo> = callbackFlow {
-        db.collection(GROUPS_COLLECTION)
-            .document(groupId)
-            .addSnapshotListener { documentSnapshot, _ ->
-                val groupInfoResponse = documentSnapshot?.toObject(GroupInfoResponse::class.java)
+    fun getGroupInfoFlow(uid: String, groupId: String): Flow<GroupInfo> {
+        return callbackFlow {
+            val groupInfoResponse = getGroupInfoResponse(groupId)
+            val userResponse = getUserInfoResponse(uid)
+            val groupInfo = groupInfoResponse.toGroupInfo(
+                leader = userResponse.toUser(),
+                rules = groupInfoResponse.rules.map { it.toRule() }
+            )
+            trySend(groupInfo)
+            awaitClose()
+        }
+    }
 
-                groupInfoResponse?.let {
-                    db.collection(USERS_COLLECTION)
-                        .document(uid)
-                        .addSnapshotListener { documentSnapshot, _ ->
-                            val userResponse = documentSnapshot?.toObject(UserResponse::class.java)
+    private suspend fun getGroupInfoResponse(groupId: String): GroupInfoResponse {
+        return suspendCancellableCoroutine { continuation ->
+            db.collection(GROUPS_COLLECTION)
+                .document(groupId)
+                .addSnapshotListener { documentSnapshot, _ ->
+                    continuation.resume(
+                        documentSnapshot?.toObject(GroupInfoResponse::class.java)
+                            ?: throw MoGakRunException.FileNotFoundedException
 
-                            userResponse?.let {
-                                trySend(
-                                    groupInfoResponse.toGroupInfo(
-                                        leader = userResponse.toUser(),
-                                        rules = groupInfoResponse.rules.map {
-                                            it.toRule()
-                                        }
-                                    )
-                                )
-                            }
-                        }
+                    )
                 }
-            }
-        awaitClose()
+        }
+    }
+
+    private suspend fun getUserInfoResponse(uid: String): UserResponse {
+        return suspendCancellableCoroutine { continuation ->
+            db.collection(USERS_COLLECTION)
+                .document(uid)
+                .addSnapshotListener { documentSnapshot, _ ->
+                    continuation.resume(
+                        documentSnapshot?.toObject(UserResponse::class.java)
+                            ?: throw MoGakRunException.FileNotFoundedException
+                    )
+                }
+        }
     }
 
     suspend fun isDuplicatedGroupName(groupName: String): Boolean {
