@@ -3,6 +3,8 @@ package com.whyranoid.data.Post
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.whyranoid.data.constant.CollectionId
+import com.whyranoid.data.constant.FieldId.RUNNING_HISTORY_ID
+import com.whyranoid.data.constant.FieldId.UPDATED_AT
 import com.whyranoid.data.model.GroupInfoResponse
 import com.whyranoid.data.model.RecruitPostResponse
 import com.whyranoid.data.model.RunningPostResponse
@@ -30,12 +32,12 @@ class PostDataSource @Inject constructor(
     fun getAllPostFlow(): Flow<List<Post>> =
         callbackFlow {
             db.collection(CollectionId.POST_COLLECTION)
-                .orderBy("updatedAt", Query.Direction.DESCENDING)
+                .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
                 .addSnapshotListener { snapshot, _ ->
                     val postList = mutableListOf<Post>()
                     snapshot?.forEach { docuemnt ->
 
-                        if (docuemnt["runningHistoryId"] != null) {
+                        if (docuemnt[RUNNING_HISTORY_ID] != null) {
                             docuemnt.toObject(RunningPostResponse::class.java).let { postResponse ->
                                 db.collection(CollectionId.USERS_COLLECTION)
                                     .document(postResponse.authorId)

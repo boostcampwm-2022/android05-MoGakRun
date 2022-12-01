@@ -8,4 +8,6 @@ object FieldId {
     const val GROUP_INTRODUCE = "introduce"
     const val RULES = "rules"
     const val JOINED_GROUP_LIST = "joinedGroupList"
+    const val UPDATED_AT = "updatedAt"
+    const val RUNNING_HISTORY_ID = "runningHistoryId"
 }
