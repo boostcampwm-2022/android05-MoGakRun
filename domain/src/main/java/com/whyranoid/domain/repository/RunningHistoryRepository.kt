@@ -20,4 +20,6 @@ interface RunningHistoryRepository {
         pace: Double,
         totalDistance: Double
     ): Result<RunningHistory>
+
+    suspend fun uploadRunningHistory(runningHistory: RunningHistory): Result<Boolean>
 }

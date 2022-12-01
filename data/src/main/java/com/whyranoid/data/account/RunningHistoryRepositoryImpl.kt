@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class RunningHistoryRepositoryImpl @Inject constructor(
-    private val runningHistoryLocalDataSource: RunningHistoryLocalDataSource
+    private val runningHistoryLocalDataSource: RunningHistoryLocalDataSource,
+    private val runningHistoryRemoteDataSource: RunningHistoryRemoteDataSource
 ) : RunningHistoryRepository {
     override fun getRunningHistory(): Flow<Result<List<RunningHistory>>> {
         return runningHistoryLocalDataSource.getRunningHistory()
@@ -35,5 +36,9 @@ class RunningHistoryRepositoryImpl @Inject constructor(
                 totalDistance = totalDistance
             )
         )
+    }
+
+    override suspend fun uploadRunningHistory(runningHistory: RunningHistory): Result<Boolean> {
+        return runningHistoryRemoteDataSource.uploadRunningHistory(runningHistory)
     }
 }
