@@ -4,7 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.whyranoid.presentation.R
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 internal class CommunityItemFragment :
     BaseFragment<FragmentCommunityItemBinding>(R.layout.fragment_community_item) {
 
-    private val viewModel: CommunityViewModel by viewModels()
+    private val viewModel: CommunityViewModel by activityViewModels()
 
     private val category by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -86,7 +86,6 @@ internal class CommunityItemFragment :
         }
     }
 
-    // TODO 카테고리 별 다른 아이템 처리
     private fun setMyGroupAdapter() {
         val myGroupAdapter = MyGroupAdapter { groupInfo ->
             viewModel.onCategoryItemClicked(groupInfo)
