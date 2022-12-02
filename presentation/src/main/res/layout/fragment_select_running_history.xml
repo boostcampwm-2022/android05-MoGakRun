@@ -23,6 +23,7 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:titleTextAppearance="@style/MoGakRunText.Bold.Medium"
                 app:title="@string/community_select_running_history_title" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -31,7 +32,8 @@
             android:id="@+id/tv_select_running_history_helper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/MoGakRunText.Bold.Small"
             android:text="@string/community_select_running_history_helper_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +45,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="24dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
