@@ -26,6 +26,11 @@ fun Date.dateToString(format: String): String {
     return formatter.format(this)
 }
 
+fun Long.toRunningDateString(): String {
+    val formatter = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+    return formatter.format(this)
+}
+
 inline fun <reified T : Serializable> Intent.getSerializableData(key: String): T? = when {
     Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> getSerializableExtra(
         key,

@@ -12,7 +12,8 @@ import com.whyranoid.presentation.databinding.ItemCalendarDayBinding
 import java.time.LocalDate
 
 class CalendarDayBinder(
-    private val calendarView: CalendarView
+    private val calendarView: CalendarView,
+    private val runningDays: List<List<String>>
 ) : DayBinder<CalendarDayBinder.DayContainer> {
     private var calendar: CalendarRange = CalendarRange(null, null)
 
@@ -36,12 +37,6 @@ class CalendarDayBinder(
                 )
             )
             // day.day와 day.date.monthValue를 지정해서 특정 월, 일에 달렸다는 콩 표시 가능
-        } else if (day.day == 10 && day.date.monthValue == 11) {
-            container.binding.root.background =
-                ContextCompat.getDrawable(
-                    calendarView.context,
-                    R.drawable.calendar_kong
-                )
         } else {
             container.binding.tvCalendarDay.setTextColor(
                 ContextCompat.getColor(
@@ -73,6 +68,20 @@ class CalendarDayBinder(
                     calendarView.context,
                     R.drawable.thumbnail_src_small
                 )
+        }
+
+        runningDays.forEach { runningDay ->
+            val runningDayYear = runningDay[0].toInt()
+            val runningDayMonth = runningDay[1].toInt()
+            val runningDayDay = runningDay[2].toInt()
+
+            if (runningDayYear == day.date.year && runningDayMonth == day.date.monthValue && runningDayDay == day.day) {
+                container.binding.root.background =
+                    ContextCompat.getDrawable(
+                        calendarView.context,
+                        R.drawable.calendar_kong
+                    )
+            }
         }
     }
 
