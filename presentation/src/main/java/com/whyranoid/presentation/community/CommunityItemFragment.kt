@@ -1,6 +1,5 @@
 package com.whyranoid.presentation.community
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -10,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentCommunityItemBinding
+import com.whyranoid.presentation.util.getSerializableData
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -21,13 +21,7 @@ internal class CommunityItemFragment :
     private val viewModel: CommunityViewModel by activityViewModels()
 
     private val category by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getSerializable(COMMUNITY_CATEGORY_KEY, CommunityCategory::class.java)
-                ?: CommunityCategory.BOARD
-        } else {
-            arguments?.getSerializable(COMMUNITY_CATEGORY_KEY) as? CommunityCategory
-                ?: CommunityCategory.BOARD
-        }
+        arguments?.getSerializableData(COMMUNITY_CATEGORY_KEY) ?: CommunityCategory.BOARD
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
