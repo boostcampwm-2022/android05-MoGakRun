@@ -71,9 +71,7 @@ class CalendarDayBinder(
         }
 
         runningDays.forEach { runningDay ->
-            val runningDayYear = runningDay[0].toInt()
-            val runningDayMonth = runningDay[1].toInt()
-            val runningDayDay = runningDay[2].toInt()
+            val (runningDayYear, runningDayMonth, runningDayDay) = runningDay.map { it.toInt() }
 
             if (runningDayYear == day.date.year && runningDayMonth == day.date.monthValue && runningDayDay == day.day) {
                 container.binding.root.background =

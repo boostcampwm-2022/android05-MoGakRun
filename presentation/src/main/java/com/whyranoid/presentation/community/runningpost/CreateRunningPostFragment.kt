@@ -83,8 +83,8 @@ internal class CreateRunningPostFragment :
         }
     }
 
-    private fun handleCreatePostStateSuccess(result: Boolean) {
-        if (result) {
+    private fun handleCreatePostStateSuccess(isSuccess: Boolean) {
+        if (isSuccess) {
             val action =
                 CreateRunningPostFragmentDirections.actionCreateRunningPostFragmentToCommunityFragment()
 
