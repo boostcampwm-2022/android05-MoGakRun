@@ -83,6 +83,9 @@
     <string name="text_check_recruit">정말 홍보하시겠어요?</string>
     <string name="text_recruit_success">홍보 글이 작성되었습니다!</string>
     <string name="text_recruit_fail">홍보 글 작성이 실패하였습니다!</string>
+    <string name="text_check_exit_group">정말 그룹을 나가시겠어요?</string>
+    <string name="text_exit_group_success">그룹 나가기에 성공하였습니다!</string>
+    <string name="text_exit_group_fail">그룹 나가기에 실패하였습니다!</string>
 
     <!-- 그룹 수정하기 화면-->
     <string name="text_edit_group_success">그룹이 수정되었습니다!</string>

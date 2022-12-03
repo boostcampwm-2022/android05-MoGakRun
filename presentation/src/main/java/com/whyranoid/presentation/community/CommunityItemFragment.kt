@@ -68,7 +68,7 @@ internal class CommunityItemFragment :
                     findNavController().navigate(action)
                 }
             }
-            is Event.GroupJoin -> {
+            is Event.JoinGroup -> {
                 if (event.isSuccess) {
                     Snackbar.make(
                         binding.root,

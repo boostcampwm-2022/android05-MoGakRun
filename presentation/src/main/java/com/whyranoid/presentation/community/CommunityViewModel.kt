@@ -55,7 +55,7 @@ class CommunityViewModel @Inject constructor(
                 is Event.GroupItemClick -> {
                     _eventFlow.emit(event)
                 }
-                is Event.GroupJoin -> {
+                is Event.JoinGroup -> {
                     if (event.isSuccess) {
                         _eventFlow.emit(event)
                     } else {
@@ -68,7 +68,7 @@ class CommunityViewModel @Inject constructor(
 
     fun onGroupJoinButtonClicked(groupId: String) {
         viewModelScope.launch {
-            emitEvent(Event.GroupJoin(joinGroupUseCase(groupId)))
+            emitEvent(Event.JoinGroup(joinGroupUseCase(groupId)))
         }
     }
 

@@ -82,7 +82,6 @@ internal class GroupDetailFragment :
         viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    // TODO : 홍보 글 쓰러가기
                     Event.RecruitButtonClick -> {
                         Snackbar.make(
                             binding.root,
@@ -91,14 +90,6 @@ internal class GroupDetailFragment :
                         ).setAction(R.string.text_recruit) {
                             viewModel.onRecruitSnackBarButtonClick()
                         }.show()
-                    }
-                    // TODO : 그룹 나가기
-                    Event.ExitGroupButtonClick -> {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.text_exit_group),
-                            Snackbar.LENGTH_SHORT
-                        ).show()
                     }
                     is Event.RecruitSnackBarButtonClick -> {
                         if (event.isSuccess) {
@@ -111,6 +102,31 @@ internal class GroupDetailFragment :
                             Snackbar.make(
                                 binding.root,
                                 getString(R.string.text_recruit_fail),
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                    Event.ExitGroupButtonClick -> {
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.text_check_exit_group),
+                            Snackbar.LENGTH_SHORT
+                        ).setAction(getString(R.string.text_exit_group)) {
+                            viewModel.onExitGroupSnackBarButtonClick()
+                        }.show()
+                    }
+                    is Event.ExitGroupSnackBarButtonClick -> {
+                        if (event.isSuccess) {
+                            Snackbar.make(
+                                binding.root,
+                                getString(R.string.text_exit_group_success),
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                            findNavController().popBackStack()
+                        } else {
+                            Snackbar.make(
+                                binding.root,
+                                getString(R.string.text_exit_group_fail),
                                 Snackbar.LENGTH_SHORT
                             ).show()
                         }
