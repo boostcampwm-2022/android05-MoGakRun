@@ -3,6 +3,7 @@ plugins {
     id "org.jetbrains.kotlin.android"
     id "kotlin-kapt"
     id "dagger.hilt.android.plugin"
+    id "com.google.firebase.crashlytics"
 }
 
 android {
@@ -65,4 +66,10 @@ dependencies {
     // Hilt Worker with Kotlin
     implementation "androidx.hilt:hilt-work:$hiltWorkerVersion"
     kapt "androidx.hilt:hilt-compiler:$hiltCompilerVersion"
+
+    // BoM for the Firebase platform
+    implementation platform("com.google.firebase:firebase-bom:$firebaseVersion")
+
+    // Crashlytics
+    implementation "com.google.firebase:firebase-crashlytics"
 }

@@ -29,9 +29,15 @@
     <string name="community_select_running_history_snack_bar">운동을 하나 선택해주세요!</string>
     <string name="community_go_to_create_running_post">인증글 생성하러 가기</string>
     <string name="community_warning_running_post">내용을 1글자 이상 입력하세요</string>
+    <string name="text_join_group_success">그룹 가입에 성공하였습니다!</string>
+    <string name="text_join_group_fail">그룹 가입에 실패하였습니다!</string>
     <string name="community_fail_create_running_post">인증글 작성에 실패했습니다</string>
     <string name="community_success_create_running_post">인증글이 등록되었습니다!</string>
     <string name="community_create_running_post_hint">인증글 내용을 입력하세요!</string>
+    <string name="text_delete_post_success">게시글 삭제에 성공하였습니다!</string>
+    <string name="text_delete_post_fail">게시글 삭제에 실패하였습니다!</string>
+    <string name="text_check_delete_post">해당 포스트를 삭제하시겠습니까?</string>
+    <string name="text_delete">삭제</string>
 
     <!-- 마이런 탭 화면 -->
     <string name="my_run_tool_bar_menu_setting">설정</string>
@@ -81,6 +87,9 @@
     <string name="text_check_recruit">정말 홍보하시겠어요?</string>
     <string name="text_recruit_success">홍보 글이 작성되었습니다!</string>
     <string name="text_recruit_fail">홍보 글 작성이 실패하였습니다!</string>
+    <string name="text_check_exit_group">정말 그룹을 나가시겠어요?</string>
+    <string name="text_exit_group_success">그룹 나가기에 성공하였습니다!</string>
+    <string name="text_exit_group_fail">그룹 나가기에 실패하였습니다!</string>
 
     <!-- 그룹 수정하기 화면-->
     <string name="text_edit_group_success">그룹이 수정되었습니다!</string>

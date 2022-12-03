@@ -7,7 +7,7 @@ buildscript {
         junitVersion = "4.13.2"
         junitUiVersion = "1.1.4"
         espressoCoreVersion = "3.5.0"
-        firebaseVersion = "31.0.3"
+        firebaseVersion = "31.1.0"
         googleServiceVersion = "4.3.14"
         timberVersion = "5.0.1"
         leakcanaryVersion = "2.10"
@@ -34,10 +34,12 @@ buildscript {
         workManagerVersion = "2.7.1"
         hiltWorkerVersion = "1.0.0"
         hiltCompilerVersion = "1.0.0"
+        crashlyticsVersion = "2.9.2"
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion"
+        classpath "com.google.firebase:firebase-crashlytics-gradle:$crashlyticsVersion"
     }
 }
 

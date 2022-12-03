@@ -12,22 +12,15 @@ import com.whyranoid.domain.model.RecruitPost
 import com.whyranoid.domain.model.RunningPost
 import com.whyranoid.presentation.databinding.ItemRecruitPostBinding
 import com.whyranoid.presentation.databinding.ItemRunningPostBinding
+import com.whyranoid.presentation.model.GroupInfoUiModel
 
-class PostAdapter(private val myUid: String) :
-    ListAdapter<Post, PostAdapter.PostViewHolder>(diffUtil) {
+class PostAdapter(
+    private val isMyPost: Boolean = false,
+    private val itemLongClickListener: (String) -> Unit = {},
+    private val buttonClickListener: (String) -> Unit = {}
+) : ListAdapter<Post, PostAdapter.PostViewHolder>(diffUtil) {
 
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Post>() {
-            override fun areItemsTheSame(oldItem: Post, newItem: Post) =
-                oldItem.postId == newItem.postId
-
-            override fun areContentsTheSame(oldItem: Post, newItem: Post) =
-                oldItem == newItem
-        }
-
-        const val RECRUIT_POST_TYPE = 0
-        const val RUNNING_POST_TYPE = 1
-    }
+    private lateinit var myGroupList: List<GroupInfoUiModel>
 
     abstract class PostViewHolder(binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -44,11 +37,18 @@ class PostAdapter(private val myUid: String) :
     ) : PostViewHolder(binding) {
         override fun bind(post: Post) {
             if (post is RecruitPost) {
-                binding.recruitPost = post
-                if (myUid == post.author.uid) {
-                    binding.btnJoinGroup.visibility = View.GONE
-                } else {
-                    binding.btnJoinGroup.visibility = View.VISIBLE
+                with(binding) {
+                    recruitPost = post
+                    if (post.groupInfo.groupId in myGroupList.map { it.groupId }) {
+                        btnJoinGroup.visibility = View.GONE
+                    } else {
+                        btnJoinGroup.visibility = View.VISIBLE
+                        btnJoinGroup.setOnClickListener {
+                            buttonClickListener(post.groupInfo.groupId)
+                            // TODO : 이러면 가입에 실패해도 그룹 가입 버튼이 사라지는데 이에 대한 처리 필요.
+                            btnJoinGroup.visibility = View.GONE
+                        }
+                    }
                 }
             }
         }
@@ -84,6 +84,30 @@ class PostAdapter(private val myUid: String) :
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val curPost = getItem(position)
+        holder.apply {
+            bind(curPost)
+            if (isMyPost) this.itemView.setOnLongClickListener {
+                itemLongClickListener(curPost.postId)
+                true
+            }
+        }
+    }
+
+    fun setMyGroupList(myGroupList: List<GroupInfoUiModel>) {
+        this.myGroupList = myGroupList
+    }
+
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<Post>() {
+            override fun areItemsTheSame(oldItem: Post, newItem: Post) =
+                oldItem.postId == newItem.postId
+
+            override fun areContentsTheSame(oldItem: Post, newItem: Post) =
+                oldItem == newItem
+        }
+
+        const val RECRUIT_POST_TYPE = 0
+        const val RUNNING_POST_TYPE = 1
     }
 }

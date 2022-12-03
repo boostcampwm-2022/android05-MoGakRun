@@ -36,7 +36,7 @@ class GroupRepositoryImpl @Inject constructor(
     }
 
     override suspend fun exitGroup(uid: String, groupId: String): Boolean {
-        return groupDataSource.joinGroup(uid, groupId)
+        return groupDataSource.exitGroup(uid, groupId)
     }
 
     override fun getGroupInfoFlow(uid: String, groupId: String): Flow<GroupInfo> {
@@ -66,6 +66,10 @@ class GroupRepositoryImpl @Inject constructor(
         uid: String
     ): Boolean {
         return groupDataSource.createGroup(groupName, introduce, rules, uid)
+    }
+
+    override suspend fun deleteGroup(uid: String, groupId: String): Boolean {
+        return groupDataSource.deleteGroup(uid, groupId)
     }
 
     override suspend fun isDuplicatedGroupName(groupName: String): Boolean {

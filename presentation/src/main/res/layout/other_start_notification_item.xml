@@ -9,23 +9,15 @@
             type="com.whyranoid.domain.model.StartNotification" />
     </data>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:elevation="10dp"
-        app:cardCornerRadius="20dp">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/mogakrun_primary_dark"
         android:padding="8dp"
         android:paddingBottom="16dp">
 
         <TextView
             android:id="@+id/tv_uid"
-            style="@style/MoGakRunText.Bold.Large"
+            style="@style/MoGakRunText.Bold.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -37,16 +29,17 @@
         <TextView
             android:id="@+id/tv_start_notification"
             style="@style/MoGakRunText.Bold.Medium"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:gravity="start"
+            android:background="@drawable/radius_background"
+            android:backgroundTint="@color/mogakrun_primary"
+            android:padding="16dp"
             app:startLongToDate="@{notifications.startedAt}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_uid"
             tools:text="2022.11.21 / 21 시 10분 운동 시작"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+
 </layout>

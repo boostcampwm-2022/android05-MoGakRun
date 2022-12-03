@@ -48,5 +48,10 @@ interface GroupRepository {
         uid: String
     ): Boolean
 
+    suspend fun deleteGroup(
+        uid: String,
+        groupId: String
+    ): Boolean
+
     suspend fun isDuplicatedGroupName(groupName: String): Boolean
 }
