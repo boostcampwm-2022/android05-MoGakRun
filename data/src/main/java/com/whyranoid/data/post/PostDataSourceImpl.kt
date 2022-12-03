@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.whyranoid.data.constant.CollectionId
 import com.whyranoid.data.constant.FieldId.AUTHOR_ID
+import com.whyranoid.data.constant.FieldId.GROUP_ID
 import com.whyranoid.data.constant.FieldId.RUNNING_HISTORY_ID
 import com.whyranoid.data.constant.FieldId.UPDATED_AT
 import com.whyranoid.data.model.GroupInfoResponse
@@ -21,6 +22,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
 import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -221,22 +223,49 @@ class PostDataSourceImpl @Inject constructor(
     ): Boolean {
         val postId = UUID.randomUUID().toString()
 
-        return suspendCancellableCoroutine { cancellableContinuation ->
+        val previousRecruitPost = db.collection(CollectionId.POST_COLLECTION)
+            .whereEqualTo(GROUP_ID, groupUid)
+            .get()
+            .await()
 
-            db.collection(CollectionId.POST_COLLECTION)
-                .document(postId)
-                .set(
-                    RecruitPostResponse(
-                        postId = postId,
-                        authorId = authorUid,
-                        updatedAt = System.currentTimeMillis(),
-                        groupId = groupUid
-                    )
-                ).addOnSuccessListener {
-                    cancellableContinuation.resume(true)
-                }.addOnFailureListener {
-                    cancellableContinuation.resume(false)
-                }
+        return if (previousRecruitPost.isEmpty) {
+            suspendCancellableCoroutine { cancellableContinuation ->
+
+                db.collection(CollectionId.POST_COLLECTION)
+                    .document(postId)
+                    .set(
+                        RecruitPostResponse(
+                            postId = postId,
+                            authorId = authorUid,
+                            updatedAt = System.currentTimeMillis(),
+                            groupId = groupUid
+                        )
+                    ).addOnSuccessListener {
+                        cancellableContinuation.resume(true)
+                    }.addOnFailureListener {
+                        cancellableContinuation.resume(false)
+                    }
+            }
+        } else {
+            suspendCancellableCoroutine { cancellableContinuation ->
+
+                val previousRecruitPostId =
+                    previousRecruitPost.toObjects(RecruitPostResponse::class.java).first().postId
+                db.collection(CollectionId.POST_COLLECTION)
+                    .document(previousRecruitPostId)
+                    .set(
+                        RecruitPostResponse(
+                            postId = postId,
+                            authorId = authorUid,
+                            updatedAt = System.currentTimeMillis(),
+                            groupId = groupUid
+                        )
+                    ).addOnSuccessListener {
+                        cancellableContinuation.resume(true)
+                    }.addOnFailureListener {
+                        cancellableContinuation.resume(false)
+                    }
+            }
         }
     }
 
