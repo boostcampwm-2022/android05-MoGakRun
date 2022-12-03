@@ -42,7 +42,7 @@ internal class CommunityItemFragment :
                 setMyGroupAdapter()
             }
             CommunityCategory.MY_POST -> {
-                // TODO: Adapter 설정
+                setMyPostAdapter()
             }
         }
     }
@@ -118,6 +118,28 @@ internal class CommunityItemFragment :
             viewModel.myGroupList.collect { groupList ->
                 removeShimmer()
                 myGroupAdapter.submitList(groupList.sortedBy { it.name })
+            }
+        }
+    }
+
+    private fun setMyPostAdapter() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val postAdapter = PostAdapter {
+                viewModel.onGroupJoinButtonClicked(it)
+            }
+            binding.rvCommunity.adapter = postAdapter
+
+            viewLifecycleOwner.repeatWhenUiStarted {
+                viewModel.myGroupList.collect { myGroupList ->
+                    postAdapter.setMyGroupList(myGroupList)
+                }
+            }
+
+            viewLifecycleOwner.repeatWhenUiStarted {
+                viewModel.myPostList.collect { myPostList ->
+                    removeShimmer()
+                    postAdapter.submitList(myPostList)
+                }
             }
         }
     }

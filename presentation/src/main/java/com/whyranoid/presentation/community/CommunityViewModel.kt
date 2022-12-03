@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.usecase.GetMyGroupListUseCase
+import com.whyranoid.domain.usecase.GetMyPostUseCase
 import com.whyranoid.domain.usecase.GetPostsUseCase
-import com.whyranoid.domain.usecase.GetUidUseCase
 import com.whyranoid.domain.usecase.JoinGroupUseCase
 import com.whyranoid.presentation.model.GroupInfoUiModel
 import com.whyranoid.presentation.model.toGroupInfoUiModel
@@ -26,7 +26,7 @@ class CommunityViewModel @Inject constructor(
     getMyGroupListUseCase: GetMyGroupListUseCase,
     getPostsUseCase: GetPostsUseCase,
     private val joinGroupUseCase: JoinGroupUseCase,
-    val getMyUseCase: GetUidUseCase
+    private val getMyPostUseCase: GetMyPostUseCase
 ) : ViewModel() {
 
     private val _postList = MutableStateFlow<List<Post>>(emptyList())
@@ -36,6 +36,10 @@ class CommunityViewModel @Inject constructor(
     private val _myGroupList = MutableStateFlow<List<GroupInfoUiModel>>(emptyList())
     val myGroupList: StateFlow<List<GroupInfoUiModel>>
         get() = _myGroupList.asStateFlow()
+
+    private val _myPostList = MutableStateFlow<List<Post>>(emptyList())
+    val myPostList: StateFlow<List<Post>>
+        get() = _myPostList.asStateFlow()
 
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow: SharedFlow<Event>
@@ -82,5 +86,11 @@ class CommunityViewModel @Inject constructor(
                 post.updatedAt
             }
         }.launchIn(viewModelScope)
+
+        viewModelScope.launch {
+            getMyPostUseCase().onEach { myPostList ->
+                _myPostList.value = myPostList
+            }.launchIn(this)
+        }
     }
 }
