@@ -58,9 +58,15 @@ internal class CommunityItemFragment :
     private fun handleEvent(event: Event) {
         when (event) {
             is Event.GroupItemClick -> {
-                val action =
-                    CommunityFragmentDirections.actionCommunityFragmentToGroupDetailFragment(event.groupInfo)
-                findNavController().navigate(action)
+                // TODO : 뷰모델의 구조를 변경할 필요가 있어보임.
+                // 공통된 뷰모델을 사용하여 eventFlow가 3개가 collect중이라서 앱이 터지는 이슈 임시 해결
+                if (category == CommunityCategory.MY_GROUP) {
+                    val action =
+                        CommunityFragmentDirections.actionCommunityFragmentToGroupDetailFragment(
+                            event.groupInfo
+                        )
+                    findNavController().navigate(action)
+                }
             }
             is Event.GroupJoin -> {
                 if (event.isSuccess) {
