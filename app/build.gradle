@@ -68,8 +68,8 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:$hiltCompilerVersion"
 
     // BoM for the Firebase platform
-    implementation platform('com.google.firebase:firebase-bom:31.1.0')
+    implementation platform("com.google.firebase:firebase-bom:$firebaseVersion")
 
     // Crashlytics
-    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation "com.google.firebase:firebase-crashlytics"
 }
