@@ -34,10 +34,12 @@ buildscript {
         workManagerVersion = "2.7.1"
         hiltWorkerVersion = "1.0.0"
         hiltCompilerVersion = "1.0.0"
+        crashlyticsVersion = "2.9.2"
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion"
+        classpath "com.google.firebase:firebase-crashlytics-gradle:$crashlyticsVersion"
     }
 }
 
