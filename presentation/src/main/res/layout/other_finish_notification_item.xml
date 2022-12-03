@@ -9,46 +9,37 @@
             type="com.whyranoid.domain.model.FinishNotification" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:elevation="10dp"
-        app:cardCornerRadius="20dp">
+        android:padding="8dp"
+        android:paddingBottom="16dp"
+        >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_uid"
+            style="@style/MoGakRunText.Bold.Small"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/mogakrun_secondary_dark"
-            android:padding="8dp"
-            android:paddingBottom="16dp"
-            >
+            android:layout_margin="8dp"
+            android:text="@{notifications.uid}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="수피치"/>
 
-            <TextView
-                android:id="@+id/tv_uid"
-                style="@style/MoGakRunText.Bold.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@{notifications.uid}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="수피치"/>
+        <TextView
+            android:id="@+id/tv_end_notification"
+            style="@style/MoGakRunText.Bold.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/radius_background"
+            android:backgroundTint="@color/mogakrun_primary"
+            android:padding="16dp"
+            app:finishLongToDate="@{notifications.runningHistory.finishedAt}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_uid"
+            tools:text="2022.11.21 / 21 시 10분 운동 종료"/>
 
-            <TextView
-                android:id="@+id/tv_end_notification"
-                style="@style/MoGakRunText.Bold.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:gravity="start"
-                app:finishLongToDate="@{notifications.runningHistory.finishedAt}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_uid"
-                tools:text="2022.11.21 / 21 시 10분 운동 종료"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -48,7 +48,6 @@ internal class GroupDetailFragment :
                         R.id.setting_group -> {
                             // TODO : BottomSheetDialog Material Theme 적용
                             val dialog = GroupSettingDialog(
-                                // TODO : 그룹 수정으로 이동
                                 onEditButtonClickListener = {
                                     val action =
                                         GroupDetailFragmentDirections.actionGroupDetailFragmentToEditGroupFragment(
