@@ -129,7 +129,14 @@ class GroupDataSourceImpl @Inject constructor(
                         rules = rules
                     )
                 ).addOnSuccessListener {
-                    cancellableContinuation.resume(true)
+                    db.collection(USERS_COLLECTION)
+                        .document(uid)
+                        .update(JOINED_GROUP_LIST, FieldValue.arrayUnion(newGroupId))
+                        .addOnSuccessListener {
+                            cancellableContinuation.resume(true)
+                        }.addOnFailureListener {
+                            cancellableContinuation.resume(false)
+                        }
                 }.addOnFailureListener {
                     cancellableContinuation.resume(false)
                 }
