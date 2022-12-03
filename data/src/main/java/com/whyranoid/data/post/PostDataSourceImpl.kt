@@ -27,10 +27,10 @@ import kotlin.coroutines.resume
 
 class PostDataSourceImpl @Inject constructor(
     private val db: FirebaseFirestore
-) {
+) : PostDataSource {
 
     //  TODO : 조금 더 간결하게 처리 필요.
-    fun getAllPostFlow(): Flow<List<Post>> =
+    override fun getAllPostFlow(): Flow<List<Post>> =
         callbackFlow {
             db.collection(CollectionId.POST_COLLECTION)
                 .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
@@ -122,7 +122,7 @@ class PostDataSourceImpl @Inject constructor(
             awaitClose()
         }
 
-    fun getMyPostFlow(uid: String): Flow<List<Post>> =
+    override fun getMyPostFlow(uid: String): Flow<List<Post>> =
         callbackFlow {
             db.collection(CollectionId.POST_COLLECTION)
                 .whereEqualTo(AUTHOR_ID, uid)
@@ -215,7 +215,7 @@ class PostDataSourceImpl @Inject constructor(
             awaitClose()
         }
 
-    suspend fun createRecruitPost(
+    override suspend fun createRecruitPost(
         authorUid: String,
         groupUid: String
     ): Boolean {
@@ -240,7 +240,7 @@ class PostDataSourceImpl @Inject constructor(
         }
     }
 
-    suspend fun createRunningPost(
+    override suspend fun createRunningPost(
         authorUid: String,
         runningHistoryId: String,
         content: String
