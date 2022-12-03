@@ -13,8 +13,10 @@ import com.whyranoid.domain.model.RunningPost
 import com.whyranoid.presentation.databinding.ItemRecruitPostBinding
 import com.whyranoid.presentation.databinding.ItemRunningPostBinding
 
-class PostAdapter(private val myUid: String) :
-    ListAdapter<Post, PostAdapter.PostViewHolder>(diffUtil) {
+class PostAdapter(
+    private val myUid: String,
+    private val buttonClickListener: (String) -> Unit
+) : ListAdapter<Post, PostAdapter.PostViewHolder>(diffUtil) {
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Post>() {
@@ -44,11 +46,16 @@ class PostAdapter(private val myUid: String) :
     ) : PostViewHolder(binding) {
         override fun bind(post: Post) {
             if (post is RecruitPost) {
-                binding.recruitPost = post
-                if (myUid == post.author.uid) {
-                    binding.btnJoinGroup.visibility = View.GONE
-                } else {
-                    binding.btnJoinGroup.visibility = View.VISIBLE
+                with(binding) {
+                    recruitPost = post
+                    if (myUid == post.author.uid) {
+                        btnJoinGroup.visibility = View.GONE
+                    } else {
+                        btnJoinGroup.visibility = View.VISIBLE
+                        btnJoinGroup.setOnClickListener {
+                            buttonClickListener(post.groupInfo.groupId)
+                        }
+                    }
                 }
             }
         }

@@ -6,6 +6,7 @@ import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.usecase.GetMyGroupListUseCase
 import com.whyranoid.domain.usecase.GetPostsUseCase
 import com.whyranoid.domain.usecase.GetUidUseCase
+import com.whyranoid.domain.usecase.JoinGroupUseCase
 import com.whyranoid.presentation.model.GroupInfoUiModel
 import com.whyranoid.presentation.model.toGroupInfoUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class CommunityViewModel @Inject constructor(
     getMyGroupListUseCase: GetMyGroupListUseCase,
     getPostsUseCase: GetPostsUseCase,
+    private val joinGroupUseCase: JoinGroupUseCase,
     val getMyUseCase: GetUidUseCase
 ) : ViewModel() {
 
@@ -39,13 +41,30 @@ class CommunityViewModel @Inject constructor(
     val eventFlow: SharedFlow<Event>
         get() = _eventFlow.asSharedFlow()
 
-    fun onCategoryItemClicked(groupInfo: GroupInfoUiModel) {
+    fun onGroupItemClicked(groupInfo: GroupInfoUiModel) {
         emitEvent(Event.GroupItemClick(groupInfo))
     }
 
     private fun emitEvent(event: Event) {
         viewModelScope.launch {
-            _eventFlow.emit(event)
+            when (event) {
+                is Event.GroupItemClick -> {
+                    _eventFlow.emit(event)
+                }
+                is Event.GroupJoin -> {
+                    if (event.isSuccess) {
+                        _eventFlow.emit(event)
+                    } else {
+                        _eventFlow.emit(event.copy(isSuccess = false))
+                    }
+                }
+            }
+        }
+    }
+
+    fun onGroupJoinButtonClicked(groupId: String) {
+        viewModelScope.launch {
+            emitEvent(Event.GroupJoin(joinGroupUseCase(groupId)))
         }
     }
 

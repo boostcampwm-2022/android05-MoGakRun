@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentCommunityItemBinding
@@ -61,6 +62,21 @@ internal class CommunityItemFragment :
                     CommunityFragmentDirections.actionCommunityFragmentToGroupDetailFragment(event.groupInfo)
                 findNavController().navigate(action)
             }
+            is Event.GroupJoin -> {
+                if (event.isSuccess) {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_join_group_success),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_join_group_fail),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
     }
 
@@ -68,7 +84,9 @@ internal class CommunityItemFragment :
         viewLifecycleOwner.lifecycleScope.launch {
             val uid = viewModel.getMyUseCase()
 
-            val postAdapter = PostAdapter(uid)
+            val postAdapter = PostAdapter(uid) {
+                viewModel.onGroupJoinButtonClicked(it)
+            }
             binding.rvCommunity.adapter = postAdapter
 
             viewLifecycleOwner.repeatWhenUiStarted {
@@ -82,7 +100,7 @@ internal class CommunityItemFragment :
 
     private fun setMyGroupAdapter() {
         val myGroupAdapter = MyGroupAdapter { groupInfo ->
-            viewModel.onCategoryItemClicked(groupInfo)
+            viewModel.onGroupItemClicked(groupInfo)
         }
         binding.rvCommunity.adapter = myGroupAdapter
 
