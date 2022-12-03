@@ -3,6 +3,7 @@ package com.whyranoid.presentation.runningstart
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.usecase.GetRunnerCountUseCase
+import com.whyranoid.presentation.running.RunningDataManager
 import com.whyranoid.presentation.util.networkconnection.NetworkConnectionStateHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,7 +14,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RunningStartViewModel @Inject constructor(
     getRunnerCountUseCase: GetRunnerCountUseCase,
-    networkConnectionStateHolder: NetworkConnectionStateHolder
+    networkConnectionStateHolder: NetworkConnectionStateHolder,
+    val runningDataManager: RunningDataManager
 ) : ViewModel() {
 
     val networkState = networkConnectionStateHolder.networkState
