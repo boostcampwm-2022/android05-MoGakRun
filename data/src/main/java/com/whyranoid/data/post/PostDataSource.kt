@@ -19,4 +19,6 @@ interface PostDataSource {
         runningHistoryId: String,
         content: String
     ): Result<Boolean>
+
+    suspend fun deletePost(postId: String): Boolean
 }

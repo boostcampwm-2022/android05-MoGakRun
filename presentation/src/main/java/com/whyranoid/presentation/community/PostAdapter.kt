@@ -15,7 +15,9 @@ import com.whyranoid.presentation.databinding.ItemRunningPostBinding
 import com.whyranoid.presentation.model.GroupInfoUiModel
 
 class PostAdapter(
-    private val buttonClickListener: (String) -> Unit
+    private val isMyPost: Boolean = false,
+    private val itemLongClickListener: (String) -> Unit = {},
+    private val buttonClickListener: (String) -> Unit = {}
 ) : ListAdapter<Post, PostAdapter.PostViewHolder>(diffUtil) {
 
     private lateinit var myGroupList: List<GroupInfoUiModel>
@@ -95,7 +97,14 @@ class PostAdapter(
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val curPost = getItem(position)
+        holder.apply {
+            bind(curPost)
+            if (isMyPost) this.itemView.setOnLongClickListener {
+                itemLongClickListener(curPost.postId)
+                true
+            }
+        }
     }
 
     fun setMyGroupList(myGroupList: List<GroupInfoUiModel>) {

@@ -38,7 +38,7 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deletePost(postId: String): Boolean {
-        TODO("Not yet implemented")
+        return postDataSource.deletePost(postId)
     }
 
     override suspend fun updatePost(postId: String, postContent: String, updatedAt: Long): Boolean {

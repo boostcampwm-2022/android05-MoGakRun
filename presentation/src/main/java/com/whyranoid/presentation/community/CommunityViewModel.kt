@@ -3,6 +3,7 @@ package com.whyranoid.presentation.community
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.model.Post
+import com.whyranoid.domain.usecase.DeletePostUseCase
 import com.whyranoid.domain.usecase.GetMyGroupListUseCase
 import com.whyranoid.domain.usecase.GetMyPostUseCase
 import com.whyranoid.domain.usecase.GetPostsUseCase
@@ -26,7 +27,8 @@ class CommunityViewModel @Inject constructor(
     getMyGroupListUseCase: GetMyGroupListUseCase,
     getPostsUseCase: GetPostsUseCase,
     private val joinGroupUseCase: JoinGroupUseCase,
-    private val getMyPostUseCase: GetMyPostUseCase
+    private val getMyPostUseCase: GetMyPostUseCase,
+    private val deletePostUseCase: DeletePostUseCase
 ) : ViewModel() {
 
     private val _postList = MutableStateFlow<List<Post>>(emptyList())
@@ -62,6 +64,13 @@ class CommunityViewModel @Inject constructor(
                         _eventFlow.emit(event.copy(isSuccess = false))
                     }
                 }
+                is Event.DeletePost -> {
+                    if (event.isSuccess) {
+                        _eventFlow.emit(event)
+                    } else {
+                        _eventFlow.emit(event.copy(isSuccess = false))
+                    }
+                }
             }
         }
     }
@@ -69,6 +78,12 @@ class CommunityViewModel @Inject constructor(
     fun onGroupJoinButtonClicked(groupId: String) {
         viewModelScope.launch {
             emitEvent(Event.JoinGroup(joinGroupUseCase(groupId)))
+        }
+    }
+
+    fun deletePost(postId: String) {
+        viewModelScope.launch {
+            emitEvent(Event.DeletePost(deletePostUseCase(postId)))
         }
     }
 

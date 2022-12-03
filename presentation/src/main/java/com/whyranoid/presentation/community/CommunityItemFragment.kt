@@ -83,14 +83,31 @@ internal class CommunityItemFragment :
                     ).show()
                 }
             }
+            is Event.DeletePost -> {
+                if (event.isSuccess) {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_delete_post_success),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_delete_post_fail),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
     }
 
     private fun setPostAdapter() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val postAdapter = PostAdapter {
-                viewModel.onGroupJoinButtonClicked(it)
-            }
+            val postAdapter = PostAdapter(
+                buttonClickListener = {
+                    viewModel.onGroupJoinButtonClicked(it)
+                }
+            )
             binding.rvCommunity.adapter = postAdapter
 
             viewLifecycleOwner.repeatWhenUiStarted {
@@ -124,9 +141,18 @@ internal class CommunityItemFragment :
 
     private fun setMyPostAdapter() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val postAdapter = PostAdapter {
-                viewModel.onGroupJoinButtonClicked(it)
-            }
+            val postAdapter = PostAdapter(
+                isMyPost = true,
+                itemLongClickListener = { postId ->
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_check_delete_post),
+                        Snackbar.LENGTH_SHORT
+                    ).setAction(R.string.text_delete) {
+                        viewModel.deletePost(postId)
+                    }.show()
+                }
+            )
             binding.rvCommunity.adapter = postAdapter
 
             viewLifecycleOwner.repeatWhenUiStarted {

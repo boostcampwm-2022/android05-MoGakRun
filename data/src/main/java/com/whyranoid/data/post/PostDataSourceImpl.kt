@@ -268,4 +268,17 @@ class PostDataSourceImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun deletePost(postId: String): Boolean {
+        return suspendCancellableCoroutine { cancellableContinuation ->
+            db.collection(CollectionId.POST_COLLECTION)
+                .document(postId)
+                .delete()
+                .addOnSuccessListener {
+                    cancellableContinuation.resume(true)
+                }.addOnFailureListener {
+                    cancellableContinuation.resume(false)
+                }
+        }
+    }
 }
