@@ -113,6 +113,7 @@
     <string name="running_channel_name">활동 추적</string>
     <string name="running_channel_description">달리기 활동을 추적하는 알림 채널입니다.</string>
     <string name="running_map_location_button">🎯</string>
+    <string name="running_start_progress_description">러닝 시작을 기다리고 있어요</string>
 
     <!--라닝 종료 화면-->
     <string name="running_finish_tool_bar">러닝 종료</string>

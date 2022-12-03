@@ -5,6 +5,10 @@
 
     <data>
 
+        <import type="com.whyranoid.presentation.running.RunningState" />
+
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.whyranoid.presentation.running.RunningViewModel" />
@@ -164,6 +168,27 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_pause_or_resume" />
+
+        <FrameLayout
+            android:id="@+id/frame_progress_running"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:alpha="0.8"
+            android:translationZ="@{vm.runningState instanceof RunningState.NotRunning ? 10f : 0f }"
+            android:visibility="@{vm.runningState instanceof RunningState.NotRunning ? View.VISIBLE : View.GONE }">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressindicator_running"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/running_start_progress_description"
+                android:indeterminate="true"
+                android:visibility="@{vm.runningState instanceof RunningState.NotRunning ? View.VISIBLE : View.GONE }"
+                app:indicatorColor="?attr/colorOnPrimary" />
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
