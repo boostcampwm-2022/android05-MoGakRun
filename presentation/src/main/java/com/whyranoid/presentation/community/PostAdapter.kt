@@ -22,19 +22,6 @@ class PostAdapter(
 
     private lateinit var myGroupList: List<GroupInfoUiModel>
 
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Post>() {
-            override fun areItemsTheSame(oldItem: Post, newItem: Post) =
-                oldItem.postId == newItem.postId
-
-            override fun areContentsTheSame(oldItem: Post, newItem: Post) =
-                oldItem == newItem
-        }
-
-        const val RECRUIT_POST_TYPE = 0
-        const val RUNNING_POST_TYPE = 1
-    }
-
     abstract class PostViewHolder(binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
         abstract fun bind(post: Post)
@@ -109,5 +96,18 @@ class PostAdapter(
 
     fun setMyGroupList(myGroupList: List<GroupInfoUiModel>) {
         this.myGroupList = myGroupList
+    }
+
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<Post>() {
+            override fun areItemsTheSame(oldItem: Post, newItem: Post) =
+                oldItem.postId == newItem.postId
+
+            override fun areContentsTheSame(oldItem: Post, newItem: Post) =
+                oldItem == newItem
+        }
+
+        const val RECRUIT_POST_TYPE = 0
+        const val RUNNING_POST_TYPE = 1
     }
 }
