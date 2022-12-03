@@ -94,6 +94,9 @@
             android:name="runningFinishData"
             app:argType="com.whyranoid.presentation.running.RunningFinishData"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_runningFinishFragment_to_createRunningPostFragment"
+            app:destination="@id/createRunningPostFragment" />
     </fragment>
 
 </navigation>

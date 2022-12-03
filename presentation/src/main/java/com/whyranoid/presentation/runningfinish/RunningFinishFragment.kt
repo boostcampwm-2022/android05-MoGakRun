@@ -90,7 +90,10 @@ internal class RunningFinishFragment :
     }
 
     private fun handlePositiveButtonClicked(runningHistory: RunningHistoryUiModel) {
-        // TODO Safe-Args 활용 CreateRunningPostFragment로 이동
+        val direction = RunningFinishFragmentDirections.actionRunningFinishFragmentToCreateRunningPostFragment(
+            runningHistory
+        )
+        findNavController().navigate(direction)
     }
 
     override fun onMapReady(naverMap: NaverMap) {
