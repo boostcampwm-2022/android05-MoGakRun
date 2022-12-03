@@ -56,6 +56,8 @@ class PostAdapter(
                         btnJoinGroup.visibility = View.VISIBLE
                         btnJoinGroup.setOnClickListener {
                             buttonClickListener(post.groupInfo.groupId)
+                            // TODO : 이러면 가입에 실패해도 그룹 가입 버튼이 사라지는데 이에 대한 처리 필요.
+                            btnJoinGroup.visibility = View.GONE
                         }
                     }
                 }
