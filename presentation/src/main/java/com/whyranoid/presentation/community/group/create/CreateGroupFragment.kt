@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
@@ -25,13 +26,51 @@ internal class CreateGroupFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewModel = viewModel
+        initViews()
+        observeState()
+    }
 
+    private fun initViews() {
+        binding.viewModel = viewModel
         setupMenu()
+    }
+
+    private fun observeState() {
+        viewLifecycleOwner.repeatWhenUiStarted {
+            viewModel.isGroupCreateButtonEnable.collect { isEnable ->
+                if (isEnable) {
+                    binding.topAppBar.menu.setGroupVisible(R.id.ready_to_create, true)
+                    binding.topAppBar.menu.setGroupVisible(R.id.not_ready_to_create, false)
+                } else {
+                    binding.topAppBar.menu.setGroupVisible(R.id.ready_to_create, false)
+                    binding.topAppBar.menu.setGroupVisible(R.id.not_ready_to_create, true)
+                }
+            }
+        }
 
         viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.eventFlow.collect { event ->
                 handleEvent(event)
+            }
+        }
+
+        viewLifecycleOwner.repeatWhenUiStarted {
+            viewModel.rules.collect { rules ->
+                binding.ruleChipGroup.apply {
+                    removeAllViews()
+                    rules.forEach { rule ->
+                        addView(
+                            Chip(requireContext()).apply {
+                                isCloseIconVisible = true
+                                setChipBackgroundColorResource(R.color.mogakrun_primary)
+                                text = rule
+                                setOnCloseIconClickListener {
+                                    viewModel.removeRule(rule)
+                                }
+                            }
+                        )
+                    }
+                }
             }
         }
     }
@@ -111,18 +150,6 @@ internal class CreateGroupFragment :
                     else -> {
                         false
                     }
-                }
-            }
-        }
-
-        viewLifecycleOwner.repeatWhenUiStarted {
-            viewModel.isGroupCreateButtonEnable.collect { isEnable ->
-                if (isEnable) {
-                    binding.topAppBar.menu.setGroupVisible(R.id.ready_to_create, true)
-                    binding.topAppBar.menu.setGroupVisible(R.id.not_ready_to_create, false)
-                } else {
-                    binding.topAppBar.menu.setGroupVisible(R.id.ready_to_create, false)
-                    binding.topAppBar.menu.setGroupVisible(R.id.not_ready_to_create, true)
                 }
             }
         }
