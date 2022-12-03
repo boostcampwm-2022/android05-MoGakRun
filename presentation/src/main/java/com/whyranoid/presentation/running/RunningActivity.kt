@@ -130,12 +130,13 @@ internal class RunningActivity :
     private fun observeState() {
         repeatWhenUiStarted {
             viewModel.runningState.collect { runningState ->
-                with(runningState.runningData) {
-                    binding.tvStartTime.text = Date(startTime).dateToString("hh:mm")
-                    binding.tvRunningTime.text =
-                        String.format("%d:%02d", runningTime / 60, runningTime % 60)
-                    binding.tvTotalDistance.text = String.format("%.4f m", totalDistance)
-                    binding.tvPace.text = String.format("%.4f km/h", pace * 3.6)
+                when (runningState) {
+                    is RunningState.NotRunning -> {
+                    }
+                    is RunningState.Running,
+                    is RunningState.Paused -> {
+                        handleUpdateState(runningState.runningData)
+                    }
                 }
             }
         }
@@ -206,6 +207,16 @@ internal class RunningActivity :
                     paths[index].map = naverMap
                 }
             }
+        }
+    }
+
+    private fun handleUpdateState(runningData: RunningData) {
+        with(runningData) {
+            binding.tvStartTime.text = Date(startTime).dateToString("hh:mm")
+            binding.tvRunningTime.text =
+                String.format("%d:%02d", runningTime / 60, runningTime % 60)
+            binding.tvTotalDistance.text = String.format("%.4f m", totalDistance)
+            binding.tvPace.text = String.format("%.4f km/h", pace * 3.6)
         }
     }
 
