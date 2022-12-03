@@ -12,11 +12,13 @@ import com.whyranoid.domain.model.RecruitPost
 import com.whyranoid.domain.model.RunningPost
 import com.whyranoid.presentation.databinding.ItemRecruitPostBinding
 import com.whyranoid.presentation.databinding.ItemRunningPostBinding
+import com.whyranoid.presentation.model.GroupInfoUiModel
 
 class PostAdapter(
-    private val myUid: String,
     private val buttonClickListener: (String) -> Unit
 ) : ListAdapter<Post, PostAdapter.PostViewHolder>(diffUtil) {
+
+    private lateinit var myGroupList: List<GroupInfoUiModel>
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Post>() {
@@ -48,7 +50,7 @@ class PostAdapter(
             if (post is RecruitPost) {
                 with(binding) {
                     recruitPost = post
-                    if (myUid == post.author.uid) {
+                    if (post.groupInfo.groupId in myGroupList.map { it.groupId }) {
                         btnJoinGroup.visibility = View.GONE
                     } else {
                         btnJoinGroup.visibility = View.VISIBLE
@@ -92,5 +94,9 @@ class PostAdapter(
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    fun setMyGroupList(myGroupList: List<GroupInfoUiModel>) {
+        this.myGroupList = myGroupList
     }
 }

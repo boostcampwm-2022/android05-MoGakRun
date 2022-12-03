@@ -82,12 +82,16 @@ internal class CommunityItemFragment :
 
     private fun setPostAdapter() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val uid = viewModel.getMyUseCase()
-
-            val postAdapter = PostAdapter(uid) {
+            val postAdapter = PostAdapter {
                 viewModel.onGroupJoinButtonClicked(it)
             }
             binding.rvCommunity.adapter = postAdapter
+
+            viewLifecycleOwner.repeatWhenUiStarted {
+                viewModel.myGroupList.collect { myGroupList ->
+                    postAdapter.setMyGroupList(myGroupList)
+                }
+            }
 
             viewLifecycleOwner.repeatWhenUiStarted {
                 viewModel.postList.collect { postList ->
