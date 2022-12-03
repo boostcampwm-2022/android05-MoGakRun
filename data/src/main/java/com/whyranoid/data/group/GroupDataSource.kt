@@ -24,6 +24,11 @@ interface GroupDataSource {
         uid: String
     ): Boolean
 
+    suspend fun deleteGroup(
+        uid: String,
+        groupId: String
+    ): Boolean
+
     fun getGroupInfoFlow(uid: String, groupId: String): Flow<GroupInfo>
 
     suspend fun isDuplicatedGroupName(groupName: String): Boolean

@@ -143,6 +143,28 @@ class GroupDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteGroup(uid: String, groupId: String): Boolean {
+        return suspendCancellableCoroutine { cancellableContinuation ->
+            db.collection(GROUPS_COLLECTION)
+                .document(groupId)
+                .delete()
+                .addOnSuccessListener {
+                    db.collection(USERS_COLLECTION)
+                        .document(uid)
+                        .update(
+                            JOINED_GROUP_LIST,
+                            FieldValue.arrayRemove(groupId)
+                        ).addOnSuccessListener {
+                            cancellableContinuation.resume(true)
+                        }.addOnFailureListener {
+                            cancellableContinuation.resume(false)
+                        }
+                }.addOnFailureListener {
+                    cancellableContinuation.resume(false)
+                }
+        }
+    }
+
     override fun getGroupInfoFlow(uid: String, groupId: String): Flow<GroupInfo> = callbackFlow {
         db.collection(GROUPS_COLLECTION)
             .document(groupId)
