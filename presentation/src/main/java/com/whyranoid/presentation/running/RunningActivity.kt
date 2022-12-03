@@ -2,7 +2,9 @@ package com.whyranoid.presentation.running
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationSource
@@ -27,6 +29,18 @@ internal class RunningActivity :
     LocationSource {
 
     private val viewModel: RunningViewModel by viewModels()
+
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            Snackbar.make(
+                binding.root,
+                getString(R.string.running_fin_snackbar_content),
+                Snackbar.LENGTH_SHORT
+            ).setAction(getString(R.string.running_fin_snackbar_action)) {
+                viewModel.onFinishButtonClicked()
+            }.show()
+        }
+    }
 
     private lateinit var mapView: MapView
     private lateinit var naverMap: NaverMap
@@ -125,6 +139,7 @@ internal class RunningActivity :
         mapView.getMapAsync(this)
 
         binding.vm = viewModel
+        this.onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 
     private fun observeState() {
@@ -210,7 +225,10 @@ internal class RunningActivity :
     }
 
     private fun handleRunningFinishSuccessState(runningFinishData: RunningFinishData) {
-        setResult(RESULT_OK, Intent().putExtra(RunningViewModel.RUNNING_FINISH_DATA_KEY, runningFinishData))
+        setResult(
+            RESULT_OK,
+            Intent().putExtra(RunningViewModel.RUNNING_FINISH_DATA_KEY, runningFinishData)
+        )
         finish()
     }
 

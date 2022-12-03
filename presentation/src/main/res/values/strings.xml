@@ -103,5 +103,7 @@
     <string name="running_finish_positive_btn">자랑할래요</string>
     <string name="running_finish_negative_btn">괜찮아요</string>
     <string name="running_finish_progress_description">러닝 종료 화면 프로그레스바</string>
+    <string name="running_fin_snackbar_content">러닝을 종료하시겠습니다?</string>
+    <string name="running_fin_snackbar_action">종료하기</string>
 
 </resources>
