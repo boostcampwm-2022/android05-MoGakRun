@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="20dp"
-            app:LongToTime="@{runningPost.runningHistory.startedAt}"
+            app:longToTime="@{runningPost.runningHistory.startedAt}"
             app:layout_constraintBottom_toBottomOf="@id/view_horizontal_partition_line"
             app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
             tools:text="17:00" />
@@ -121,7 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="20dp"
-            app:LongToTime="@{runningPost.runningHistory.finishedAt}"
+            app:longToTime="@{runningPost.runningHistory.finishedAt}"
             app:layout_constraintBottom_toBottomOf="@id/view_horizontal_partition_line"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="19:22" />

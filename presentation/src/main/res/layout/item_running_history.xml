@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.whyranoid.presentation.util.ExtensionsKt" />
+
         <variable
             name="runningHistory"
             type="com.whyranoid.presentation.model.RunningHistoryUiModel" />
@@ -34,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:maxLines="1"
-            android:text="@{Long.toString(runningHistory.date)}"
+            android:text="@{ExtensionsKt.toRunningDateString(runningHistory.date)}"
             android:textAppearance="@style/MoGakRunText.Regular.Small"
             android:textColor="?attr/colorOnSecondary"
             app:layout_constraintEnd_toEndOf="@id/view_vertical_partition_line"
@@ -59,7 +61,7 @@
             android:id="@+id/tv_total_running_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{Integer.toString(runningHistory.totalRunningTime)}"
+            android:text="@{String.format(@string/running_history_value_total_running_time, runningHistory.totalRunningTime / 3600, runningHistory.totalRunningTime / 60)}"
             android:textAppearance="@style/MoGakRunText.Regular.Small"
             app:layout_constraintBottom_toBottomOf="@id/tv_label_total_running_time"
             app:layout_constraintEnd_toEndOf="parent"
@@ -103,11 +105,11 @@
 
         <TextView
             android:id="@+id/tv_start_time_value"
+            longToTime="@{runningHistory.startedAt}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingBottom="20dp"
-            android:text="@{Long.toString(runningHistory.startedAt)}"
             android:textAppearance="@style/MoGakRunText.Regular.Medium"
             app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
             app:layout_constraintHorizontal_bias="0.6"
@@ -126,12 +128,12 @@
             app:layout_constraintTop_toTopOf="@id/tv_start_time_label" />
 
         <TextView
+            longToTime="@{runningHistory.finishedAt}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:paddingTop="10dp"
             android:paddingBottom="20dp"
-            android:text="@{Long.toString(runningHistory.finishedAt)}"
             android:textAppearance="@style/MoGakRunText.Regular.Medium"
             app:layout_constraintEnd_toEndOf="@id/view_horizontal_partition_line"
             app:layout_constraintHorizontal_bias="0.6"
@@ -156,7 +158,7 @@
             android:layout_marginTop="24dp"
             android:paddingTop="10dp"
             android:paddingBottom="20dp"
-            android:text="@{Double.toString(runningHistory.totalDistance)}"
+            android:text="@{runningHistory.totalDistance >= 1000 ? String.format(@string/running_history_value_running_distance_km, runningHistory.totalDistance / 1000) : String.format(@string/running_history_value_running_distance_m, runningHistory.totalDistance)}"
             android:textAppearance="@style/MoGakRunText.Regular.Medium"
             app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
             app:layout_constraintHorizontal_bias="0.6"
@@ -181,7 +183,7 @@
             android:layout_marginTop="24dp"
             android:paddingTop="10dp"
             android:paddingBottom="20dp"
-            android:text="@{Double.toString(runningHistory.pace)}"
+            android:text="@{String.format(@string/running_history_value_running_pace, runningHistory.pace)}"
             android:textAppearance="@style/MoGakRunText.Regular.Medium"
             app:layout_constraintEnd_toEndOf="@id/view_horizontal_partition_line"
             app:layout_constraintHorizontal_bias="0.6"
