@@ -22,13 +22,16 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:elevation="0dp"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/top_app_bar"
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
+                android:background="@color/mogakrun_background"
                 android:layout_height="?attr/actionBarSize"
+                app:titleTextAppearance="@style/MoGakRunText.Bold.Medium"
                 app:title="@string/community_create_running_post_title" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -38,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/community_label_running_history"
+            android:textAppearance="@style/MoGakRunText.Bold.Medium"
             app:layout_constraintTop_toBottomOf="@id/app_bar"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="20dp"
@@ -59,8 +63,13 @@
             android:id="@+id/et_running_post_content"
             android:layout_width="0dp"
             android:layout_height="300dp"
+            android:background="@drawable/community_create_running_post_edit_text_background"
+            android:layout_marginTop="28dp"
             android:layout_marginHorizontal="12dp"
+            android:padding="16dp"
+            android:textAppearance="@style/MoGakRunText.Regular.Medium"
             android:inputType="textMultiLine"
+            android:hint="@string/community_create_running_post_hint"
             android:gravity="top|start"
             android:text="@={vm.runningPostContent}"
             app:layout_constraintStart_toStartOf="parent"

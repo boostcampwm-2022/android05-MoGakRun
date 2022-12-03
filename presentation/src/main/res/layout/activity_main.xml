@@ -26,6 +26,8 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
+            app:itemTextColor="@drawable/bottom_navigation_color_selector"
+            app:itemIconTint="@drawable/bottom_navigation_color_selector"
             style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

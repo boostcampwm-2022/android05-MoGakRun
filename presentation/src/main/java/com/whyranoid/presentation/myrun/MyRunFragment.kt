@@ -57,18 +57,6 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
             }
             true
         }
-
-        calendarView.apply {
-            itemAnimator = null
-            dayBinder = CalendarDayBinder(this)
-            monthScrollListener = { calendarMonth ->
-                onMonthScrolled(calendarMonth.yearMonth)
-            }
-            // 모든 달력 범위 설정
-            setup(firstMonth, lastMonth, firstDayOfWeek)
-            // 첫 화면에서 보일 달 설정
-            scrollToMonth(currentMonth)
-        }
     }
 
     private fun observeState() {
@@ -97,6 +85,22 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
 
                     is UiState.Failure -> {
                     }
+                }
+            }
+        }
+
+        viewLifecycleOwner.repeatWhenUiStarted {
+            viewModel.runningDays.collect { runningDays ->
+                binding.calendarView.apply {
+                    itemAnimator = null
+                    dayBinder = CalendarDayBinder(this, runningDays)
+                    monthScrollListener = { calendarMonth ->
+                        onMonthScrolled(calendarMonth.yearMonth)
+                    }
+                    // 모든 달력 범위 설정
+                    setup(firstMonth, lastMonth, firstDayOfWeek)
+                    // 첫 화면에서 보일 달 설정
+                    scrollToMonth(currentMonth)
                 }
             }
         }
