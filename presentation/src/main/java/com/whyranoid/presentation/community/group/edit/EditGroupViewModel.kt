@@ -32,6 +32,10 @@ class EditGroupViewModel @Inject constructor(
         emitEvent(Event.AddRuleButtonClick)
     }
 
+    fun removeRule(rule: String) {
+        rules.value = rules.value.filter { it != rule }
+    }
+
     fun emitEvent(event: Event) {
         viewModelScope.launch {
             when (event) {

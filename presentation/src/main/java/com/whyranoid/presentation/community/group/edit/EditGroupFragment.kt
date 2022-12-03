@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
@@ -19,14 +20,13 @@ internal class EditGroupFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupMenu()
         initViews()
         observeState()
     }
 
     private fun initViews() {
         binding.viewModel = viewModel
+        setupMenu()
     }
 
     private fun handleEvent(event: Event) {
@@ -58,6 +58,26 @@ internal class EditGroupFragment :
         viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.eventFlow.collect { event ->
                 handleEvent(event)
+            }
+        }
+
+        viewLifecycleOwner.repeatWhenUiStarted {
+            viewModel.rules.collect { rules ->
+                binding.ruleChipGroup.apply {
+                    removeAllViews()
+                    rules.forEach { rule ->
+                        addView(
+                            Chip(requireContext()).apply {
+                                isCloseIconVisible = true
+                                setChipBackgroundColorResource(R.color.mogakrun_primary)
+                                text = rule
+                                setOnCloseIconClickListener {
+                                    viewModel.removeRule(rule)
+                                }
+                            }
+                        )
+                    }
+                }
             }
         }
     }
