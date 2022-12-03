@@ -24,8 +24,8 @@
             android:id="@+id/btn_map_location"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="@string/running_map_location_button"
             android:onClick="@{() -> vm.onTrackingButtonClicked()}"
+            android:text="@string/running_map_location_button"
             app:layout_constraintBottom_toTopOf="@id/panel_running_data"
             app:layout_constraintRight_toRightOf="@id/panel_running_data" />
 
@@ -37,9 +37,9 @@
             android:layout_margin="12dp"
             android:background="@color/white"
             android:clickable="false"
+            android:elevation="@dimen/cardview_default_elevation"
             android:paddingHorizontal="12dp"
             android:paddingVertical="8dp"
-            android:elevation="@dimen/cardview_default_elevation"
             app:layout_constraintBottom_toTopOf="@+id/btn_pause_or_resume"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -142,7 +142,6 @@
                 tools:text="6.3km/h" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_pause_or_resume"

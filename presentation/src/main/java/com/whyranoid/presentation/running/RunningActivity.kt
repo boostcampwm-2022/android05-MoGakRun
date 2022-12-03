@@ -210,7 +210,10 @@ internal class RunningActivity :
     }
 
     private fun handleRunningFinishSuccessState(runningFinishData: RunningFinishData) {
-        setResult(RESULT_OK, Intent().putExtra(RunningViewModel.RUNNING_FINISH_DATA_KEY, runningFinishData))
+        setResult(
+            RESULT_OK,
+            Intent().putExtra(RunningViewModel.RUNNING_FINISH_DATA_KEY, runningFinishData)
+        )
         finish()
     }
 
