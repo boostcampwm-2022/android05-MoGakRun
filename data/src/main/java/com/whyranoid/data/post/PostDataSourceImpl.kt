@@ -3,6 +3,7 @@ package com.whyranoid.data.post
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.whyranoid.data.constant.CollectionId
+import com.whyranoid.data.constant.FieldId.AUTHOR_ID
 import com.whyranoid.data.constant.FieldId.RUNNING_HISTORY_ID
 import com.whyranoid.data.constant.FieldId.UPDATED_AT
 import com.whyranoid.data.model.GroupInfoResponse
@@ -32,6 +33,99 @@ class PostDataSourceImpl @Inject constructor(
     fun getAllPostFlow(): Flow<List<Post>> =
         callbackFlow {
             db.collection(CollectionId.POST_COLLECTION)
+                .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
+                .addSnapshotListener { snapshot, _ ->
+                    val postList = mutableListOf<Post>()
+                    snapshot?.forEach { docuemnt ->
+
+                        if (docuemnt[RUNNING_HISTORY_ID] != null) {
+                            docuemnt.toObject(RunningPostResponse::class.java).let { postResponse ->
+                                db.collection(CollectionId.USERS_COLLECTION)
+                                    .document(postResponse.authorId)
+                                    .get()
+                                    .addOnSuccessListener { authorDocument ->
+                                        val authorResponse =
+                                            authorDocument?.toObject(UserResponse::class.java)
+
+                                        authorResponse?.let {
+                                            db.collection(CollectionId.RUNNING_HISTORY_COLLECTION)
+                                                .document(postResponse.runningHistoryId)
+                                                .get()
+                                                .addOnSuccessListener { runningHistoryDocument ->
+                                                    val runningHistoryResponse =
+                                                        runningHistoryDocument.toObject(
+                                                            RunningHistory::class.java
+                                                        )
+
+                                                    runningHistoryResponse?.let {
+                                                        val author = authorResponse.toUser()
+
+                                                        postList.add(
+                                                            RunningPost(
+                                                                postId = postResponse.postId,
+                                                                author = author,
+                                                                updatedAt = postResponse.updatedAt,
+                                                                runningHistory = it,
+                                                                likeCount = 0,
+                                                                content = postResponse.content
+                                                            )
+                                                        )
+                                                    }
+                                                }
+                                        }
+                                    }
+                            }
+                        } else {
+                            docuemnt.toObject(RecruitPostResponse::class.java).let { postResponse ->
+
+                                db.collection(CollectionId.USERS_COLLECTION)
+                                    .document(postResponse.authorId)
+                                    .get()
+                                    .addOnSuccessListener { authorDocument ->
+                                        val authorResponse =
+                                            authorDocument?.toObject(UserResponse::class.java)
+
+                                        authorResponse?.let {
+                                            db.collection(CollectionId.GROUPS_COLLECTION)
+                                                .document(postResponse.groupId)
+                                                .get()
+                                                .addOnSuccessListener { groupDocument ->
+                                                    val groupInfoResponse =
+                                                        groupDocument.toObject(GroupInfoResponse::class.java)
+
+                                                    groupInfoResponse?.let { groupInfoResponse ->
+                                                        val author = authorResponse.toUser()
+                                                        postList.add(
+                                                            RecruitPost(
+                                                                postId = postResponse.postId,
+                                                                author = author,
+                                                                updatedAt = postResponse.updatedAt,
+                                                                groupInfo = groupInfoResponse
+                                                                    .toGroupInfo(
+                                                                        author,
+                                                                        rules = groupInfoResponse.rules.map {
+                                                                            it.toRule()
+                                                                        }
+                                                                    )
+                                                            )
+                                                        )
+                                                        trySend(postList)
+                                                    }
+                                                }
+                                        }
+                                    }
+                            }
+                        }
+                    }
+                }
+
+            awaitClose()
+        }
+
+    fun getMyPostFlow(uid: String): Flow<List<Post>> =
+        callbackFlow {
+            db.collection(CollectionId.POST_COLLECTION)
+                .whereEqualTo(AUTHOR_ID, uid)
                 .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
                 .addSnapshotListener { snapshot, _ ->
                     val postList = mutableListOf<Post>()

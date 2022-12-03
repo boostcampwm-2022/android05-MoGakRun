@@ -18,6 +18,10 @@ class PostRepositoryImpl @Inject constructor(
         return postDataSourceImpl.getAllPostFlow()
     }
 
+    override fun getMyPostFlow(uid: String): Flow<List<Post>> {
+        return postDataSourceImpl.getMyPostFlow(uid)
+    }
+
     override suspend fun createRunningPost(
         authorUid: String,
         runningHistoryId: String,
