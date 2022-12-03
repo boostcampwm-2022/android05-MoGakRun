@@ -39,15 +39,7 @@ internal class CommunityFragment :
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    CommunityCategory.MY_GROUP.ordinal -> {
-                        binding.topAppBar.menu.clear()
-                    }
-                    CommunityCategory.BOARD.ordinal,
-                    CommunityCategory.MY_POST.ordinal -> {
-                        binding.topAppBar.menu.clear()
-                    }
-                }
+                binding.topAppBar.menu.clear()
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
