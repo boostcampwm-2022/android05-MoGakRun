@@ -38,6 +38,8 @@
     <string name="text_delete_post_fail">게시글 삭제에 실패하였습니다!</string>
     <string name="text_check_delete_post">해당 포스트를 삭제하시겠습니까?</string>
     <string name="text_delete">삭제</string>
+    <string name="text_join_group">그룹 가입하기</string>
+    <string name="text_like_count">좋아요 %d개</string>
 
     <!-- 마이런 탭 화면 -->
     <string name="my_run_tool_bar_menu_setting">설정</string>
@@ -63,6 +65,8 @@
     <string name="text_go_to_create_group">그룹 생성하러 가기</string>
     <string name="text_group_introduce">그룹 소개</string>
     <string name="text_duplicate_check">중복확인</string>
+    <string name="text_duplicated_group_name">중복된 그룹 이름입니다. 변경해주세요!</string>
+    <string name="text_un_duplicated_group_name">사용 가능한 그룹 이름입니다!</string>
     <string name="text_create_group">그룹 생성하기</string>
     <string name="text_warning_create_group">그룹명과 그룹 소개를 입력해주세요.</string>
     <string name="text_create_group_success">그룹이 생성되었습니다!</string>
@@ -71,10 +75,14 @@
 
     <!-- 운동 기록 아이템 뷰 -->
     <string name="running_history_label_total_running_time">총 운동시간</string>
+    <string name="running_history_value_total_running_time">%d시간 %d분</string>
     <string name="running_history_label_start_running_time">시작시간</string>
     <string name="running_history_label_finish_running_time">종료시간</string>
     <string name="running_history_label_running_distance">이동거리</string>
+    <string name="running_history_value_running_distance_m">%.0fm</string>
+    <string name="running_history_value_running_distance_km">%.2fkm</string>
     <string name="running_history_label_running_pace">페이스</string>
+    <string name="running_history_value_running_pace">%.2fkm/h</string>
 
     <!-- 그룹 상세보기 화면-->
     <string name="text_headcount">%d명</string>
@@ -105,10 +113,7 @@
     <string name="running_channel_name">활동 추적</string>
     <string name="running_channel_description">달리기 활동을 추적하는 알림 채널입니다.</string>
     <string name="running_map_location_button">🎯</string>
-    <string name="text_join_group">그룹 가입하기</string>
-    <string name="text_duplicated_group_name">중복된 그룹 이름입니다. 변경해주세요!</string>
-    <string name="text_un_duplicated_group_name">사용 가능한 그룹 이름입니다!</string>
-    <string name="text_like_count">좋아요 %d개</string>
+    <string name="running_start_progress_description">러닝 시작을 기다리고 있어요</string>
 
     <!--라닝 종료 화면-->
     <string name="running_finish_tool_bar">러닝 종료</string>
