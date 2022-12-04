@@ -1,17 +1,35 @@
 package com.whyranoid.data.post
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
-    private val postDataSource: PostDataSource
+    private val postDataSource: PostDataSource,
+    private val postPagingDataSource: PostPagingDataSource,
+    private val myPostPagingDataSource: MyPostPagingDataSource
 ) : PostRepository {
 
-    // TODO : 페이징처리하기
-    override fun getPagingPosts(): Flow<List<Post>> {
-        TODO("Not yet implemented")
+    // TODO : 캐싱하기
+    override fun getPagingPosts(): Flow<PagingData<Post>> {
+        return Pager(
+            PagingConfig(pageSize = 5)
+        ) {
+            postPagingDataSource
+        }.flow
+    }
+
+    override fun getMyPagingPosts(uid: String): Flow<PagingData<Post>> {
+        myPostPagingDataSource.setMyUid(uid)
+        return Pager(
+            PagingConfig(pageSize = 5)
+        ) {
+            myPostPagingDataSource
+        }.flow
     }
 
     override fun getAllPostFlow(): Flow<List<Post>> {

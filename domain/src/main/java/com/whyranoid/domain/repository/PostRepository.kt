@@ -1,5 +1,6 @@
 package com.whyranoid.domain.repository
 
+import androidx.paging.PagingData
 import com.whyranoid.domain.model.Post
 import kotlinx.coroutines.flow.Flow
 
@@ -7,7 +8,9 @@ interface PostRepository {
 
     // TODO : 페이징 처리
     // 글(홍보 / 인증) 페이징으로 가져오기 - 리모트
-    fun getPagingPosts(): Flow<List<Post>>
+    fun getPagingPosts(): Flow<PagingData<Post>>
+
+    fun getMyPagingPosts(uid: String): Flow<PagingData<Post>>
 
     fun getAllPostFlow(): Flow<List<Post>>
 

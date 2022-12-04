@@ -2,11 +2,10 @@ package com.whyranoid.presentation.community
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.usecase.DeletePostUseCase
 import com.whyranoid.domain.usecase.GetMyGroupListUseCase
-import com.whyranoid.domain.usecase.GetMyPostUseCase
-import com.whyranoid.domain.usecase.GetPostsUseCase
+import com.whyranoid.domain.usecase.GetMyPagingPostsUseCase
+import com.whyranoid.domain.usecase.GetPagingPostsUseCase
 import com.whyranoid.domain.usecase.JoinGroupUseCase
 import com.whyranoid.presentation.model.GroupInfoUiModel
 import com.whyranoid.presentation.model.toGroupInfoUiModel
@@ -25,27 +24,21 @@ import javax.inject.Inject
 @HiltViewModel
 class CommunityViewModel @Inject constructor(
     getMyGroupListUseCase: GetMyGroupListUseCase,
-    getPostsUseCase: GetPostsUseCase,
     private val joinGroupUseCase: JoinGroupUseCase,
-    private val getMyPostUseCase: GetMyPostUseCase,
-    private val deletePostUseCase: DeletePostUseCase
+    private val deletePostUseCase: DeletePostUseCase,
+    getPagingPostsUseCase: GetPagingPostsUseCase,
+    val getMyPagingPostsUseCase: GetMyPagingPostsUseCase
 ) : ViewModel() {
-
-    private val _postList = MutableStateFlow<List<Post>>(emptyList())
-    val postList: StateFlow<List<Post>>
-        get() = _postList.asStateFlow()
 
     private val _myGroupList = MutableStateFlow<List<GroupInfoUiModel>>(emptyList())
     val myGroupList: StateFlow<List<GroupInfoUiModel>>
         get() = _myGroupList.asStateFlow()
 
-    private val _myPostList = MutableStateFlow<List<Post>>(emptyList())
-    val myPostList: StateFlow<List<Post>>
-        get() = _myPostList.asStateFlow()
-
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow: SharedFlow<Event>
         get() = _eventFlow.asSharedFlow()
+
+    val pagingPost = getPagingPostsUseCase()
 
     fun onGroupItemClicked(groupInfo: GroupInfoUiModel) {
         emitEvent(Event.GroupItemClick(groupInfo))
@@ -93,18 +86,6 @@ class CommunityViewModel @Inject constructor(
                 _myGroupList.value = groupInfoList.map { groupInfo ->
                     groupInfo.toGroupInfoUiModel()
                 }
-            }.launchIn(this)
-        }
-
-        getPostsUseCase().onEach { postList ->
-            _postList.value = postList.sortedByDescending { post ->
-                post.updatedAt
-            }
-        }.launchIn(viewModelScope)
-
-        viewModelScope.launch {
-            getMyPostUseCase().onEach { myPostList ->
-                _myPostList.value = myPostList
             }.launchIn(this)
         }
     }
