@@ -39,7 +39,7 @@ class PostPagingDataSource @Inject constructor(
             // 현재 페이지
             val currentPage = params.key ?: db.collection(POST_COLLECTION)
                 .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
-                .limit(10)
+                .limit(DATA_COUNT_PER_PAGE)
                 .get()
                 .await()
 
@@ -120,7 +120,7 @@ class PostPagingDataSource @Inject constructor(
             // 마지막 스냅샷 이후 페이지 불러오기
             val nextPage = db.collection(POST_COLLECTION)
                 .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
-                .limit(10).startAfter(lastDocumentSnapshot)
+                .limit(DATA_COUNT_PER_PAGE).startAfter(lastDocumentSnapshot)
                 .get()
                 .await()
 
@@ -132,5 +132,9 @@ class PostPagingDataSource @Inject constructor(
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
+    }
+
+    companion object {
+        private const val DATA_COUNT_PER_PAGE = 10L
     }
 }

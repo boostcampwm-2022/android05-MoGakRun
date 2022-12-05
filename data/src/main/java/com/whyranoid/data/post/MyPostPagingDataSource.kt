@@ -40,7 +40,7 @@ class MyPostPagingDataSource @Inject constructor(
             // 현재 페이지
             val currentPage = params.key ?: db.collection(CollectionId.POST_COLLECTION)
                 .whereEqualTo(AUTHOR_ID, myUid)
-                .limit(10)
+                .limit(DATA_COUNT_PER_PAGE)
                 .get()
                 .await()
 
@@ -121,7 +121,7 @@ class MyPostPagingDataSource @Inject constructor(
             // 마지막 스냅샷 이후 페이지 불러오기
             val nextPage = db.collection(CollectionId.POST_COLLECTION)
                 .whereEqualTo(AUTHOR_ID, myUid)
-                .limit(10)
+                .limit(DATA_COUNT_PER_PAGE)
                 .startAfter(lastDocumentSnapshot)
                 .get()
                 .await()
@@ -138,5 +138,9 @@ class MyPostPagingDataSource @Inject constructor(
 
     fun setMyUid(myUid: String) {
         this.myUid = myUid
+    }
+
+    companion object {
+        private const val DATA_COUNT_PER_PAGE = 10L
     }
 }
