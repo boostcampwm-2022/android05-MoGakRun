@@ -19,6 +19,7 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:elevation="0dp"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -26,6 +27,8 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:background="@color/mogakrun_background"
+                app:titleTextAppearance="@style/MoGakRunText.Bold.Medium"
                 app:title="@string/text_edit_group" />
 
         </com.google.android.material.appbar.AppBarLayout>
