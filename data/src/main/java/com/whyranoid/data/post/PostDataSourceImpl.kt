@@ -31,7 +31,8 @@ class PostDataSourceImpl @Inject constructor(
     private val db: FirebaseFirestore
 ) : PostDataSource {
 
-    //  TODO : 조금 더 간결하게 처리 필요.
+    // TODO : 조금 더 간결하게 처리 필요.
+    // TODO : 페이징 처리가 잘 끝나면 삭제
     override fun getAllPostFlow(): Flow<List<Post>> =
         callbackFlow {
             db.collection(CollectionId.POST_COLLECTION)
@@ -124,6 +125,7 @@ class PostDataSourceImpl @Inject constructor(
             awaitClose()
         }
 
+    // TODO : 페이징 처리가 잘 끝나면 삭제
     override fun getMyPostFlow(uid: String): Flow<List<Post>> =
         callbackFlow {
             db.collection(CollectionId.POST_COLLECTION)
@@ -131,10 +133,10 @@ class PostDataSourceImpl @Inject constructor(
                 .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
                 .addSnapshotListener { snapshot, _ ->
                     val postList = mutableListOf<Post>()
-                    snapshot?.forEach { docuemnt ->
+                    snapshot?.forEach { document ->
 
-                        if (docuemnt[RUNNING_HISTORY_ID] != null) {
-                            docuemnt.toObject(RunningPostResponse::class.java).let { postResponse ->
+                        if (document[RUNNING_HISTORY_ID] != null) {
+                            document.toObject(RunningPostResponse::class.java).let { postResponse ->
                                 db.collection(CollectionId.USERS_COLLECTION)
                                     .document(postResponse.authorId)
                                     .get()
@@ -171,7 +173,7 @@ class PostDataSourceImpl @Inject constructor(
                                     }
                             }
                         } else {
-                            docuemnt.toObject(RecruitPostResponse::class.java).let { postResponse ->
+                            document.toObject(RecruitPostResponse::class.java).let { postResponse ->
 
                                 db.collection(CollectionId.USERS_COLLECTION)
                                     .document(postResponse.authorId)
@@ -251,14 +253,12 @@ class PostDataSourceImpl @Inject constructor(
 
                 val previousRecruitPostId =
                     previousRecruitPost.toObjects(RecruitPostResponse::class.java).first().postId
+
                 db.collection(CollectionId.POST_COLLECTION)
                     .document(previousRecruitPostId)
-                    .set(
-                        RecruitPostResponse(
-                            postId = postId,
-                            authorId = authorUid,
-                            updatedAt = System.currentTimeMillis(),
-                            groupId = groupUid
+                    .update(
+                        mapOf(
+                            UPDATED_AT to System.currentTimeMillis()
                         )
                     ).addOnSuccessListener {
                         cancellableContinuation.resume(true)

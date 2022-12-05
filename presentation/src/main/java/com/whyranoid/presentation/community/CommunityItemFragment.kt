@@ -13,6 +13,7 @@ import com.whyranoid.presentation.databinding.FragmentCommunityItemBinding
 import com.whyranoid.presentation.util.getSerializableData
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -117,9 +118,9 @@ internal class CommunityItemFragment :
             }
 
             viewLifecycleOwner.repeatWhenUiStarted {
-                viewModel.postList.collect { postList ->
+                viewModel.pagingPost.collectLatest { postList ->
                     removeShimmer()
-                    postAdapter.submitList(postList)
+                    postAdapter.submitData(postList)
                 }
             }
         }
@@ -162,9 +163,9 @@ internal class CommunityItemFragment :
             }
 
             viewLifecycleOwner.repeatWhenUiStarted {
-                viewModel.myPostList.collect { myPostList ->
+                viewModel.getMyPagingPostsUseCase().collectLatest { myPostList ->
                     removeShimmer()
-                    postAdapter.submitList(myPostList)
+                    postAdapter.submitData(myPostList)
                 }
             }
         }

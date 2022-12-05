@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.model.RecruitPost
@@ -18,7 +18,7 @@ class PostAdapter(
     private val isMyPost: Boolean = false,
     private val itemLongClickListener: (String) -> Unit = {},
     private val buttonClickListener: (String) -> Unit = {}
-) : ListAdapter<Post, PostAdapter.PostViewHolder>(diffUtil) {
+) : PagingDataAdapter<Post, PostAdapter.PostViewHolder>(diffUtil) {
 
     private lateinit var myGroupList: List<GroupInfoUiModel>
 
@@ -84,12 +84,13 @@ class PostAdapter(
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        val curPost = getItem(position)
-        holder.apply {
-            bind(curPost)
-            if (isMyPost) this.itemView.setOnLongClickListener {
-                itemLongClickListener(curPost.postId)
-                true
+        getItem(position)?.let { curPost ->
+            holder.apply {
+                bind(curPost)
+                if (isMyPost) this.itemView.setOnLongClickListener {
+                    itemLongClickListener(curPost.postId)
+                    true
+                }
             }
         }
     }
