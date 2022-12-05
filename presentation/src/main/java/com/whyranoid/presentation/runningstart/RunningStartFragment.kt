@@ -60,7 +60,7 @@ internal class RunningStartFragment :
                             runningFinishData
                         )
                     findNavController().navigate(direction)
-                } ?: Snackbar.make(binding.root, "러닝 도중 에러가 발생했어요! 죄송해요..", Snackbar.LENGTH_SHORT)
+                } ?: Snackbar.make(binding.root, getString(R.string.running_start_error_message), Snackbar.LENGTH_SHORT)
                     .show()
             }
         }

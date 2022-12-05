@@ -34,9 +34,9 @@ internal class RunningActivity :
         override fun handleOnBackPressed() {
             Snackbar.make(
                 binding.root,
-                getString(R.string.running_fin_snackbar_content),
+                getString(R.string.running_finish_snackbar_content),
                 Snackbar.LENGTH_SHORT
-            ).setAction(getString(R.string.running_fin_snackbar_action)) {
+            ).setAction(getString(R.string.running_finish_snackbar_action)) {
                 viewModel.onFinishButtonClicked()
             }.show()
         }
