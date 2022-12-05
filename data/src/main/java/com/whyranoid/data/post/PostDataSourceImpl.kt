@@ -253,14 +253,12 @@ class PostDataSourceImpl @Inject constructor(
 
                 val previousRecruitPostId =
                     previousRecruitPost.toObjects(RecruitPostResponse::class.java).first().postId
+
                 db.collection(CollectionId.POST_COLLECTION)
                     .document(previousRecruitPostId)
-                    .set(
-                        RecruitPostResponse(
-                            postId = postId,
-                            authorId = authorUid,
-                            updatedAt = System.currentTimeMillis(),
-                            groupId = groupUid
+                    .update(
+                        mapOf(
+                            UPDATED_AT to System.currentTimeMillis()
                         )
                     ).addOnSuccessListener {
                         cancellableContinuation.resume(true)
