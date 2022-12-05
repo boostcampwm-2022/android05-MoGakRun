@@ -97,57 +97,40 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_runner_count_unit" />
 
-        <androidx.cardview.widget.CardView
-            enableWithNetworkState="@{vm.networkState}"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_anim_running_start"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/card_view_start_running"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_runner_count_suffix"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/runing_tab_animation" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_start_running"
+            enableWithNetworkState="@{vm.networkState}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:onClick="@{() -> vm.onStartButtonClicked()}"
             app:cardBackgroundColor="@color/mogakrun_primary_light"
-            app:cardCornerRadius="999dp"
+            app:cardCornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/width_end"
             app:layout_constraintStart_toStartOf="@id/width_start"
             app:layout_constraintTop_toBottomOf="@id/tv_runner_count_suffix">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guide_running_start"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.66" />
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/lottie_anim_running_start"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="@id/guide_running_start"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/runing_tab_animation" />
-
-                <TextView
-                    style="@style/MoGakRunText.Regular.Large"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:text="@string/runner_start_button_text"
-                    android:textColor="?attr/colorOnPrimary"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/guide_running_start" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <TextView
+                style="@style/MoGakRunText.Regular.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/runner_start_button_text"
+                android:textColor="?attr/colorOnPrimary"
+                android:textAppearance="@style/MoGakRunText.Bold.Large"
+                android:paddingVertical="16dp"/>
 
         </androidx.cardview.widget.CardView>
 

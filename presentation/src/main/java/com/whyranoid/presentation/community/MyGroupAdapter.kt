@@ -11,22 +11,6 @@ import com.whyranoid.presentation.model.GroupInfoUiModel
 class MyGroupAdapter(private val onClickListener: (GroupInfoUiModel) -> Unit) :
     ListAdapter<GroupInfoUiModel, MyGroupAdapter.MyGroupViewHolder>(diffUtil) {
 
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<GroupInfoUiModel>() {
-            override fun areItemsTheSame(
-                oldItem: GroupInfoUiModel,
-                newItem: GroupInfoUiModel
-            ): Boolean =
-                oldItem.groupId == newItem.groupId
-
-            override fun areContentsTheSame(
-                oldItem: GroupInfoUiModel,
-                newItem: GroupInfoUiModel
-            ): Boolean =
-                oldItem == newItem
-        }
-    }
-
     class MyGroupViewHolder(private val binding: MyGroupItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(groupInfo: GroupInfoUiModel) {
@@ -49,6 +33,22 @@ class MyGroupAdapter(private val onClickListener: (GroupInfoUiModel) -> Unit) :
                 }
             }
             bind(groupInfo = curItem)
+        }
+    }
+
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<GroupInfoUiModel>() {
+            override fun areItemsTheSame(
+                oldItem: GroupInfoUiModel,
+                newItem: GroupInfoUiModel
+            ): Boolean =
+                oldItem.groupId == newItem.groupId
+
+            override fun areContentsTheSame(
+                oldItem: GroupInfoUiModel,
+                newItem: GroupInfoUiModel
+            ): Boolean =
+                oldItem == newItem
         }
     }
 }

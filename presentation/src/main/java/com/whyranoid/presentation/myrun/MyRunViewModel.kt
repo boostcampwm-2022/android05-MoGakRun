@@ -2,6 +2,7 @@ package com.whyranoid.presentation.myrun
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.usecase.GetNicknameUseCase
 import com.whyranoid.domain.usecase.GetProfileUriUseCase
 import com.whyranoid.domain.usecase.GetRunningHistoryUseCase
@@ -10,6 +11,7 @@ import com.whyranoid.domain.usecase.UpdateNicknameUseCase
 import com.whyranoid.presentation.model.RunningHistoryUiModel
 import com.whyranoid.presentation.model.UiState
 import com.whyranoid.presentation.model.toRunningHistoryUiModel
+import com.whyranoid.presentation.util.toRunningDateString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -49,6 +51,11 @@ class MyRunViewModel @Inject constructor(
         MutableStateFlow<UiState<List<RunningHistoryUiModel>>>(UiState.UnInitialized)
     val runningHistoryListState: StateFlow<UiState<List<RunningHistoryUiModel>>>
         get() = _runningHistoryListState.asStateFlow()
+
+    private val _runningDays =
+        MutableStateFlow<List<List<String>>>(emptyList())
+    val runningDays: StateFlow<List<List<String>>>
+        get() = _runningDays.asStateFlow()
 
     private fun getUid() {
         viewModelScope.launch {
@@ -90,6 +97,7 @@ class MyRunViewModel @Inject constructor(
                 runningHistoryListResult.onSuccess { runningHistoryList ->
                     _runningHistoryListState.value =
                         UiState.Success(runningHistoryList.map { runningHistory -> runningHistory.toRunningHistoryUiModel() })
+                    getRunningDays(runningHistoryList)
                 }.onFailure { throwable ->
                     _runningHistoryListState.value = UiState.Failure(throwable)
                 }
@@ -97,7 +105,16 @@ class MyRunViewModel @Inject constructor(
         }
     }
 
+    private fun getRunningDays(runningHistoryList: List<RunningHistory>) {
+        runningHistoryList.map { runningHistory ->
+            _runningDays.value += listOf(
+                runningHistory.startedAt.toRunningDateString().split(RUNNING_DATE_SEPARATOR)
+            )
+        }
+    }
+
     companion object {
         private const val EMPTY_STRING = ""
+        private const val RUNNING_DATE_SEPARATOR = "."
     }
 }

@@ -11,13 +11,16 @@ interface PostRepository {
 
     fun getAllPostFlow(): Flow<List<Post>>
 
-    // 글 작성하기 - 리모트
+    fun getMyPostFlow(uid: String): Flow<List<Post>>
+
+    // 인증 글 작성
     suspend fun createRunningPost(
         authorUid: String,
         runningHistoryId: String,
         content: String
     ): Result<Boolean>
 
+    // 홍보 글 작성
     suspend fun createRecruitPost(
         authorUid: String,
         groupUid: String

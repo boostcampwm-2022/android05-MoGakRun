@@ -47,6 +47,10 @@ class CreateGroupViewModel @Inject constructor(
         _showDialog.value = false
     }
 
+    fun removeRule(rule: String) {
+        rules.value = rules.value.filter { it != rule }
+    }
+
     val isDoubleCheckButtonEnable: StateFlow<Boolean>
         get() = groupName.combine(groupIntroduce) { name, introduce ->
             name?.trim()?.isNotEmpty() ?: false && introduce?.trim()?.isNotEmpty() ?: false

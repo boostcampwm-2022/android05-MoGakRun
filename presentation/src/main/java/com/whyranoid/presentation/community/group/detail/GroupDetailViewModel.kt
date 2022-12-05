@@ -7,6 +7,7 @@ import com.whyranoid.domain.model.FinishNotification
 import com.whyranoid.domain.model.GroupNotification
 import com.whyranoid.domain.model.StartNotification
 import com.whyranoid.domain.usecase.CreateRecruitPostUseCase
+import com.whyranoid.domain.usecase.ExitGroupUseCase
 import com.whyranoid.domain.usecase.GetGroupInfoUseCase
 import com.whyranoid.domain.usecase.GetGroupNotificationsUseCase
 import com.whyranoid.domain.usecase.GetUidUseCase
@@ -29,6 +30,7 @@ class GroupDetailViewModel @Inject constructor(
     getGroupInfoUseCase: GetGroupInfoUseCase,
     getGroupNotificationsUseCase: GetGroupNotificationsUseCase,
     private val createRecruitPostUseCase: CreateRecruitPostUseCase,
+    private val exitGroupUseCase: ExitGroupUseCase,
     val getUidUseCase: GetUidUseCase,
     stateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -97,11 +99,24 @@ class GroupDetailViewModel @Inject constructor(
         }
     }
 
+    fun onExitGroupSnackBarButtonClick() {
+        viewModelScope.launch {
+            val isExitGroupSuccess = exitGroupUseCase(groupId)
+            if (isExitGroupSuccess) {
+                emitEvent(Event.ExitGroupSnackBarButtonClick())
+            } else {
+                emitEvent(Event.ExitGroupSnackBarButtonClick(false))
+            }
+        }
+    }
+
     private fun emitEvent(event: Event) {
         when (event) {
             Event.RecruitButtonClick,
             Event.ExitGroupButtonClick,
-            is Event.RecruitSnackBarButtonClick -> {
+            is Event.RecruitSnackBarButtonClick,
+            is Event.ExitGroupSnackBarButtonClick
+            -> {
                 viewModelScope.launch {
                     _eventFlow.emit(event)
                 }

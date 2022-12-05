@@ -1,15 +1,16 @@
 package com.whyranoid.presentation.community
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentCommunityItemBinding
+import com.whyranoid.presentation.util.getSerializableData
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -18,16 +19,10 @@ import kotlinx.coroutines.launch
 internal class CommunityItemFragment :
     BaseFragment<FragmentCommunityItemBinding>(R.layout.fragment_community_item) {
 
-    private val viewModel: CommunityViewModel by viewModels()
+    private val viewModel: CommunityViewModel by activityViewModels()
 
     private val category by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getSerializable(COMMUNITY_CATEGORY_KEY, CommunityCategory::class.java)
-                ?: CommunityCategory.BOARD
-        } else {
-            arguments?.getSerializable(COMMUNITY_CATEGORY_KEY) as? CommunityCategory
-                ?: CommunityCategory.BOARD
-        }
+        arguments?.getSerializableData(COMMUNITY_CATEGORY_KEY) ?: CommunityCategory.BOARD
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,7 +42,7 @@ internal class CommunityItemFragment :
                 setMyGroupAdapter()
             }
             CommunityCategory.MY_POST -> {
-                // TODO: Adapter 설정
+                setMyPostAdapter()
             }
         }
     }
@@ -62,20 +57,64 @@ internal class CommunityItemFragment :
 
     private fun handleEvent(event: Event) {
         when (event) {
-            is Event.CategoryItemClick -> {
-                val action =
-                    CommunityFragmentDirections.actionCommunityFragmentToGroupDetailFragment(event.groupInfo)
-                findNavController().navigate(action)
+            is Event.GroupItemClick -> {
+                // TODO : 뷰모델의 구조를 변경할 필요가 있어보임.
+                // 공통된 뷰모델을 사용하여 eventFlow가 3개가 collect중이라서 앱이 터지는 이슈 임시 해결
+                if (category == CommunityCategory.MY_GROUP) {
+                    val action =
+                        CommunityFragmentDirections.actionCommunityFragmentToGroupDetailFragment(
+                            event.groupInfo
+                        )
+                    findNavController().navigate(action)
+                }
+            }
+            is Event.JoinGroup -> {
+                if (event.isSuccess) {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_join_group_success),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_join_group_fail),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            is Event.DeletePost -> {
+                if (event.isSuccess) {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_delete_post_success),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_delete_post_fail),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
 
     private fun setPostAdapter() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val uid = viewModel.getMyUseCase()
-
-            val postAdapter = PostAdapter(uid)
+            val postAdapter = PostAdapter(
+                buttonClickListener = {
+                    viewModel.onGroupJoinButtonClicked(it)
+                }
+            )
             binding.rvCommunity.adapter = postAdapter
+
+            viewLifecycleOwner.repeatWhenUiStarted {
+                viewModel.myGroupList.collect { myGroupList ->
+                    postAdapter.setMyGroupList(myGroupList)
+                }
+            }
 
             viewLifecycleOwner.repeatWhenUiStarted {
                 viewModel.postList.collect { postList ->
@@ -86,10 +125,9 @@ internal class CommunityItemFragment :
         }
     }
 
-    // TODO 카테고리 별 다른 아이템 처리
     private fun setMyGroupAdapter() {
         val myGroupAdapter = MyGroupAdapter { groupInfo ->
-            viewModel.onCategoryItemClicked(groupInfo)
+            viewModel.onGroupItemClicked(groupInfo)
         }
         binding.rvCommunity.adapter = myGroupAdapter
 
@@ -97,6 +135,37 @@ internal class CommunityItemFragment :
             viewModel.myGroupList.collect { groupList ->
                 removeShimmer()
                 myGroupAdapter.submitList(groupList.sortedBy { it.name })
+            }
+        }
+    }
+
+    private fun setMyPostAdapter() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val postAdapter = PostAdapter(
+                isMyPost = true,
+                itemLongClickListener = { postId ->
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_check_delete_post),
+                        Snackbar.LENGTH_SHORT
+                    ).setAction(R.string.text_delete) {
+                        viewModel.deletePost(postId)
+                    }.show()
+                }
+            )
+            binding.rvCommunity.adapter = postAdapter
+
+            viewLifecycleOwner.repeatWhenUiStarted {
+                viewModel.myGroupList.collect { myGroupList ->
+                    postAdapter.setMyGroupList(myGroupList)
+                }
+            }
+
+            viewLifecycleOwner.repeatWhenUiStarted {
+                viewModel.myPostList.collect { myPostList ->
+                    removeShimmer()
+                    postAdapter.submitList(myPostList)
+                }
             }
         }
     }

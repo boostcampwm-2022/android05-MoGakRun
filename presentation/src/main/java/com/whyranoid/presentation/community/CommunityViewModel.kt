@@ -3,9 +3,11 @@ package com.whyranoid.presentation.community
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.model.Post
+import com.whyranoid.domain.usecase.DeletePostUseCase
 import com.whyranoid.domain.usecase.GetMyGroupListUseCase
+import com.whyranoid.domain.usecase.GetMyPostUseCase
 import com.whyranoid.domain.usecase.GetPostsUseCase
-import com.whyranoid.domain.usecase.GetUidUseCase
+import com.whyranoid.domain.usecase.JoinGroupUseCase
 import com.whyranoid.presentation.model.GroupInfoUiModel
 import com.whyranoid.presentation.model.toGroupInfoUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +26,9 @@ import javax.inject.Inject
 class CommunityViewModel @Inject constructor(
     getMyGroupListUseCase: GetMyGroupListUseCase,
     getPostsUseCase: GetPostsUseCase,
-    val getMyUseCase: GetUidUseCase
+    private val joinGroupUseCase: JoinGroupUseCase,
+    private val getMyPostUseCase: GetMyPostUseCase,
+    private val deletePostUseCase: DeletePostUseCase
 ) : ViewModel() {
 
     private val _postList = MutableStateFlow<List<Post>>(emptyList())
@@ -35,17 +39,51 @@ class CommunityViewModel @Inject constructor(
     val myGroupList: StateFlow<List<GroupInfoUiModel>>
         get() = _myGroupList.asStateFlow()
 
+    private val _myPostList = MutableStateFlow<List<Post>>(emptyList())
+    val myPostList: StateFlow<List<Post>>
+        get() = _myPostList.asStateFlow()
+
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow: SharedFlow<Event>
         get() = _eventFlow.asSharedFlow()
 
-    fun onCategoryItemClicked(groupInfo: GroupInfoUiModel) {
-        emitEvent(Event.CategoryItemClick(groupInfo))
+    fun onGroupItemClicked(groupInfo: GroupInfoUiModel) {
+        emitEvent(Event.GroupItemClick(groupInfo))
     }
 
     private fun emitEvent(event: Event) {
         viewModelScope.launch {
-            _eventFlow.emit(event)
+            when (event) {
+                is Event.GroupItemClick -> {
+                    _eventFlow.emit(event)
+                }
+                is Event.JoinGroup -> {
+                    if (event.isSuccess) {
+                        _eventFlow.emit(event)
+                    } else {
+                        _eventFlow.emit(event.copy(isSuccess = false))
+                    }
+                }
+                is Event.DeletePost -> {
+                    if (event.isSuccess) {
+                        _eventFlow.emit(event)
+                    } else {
+                        _eventFlow.emit(event.copy(isSuccess = false))
+                    }
+                }
+            }
+        }
+    }
+
+    fun onGroupJoinButtonClicked(groupId: String) {
+        viewModelScope.launch {
+            emitEvent(Event.JoinGroup(joinGroupUseCase(groupId)))
+        }
+    }
+
+    fun deletePost(postId: String) {
+        viewModelScope.launch {
+            emitEvent(Event.DeletePost(deletePostUseCase(postId)))
         }
     }
 
@@ -59,7 +97,15 @@ class CommunityViewModel @Inject constructor(
         }
 
         getPostsUseCase().onEach { postList ->
-            _postList.value = postList
+            _postList.value = postList.sortedByDescending { post ->
+                post.updatedAt
+            }
         }.launchIn(viewModelScope)
+
+        viewModelScope.launch {
+            getMyPostUseCase().onEach { myPostList ->
+                _myPostList.value = myPostList
+            }.launchIn(this)
+        }
     }
 }

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
-    private val postDataSourceImpl: PostDataSourceImpl
+    private val postDataSource: PostDataSource
 ) : PostRepository {
 
     // TODO : 페이징처리하기
@@ -15,7 +15,11 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override fun getAllPostFlow(): Flow<List<Post>> {
-        return postDataSourceImpl.getAllPostFlow()
+        return postDataSource.getAllPostFlow()
+    }
+
+    override fun getMyPostFlow(uid: String): Flow<List<Post>> {
+        return postDataSource.getMyPostFlow(uid)
     }
 
     override suspend fun createRunningPost(
@@ -23,18 +27,18 @@ class PostRepositoryImpl @Inject constructor(
         runningHistoryId: String,
         content: String
     ): Result<Boolean> {
-        return postDataSourceImpl.createRunningPost(authorUid, runningHistoryId, content)
+        return postDataSource.createRunningPost(authorUid, runningHistoryId, content)
     }
 
     override suspend fun createRecruitPost(
         authorUid: String,
         groupUid: String
     ): Boolean {
-        return postDataSourceImpl.createRecruitPost(authorUid, groupUid)
+        return postDataSource.createRecruitPost(authorUid, groupUid)
     }
 
     override suspend fun deletePost(postId: String): Boolean {
-        TODO("Not yet implemented")
+        return postDataSource.deletePost(postId)
     }
 
     override suspend fun updatePost(postId: String, postContent: String, updatedAt: Long): Boolean {

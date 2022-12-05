@@ -86,6 +86,9 @@
         <argument
             android:name="selectedRunningHistory"
             app:argType="com.whyranoid.presentation.model.RunningHistoryUiModel" />
+        <action
+            android:id="@+id/action_createRunningPostFragment_to_communityFragment"
+            app:destination="@id/communityFragment" />
     </fragment>
     <fragment
         android:id="@+id/runningFinishFragment"

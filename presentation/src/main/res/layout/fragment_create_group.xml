@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.whyranoid.presentation.community.group.create.CreateGroupViewModel" />
@@ -65,19 +66,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar" />
 
-        <TextView
+        <ScrollView
             android:id="@+id/time_and_date_picker"
-            style="@style/MoGakRunText.Bold.Medium"
             android:layout_width="0dp"
             android:layout_height="70dp"
             android:layout_margin="16dp"
             android:background="@color/mogakrun_secondary_dark"
-            android:gravity="center_vertical"
-            android:text="@{viewModel.rules.toString()}"
+            android:paddingHorizontal="8dp"
+            android:scrollbars="none"
             app:layout_constraintEnd_toStartOf="@id/btn_select_rule"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_input_layout_group_name"
-            tools:text="규칙들 들어갈 자리입니다~" />
+            app:layout_constraintTop_toBottomOf="@id/text_input_layout_group_name">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/rule_chip_group"
+                style="@style/MoGakRunText.Bold.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </ScrollView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_select_rule"
