@@ -14,14 +14,16 @@ import com.whyranoid.data.model.UserResponse
 import com.whyranoid.data.model.toGroupInfo
 import com.whyranoid.data.model.toUser
 import com.whyranoid.domain.model.GroupInfo
+import com.whyranoid.domain.model.MoGakRunException
 import com.whyranoid.domain.model.Rule
 import com.whyranoid.domain.model.toRule
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
@@ -165,32 +167,41 @@ class GroupDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun getGroupInfoFlow(uid: String, groupId: String): Flow<GroupInfo> = callbackFlow {
-        db.collection(GROUPS_COLLECTION)
-            .document(groupId)
-            .addSnapshotListener { documentSnapshot, _ ->
-                val groupInfoResponse = documentSnapshot?.toObject(GroupInfoResponse::class.java)
+    override fun getGroupInfoFlow(uid: String, groupId: String): Flow<GroupInfo> {
+        return getUserResponse(uid).combine(getGroupInfoResponse(groupId)) { userResponse, groupInfoResponse ->
+            groupInfoResponse.toGroupInfo(
+                leader = userResponse.toUser(),
+                rules = groupInfoResponse.rules.map { it.toRule() }
+            )
+        }
+    }
 
-                groupInfoResponse?.let {
-                    db.collection(USERS_COLLECTION)
-                        .document(uid)
-                        .addSnapshotListener { documentSnapshot, _ ->
-                            val userResponse = documentSnapshot?.toObject(UserResponse::class.java)
-
-                            userResponse?.let {
-                                trySend(
-                                    groupInfoResponse.toGroupInfo(
-                                        leader = userResponse.toUser(),
-                                        rules = groupInfoResponse.rules.map {
-                                            it.toRule()
-                                        }
-                                    )
-                                )
-                            }
-                        }
+    private fun getGroupInfoResponse(groupId: String): Flow<GroupInfoResponse> {
+        return callbackFlow {
+            db.collection(GROUPS_COLLECTION)
+                .document(groupId)
+                .addSnapshotListener { documentSnapshot, _ ->
+                    trySend(
+                        documentSnapshot?.toObject(GroupInfoResponse::class.java)
+                            ?: throw MoGakRunException.FileNotFoundedException
+                    )
                 }
-            }
-        awaitClose()
+            awaitClose()
+        }
+    }
+
+    private fun getUserResponse(uid: String): Flow<UserResponse> {
+        return callbackFlow {
+            db.collection(USERS_COLLECTION)
+                .document(uid)
+                .addSnapshotListener { documentSnapshot, _ ->
+                    trySend(
+                        documentSnapshot?.toObject(UserResponse::class.java)
+                            ?: throw MoGakRunException.FileNotFoundedException
+                    )
+                }
+            awaitClose()
+        }
     }
 
     override suspend fun isDuplicatedGroupName(groupName: String): Boolean {
