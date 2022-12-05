@@ -18,6 +18,7 @@ import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentRunningStartBinding
 import com.whyranoid.presentation.running.RunningActivity
 import com.whyranoid.presentation.running.RunningFinishData
+import com.whyranoid.presentation.running.RunningState
 import com.whyranoid.presentation.running.RunningViewModel.Companion.RUNNING_FINISH_DATA_KEY
 import com.whyranoid.presentation.util.getSerializableData
 import com.whyranoid.presentation.util.gpsstate.GPSState
@@ -51,15 +52,17 @@ internal class RunningStartFragment :
                     RUNNING_FINISH_DATA_KEY
                 )
 
-            runningFinishData?.let {
-                // 결과 넘겨주기
-                val direction =
-                    RunningStartFragmentDirections.actionRunningStartFragmentToRunningFinish(
-                        runningFinishData
-                    )
-                findNavController().navigate(direction)
-            } ?: Snackbar.make(binding.root, "러닝 도중 에러가 발생했어요! 죄송해요..", Snackbar.LENGTH_SHORT)
-                .show()
+            // 결과 넘겨주기
+            if (runningFinishData?.runningPositionList.isNullOrEmpty().not()) {
+                runningFinishData?.let {
+                    val direction =
+                        RunningStartFragmentDirections.actionRunningStartFragmentToRunningFinish(
+                            runningFinishData
+                        )
+                    findNavController().navigate(direction)
+                } ?: Snackbar.make(binding.root, getString(R.string.running_start_error_message), Snackbar.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 
@@ -67,9 +70,21 @@ internal class RunningStartFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.vm = viewModel
 
+        initViews()
         observeState()
+    }
+
+    private fun initViews() {
+        binding.vm = viewModel
+        if ((viewModel.runningDataManager.runningState.value is RunningState.NotRunning).not()) {
+            runningActivityLauncher.launch(
+                Intent(
+                    requireContext(),
+                    RunningActivity::class.java
+                )
+            )
+        }
     }
 
     private fun observeState() {

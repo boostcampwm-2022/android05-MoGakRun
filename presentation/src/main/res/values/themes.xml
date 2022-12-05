@@ -10,7 +10,8 @@
         <item name="colorSecondaryVariant">@color/mogakrun_secondary_dark</item>
         <item name="colorOnSecondary">@color/mogakrun_on_secondary</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/mogakrun_background</item>
+        <item name="android:windowLightStatusBar">true</item>
         <!-- TabLayout color. -->
         <item name="tabSelectedTextColor">@color/mogakrun_on_primary</item>
         <!-- Base color. -->

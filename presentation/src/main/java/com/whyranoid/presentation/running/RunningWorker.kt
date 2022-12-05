@@ -20,6 +20,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.whyranoid.presentation.MainActivity
 import com.whyranoid.presentation.R
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -61,7 +62,7 @@ class RunningWorker @AssistedInject constructor(
         val id = context.getString(R.string.running_notification_id)
         val title = context.getString(R.string.running_notification_title)
 
-        val intent = Intent(context, RunningActivity::class.java)
+        val intent = Intent(context, MainActivity::class.java)
         val pendingIntent =
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
