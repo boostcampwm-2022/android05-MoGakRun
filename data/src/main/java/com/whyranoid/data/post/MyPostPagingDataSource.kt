@@ -3,11 +3,10 @@ package com.whyranoid.data.post
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.whyranoid.data.constant.CollectionId
 import com.whyranoid.data.constant.FieldId
-import com.whyranoid.data.constant.FieldId.UPDATED_AT
+import com.whyranoid.data.constant.FieldId.AUTHOR_ID
 import com.whyranoid.data.model.GroupInfoResponse
 import com.whyranoid.data.model.RecruitPostResponse
 import com.whyranoid.data.model.RunningPostResponse
@@ -37,9 +36,10 @@ class MyPostPagingDataSource @Inject constructor(
     override suspend fun load(params: LoadParams<QuerySnapshot>): LoadResult<QuerySnapshot, Post> {
         return try {
             val postList = mutableListOf<Post>()
+
             // 현재 페이지
             val currentPage = params.key ?: db.collection(CollectionId.POST_COLLECTION)
-                .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
+                .whereEqualTo(AUTHOR_ID, myUid)
                 .limit(10)
                 .get()
                 .await()
@@ -120,8 +120,9 @@ class MyPostPagingDataSource @Inject constructor(
 
             // 마지막 스냅샷 이후 페이지 불러오기
             val nextPage = db.collection(CollectionId.POST_COLLECTION)
-                .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
-                .limit(10).startAfter(lastDocumentSnapshot)
+                .whereEqualTo(AUTHOR_ID, myUid)
+                .limit(10)
+                .startAfter(lastDocumentSnapshot)
                 .get()
                 .await()
 
