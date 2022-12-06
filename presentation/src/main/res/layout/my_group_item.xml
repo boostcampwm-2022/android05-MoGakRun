@@ -14,12 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:background="@color/mogakrun_primary"
-        android:elevation="10dp">
+        android:background="@drawable/community_create_running_post_edit_text_background"
+        android:elevation="4dp">
 
         <TextView
             android:id="@+id/group_name"
-            style="@style/MoGakRunText.Bold.Large"
+            style="@style/MoGakRunText.Regular.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -30,7 +30,7 @@
 
         <TextView
             android:id="@+id/text_group_name"
-            style="@style/MoGakRunText.Bold.Medium"
+            style="@style/MoGakRunText.Regular.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -41,7 +41,7 @@
 
         <TextView
             android:id="@+id/text_group_introduce"
-            style="@style/MoGakRunText.Bold.Small"
+            style="@style/MoGakRunText.Regular.Small"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"

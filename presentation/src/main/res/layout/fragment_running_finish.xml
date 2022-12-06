@@ -3,8 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.whyranoid.presentation.model.UiState"/>
-        <import type="android.view.View"/>
+
+        <import type="com.whyranoid.presentation.model.UiState" />
+
+        <import type="android.view.View" />
 
         <variable
             name="vm"
@@ -19,6 +21,7 @@
             android:id="@+id/tool_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:elevation="0dp"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -26,8 +29,9 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:background="@color/mogakrun_background"
                 app:title="@string/running_finish_tool_bar"
-                app:titleCentered="true" />
+                app:titleTextAppearance="@style/MoGakRunText.Bold.Medium" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -37,7 +41,7 @@
             app:layout_constraintBottom_toTopOf="@id/running_history_item"
             app:layout_constraintTop_toBottomOf="@id/tool_bar">
 
-            <fragment xmlns:app="http://schemas.android.com/apk/res-auto"
+            <fragment
                 android:id="@+id/map_fragment"
                 android:name="com.naver.maps.map.MapFragment"
                 android:layout_width="match_parent"
@@ -58,6 +62,7 @@
             layout="@layout/item_running_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
             app:layout_constraintBottom_toTopOf="@id/btn_positive" />
 
         <com.google.android.material.button.MaterialButton
@@ -67,6 +72,7 @@
             android:layout_margin="12dp"
             android:onClick="@{() -> vm.onPositiveButtonClicked()}"
             android:text="@string/running_finish_positive_btn"
+            android:textAppearance="@style/MoGakRunText.Regular.Small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_negative"
             app:layout_constraintStart_toStartOf="parent" />
@@ -78,6 +84,7 @@
             android:layout_margin="12dp"
             android:onClick="@{() -> vm.onNegativeButtonClicked()}"
             android:text="@string/running_finish_negative_btn"
+            android:textAppearance="@style/MoGakRunText.Regular.Small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_positive" />
@@ -86,8 +93,8 @@
             android:id="@+id/frame_progress_running"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black"
             android:alpha="0.8"
+            android:background="@color/black"
             android:translationZ="@{vm.runningFinishDataState instanceof UiState.Success ? 0f : 10f }"
             android:visibility="@{vm.runningFinishDataState instanceof UiState.Success ? View.GONE : View.VISIBLE }">
 

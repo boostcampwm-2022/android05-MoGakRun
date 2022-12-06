@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp">
 
         <ImageView
             android:id="@+id/iv_leader_profile"
@@ -29,20 +30,20 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@{recruitPost.author.name}"
-            app:layout_constraintStart_toEndOf="@id/iv_leader_profile"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textAppearance="@style/MoGakRunText.Regular.Medium"
             app:layout_constraintBottom_toBottomOf="@id/iv_leader_profile"
+            app:layout_constraintStart_toEndOf="@id/iv_leader_profile"
+            app:layout_constraintTop_toTopOf="@+id/iv_leader_profile"
             tools:text="수피치" />
 
         <TextView
             android:id="@+id/tv_group_name"
-            style="@style/MoGakRunText.ExtraBold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_marginTop="16dp"
-            android:gravity="center"
             android:text="@{recruitPost.groupInfo.name}"
+            android:textAppearance="@style/MoGakRunText.Regular.Large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_leader_profile"
@@ -50,12 +51,11 @@
 
         <TextView
             android:id="@+id/tv_group_introduce"
-            style="@style/MoGakRunText.Bold.Large"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:gravity="center"
             android:text="@{recruitPost.groupInfo.introduce}"
+            android:textAppearance="@style/MoGakRunText.Regular.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_group_name"
@@ -63,12 +63,11 @@
 
         <TextView
             android:id="@+id/tv_rules"
-            style="@style/MoGakRunText.Bold.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:gravity="center"
             android:text="@{recruitPost.groupInfo.rules.toString()}"
+            android:textAppearance="@style/MoGakRunText.Regular.Small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_group_introduce"
@@ -80,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/text_join_group"
+            android:textAppearance="@style/MoGakRunText.Regular.Small"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_rules" />
 

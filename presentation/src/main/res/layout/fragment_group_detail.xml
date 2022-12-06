@@ -31,18 +31,17 @@
                 android:background="@color/mogakrun_background"
                 app:title="@{viewModel.groupInfo.name}"
                 app:titleTextAppearance="@style/MoGakRunText.Bold.Medium"
-                tools:title ="수피치 그룹"/>
+                tools:title="수피치 그룹" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_bar"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@color/mogakrun_secondary">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -51,12 +50,11 @@
 
                 <TextView
                     android:id="@+id/tv_group_name"
-                    style="@style/MoGakRunText.ExtraBold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:gravity="center"
                     android:text="@{viewModel.groupInfo.name}"
+                    android:textAppearance="@style/MoGakRunText.Regular.Large"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -64,12 +62,11 @@
 
                 <TextView
                     android:id="@+id/tv_group_introduce"
-                    style="@style/MoGakRunText.Bold.Large"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:gravity="center"
                     android:text="@{viewModel.groupInfo.introduce}"
+                    android:textAppearance="@style/MoGakRunText.Regular.Medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_group_name"
@@ -77,12 +74,11 @@
 
                 <TextView
                     android:id="@+id/tv_rules"
-                    style="@style/MoGakRunText.Bold.Medium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:gravity="center"
                     android:text="@{viewModel.groupInfo.rules.toString()}"
+                    android:textAppearance="@style/MoGakRunText.Regular.Small"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_group_introduce"
@@ -90,19 +86,19 @@
 
                 <TextView
                     android:id="@+id/tv_head_count"
-                    style="@style/MoGakRunText.Bold.Medium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:gravity="center"
                     android:text="@{@string/text_headcount(viewModel.groupInfo.headCount)}"
+                    android:textAppearance="@style/MoGakRunText.Regular.Small"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_rules"
                     tools:text="40명" />
 
                 <TextView
                     android:id="@+id/tv_leader"
-                    style="@style/MoGakRunText.Bold.Medium"
+                    style="@style/MoGakRunText.Regular.Small"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
@@ -117,8 +113,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="@string/text_recruit"
                     android:onClick="@{() -> viewModel.onRecruitButtonClicked()}"
+                    android:text="@string/text_recruit"
+                    android:textAppearance="@style/MoGakRunText.Regular.Small"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_head_count" />
@@ -128,8 +125,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="@string/text_exit_group"
                     android:onClick="@{() -> viewModel.onExitGroupButtonClicked()}"
+                    android:text="@string/text_exit_group"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_head_count" />

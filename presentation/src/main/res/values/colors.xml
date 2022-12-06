@@ -5,7 +5,7 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#6d6d6d</color>
+    <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
 
     <color name="mogakrun_primary">#FFFFFF</color>
@@ -19,9 +19,9 @@
     <color name="mogakrun_on_secondary">#787878</color>
 
     <color name="mogakrun_background">#F3F2ED</color>
-    <color name="mogakrun_onBackground">#6d6d6d</color>
+    <color name="mogakrun_onBackground">#6D6D6D</color>
 
     <color name="mogakrun_bottom_navigation_menu_grey">#666666</color>
-    <color name="gray">#cccccc</color>
+    <color name="gray">#CCCCCC</color>
 
 </resources>

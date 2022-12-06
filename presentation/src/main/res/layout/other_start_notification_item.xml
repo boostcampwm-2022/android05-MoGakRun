@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="notifications"
             type="com.whyranoid.domain.model.StartNotification" />
@@ -17,28 +18,28 @@
 
         <TextView
             android:id="@+id/tv_uid"
-            style="@style/MoGakRunText.Bold.Small"
+            style="@style/MoGakRunText.Regular.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@{notifications.uid}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="수피치"/>
+            tools:text="수피치" />
 
         <TextView
             android:id="@+id/tv_start_notification"
-            style="@style/MoGakRunText.Bold.Medium"
+            style="@style/MoGakRunText.Regular.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/radius_background"
             android:backgroundTint="@color/mogakrun_primary"
             android:padding="16dp"
-            app:startLongToDate="@{notifications.startedAt}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_uid"
-            tools:text="2022.11.21 / 21 시 10분 운동 시작"/>
+            app:startLongToDate="@{notifications.startedAt}"
+            tools:text="2022.11.21 / 21 시 10분 운동 시작" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

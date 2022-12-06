@@ -26,14 +26,16 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
-            app:itemTextColor="@drawable/bottom_navigation_color_selector"
-            app:itemIconTint="@drawable/bottom_navigation_color_selector"
             style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:itemIconTint="@drawable/bottom_navigation_color_selector"
+            app:itemTextAppearanceActive="@style/MoGakRunText.Regular.Small"
+            app:itemTextAppearanceInactive="@style/MoGakRunText.Regular.Small"
+            app:itemTextColor="@drawable/bottom_navigation_color_selector"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_navigation_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

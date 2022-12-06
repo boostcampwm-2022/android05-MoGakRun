@@ -14,7 +14,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp">
 
         <ImageView
             android:id="@+id/iv_leader_profile"
@@ -22,9 +23,9 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="16dp"
+            android:contentDescription="@string/my_run_profile_image_description"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/my_run_profile_image_description"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_leader_name"
@@ -32,195 +33,196 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@{runningPost.author.name}"
+            android:textAppearance="@style/MoGakRunText.Regular.Medium"
             app:layout_constraintBottom_toBottomOf="@id/iv_leader_profile"
             app:layout_constraintStart_toEndOf="@id/iv_leader_profile"
             app:layout_constraintTop_toTopOf="@id/iv_leader_profile"
             tools:text="수피치" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/item_view_running_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/background_rounded"
-        android:backgroundTint="@color/mogakrun_secondary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_leader_profile"
-        android:elevation="@dimen/cardview_default_elevation">
-
-        <View
-            android:id="@+id/view_running_history_body"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/item_view_running_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:background="@drawable/background_rounded"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:backgroundTint="@color/mogakrun_secondary"
+            android:elevation="@dimen/cardview_default_elevation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_running_history_date" />
+            app:layout_constraintTop_toBottomOf="@id/iv_leader_profile">
 
-        <TextView
-            android:id="@+id/tv_running_history_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:maxLines="1"
-            android:text="@{ExtensionsKt.toRunningDateString(runningPost.runningHistory.startedAt)}"
-            android:textAppearance="@style/MoGakRunText.Regular.Small"
-            android:textColor="?attr/colorOnSecondary"
-            app:layout_constraintEnd_toEndOf="@id/view_vertical_partition_line"
-            app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="2022/09/11" />
+            <View
+                android:id="@+id/view_running_history_body"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/background_rounded"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_running_history_date" />
 
-        <TextView
-            android:id="@+id/tv_label_total_running_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:text="@string/running_history_label_total_running_time"
-            android:textAppearance="@style/MoGakRunText.Light.Small"
-            app:layout_constraintBottom_toBottomOf="@id/tv_running_history_date"
-            app:layout_constraintEnd_toStartOf="@id/tv_total_running_time"
-            app:layout_constraintStart_toStartOf="@id/view_vertical_partition_line"
-            app:layout_constraintTop_toTopOf="@id/tv_running_history_date" />
+            <TextView
+                android:id="@+id/tv_running_history_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:text="@{ExtensionsKt.toRunningDateString(runningPost.runningHistory.startedAt)}"
+                android:textAppearance="@style/MoGakRunText.Regular.Small"
+                android:textColor="?attr/colorOnSecondary"
+                app:layout_constraintEnd_toEndOf="@id/view_vertical_partition_line"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="2022/09/11" />
 
-        <TextView
-            android:id="@+id/tv_total_running_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{String.format(@string/running_history_value_total_running_time, runningPost.runningHistory.totalRunningTime / 3600, runningPost.runningHistory.totalRunningTime / 60)}"
-            android:textAppearance="@style/MoGakRunText.Regular.Small"
-            app:layout_constraintBottom_toBottomOf="@id/tv_label_total_running_time"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_label_total_running_time"
-            app:layout_constraintTop_toTopOf="@id/tv_label_total_running_time"
-            tools:text="2시간 22분" />
+            <TextView
+                android:id="@+id/tv_label_total_running_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="@string/running_history_label_total_running_time"
+                android:textAppearance="@style/MoGakRunText.Light.Small"
+                app:layout_constraintBottom_toBottomOf="@id/tv_running_history_date"
+                app:layout_constraintEnd_toStartOf="@id/tv_total_running_time"
+                app:layout_constraintStart_toStartOf="@id/view_vertical_partition_line"
+                app:layout_constraintTop_toTopOf="@id/tv_running_history_date" />
 
-        <View
-            android:id="@+id/view_vertical_partition_line"
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:alpha="0.2"
-            android:background="?attr/colorOnSecondary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/view_running_history_body" />
+            <TextView
+                android:id="@+id/tv_total_running_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.format(@string/running_history_value_total_running_time, runningPost.runningHistory.totalRunningTime / 3600, runningPost.runningHistory.totalRunningTime / 60)}"
+                android:textAppearance="@style/MoGakRunText.Regular.Small"
+                app:layout_constraintBottom_toBottomOf="@id/tv_label_total_running_time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_label_total_running_time"
+                app:layout_constraintTop_toTopOf="@id/tv_label_total_running_time"
+                tools:text="2시간 22분" />
 
-        <View
-            android:id="@+id/view_horizontal_partition_line"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:alpha="0.2"
-            android:background="?attr/colorOnSecondary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_start_time_value" />
+            <View
+                android:id="@+id/view_vertical_partition_line"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:alpha="0.2"
+                android:background="?attr/colorOnSecondary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/view_running_history_body" />
 
-        <TextView
-            android:id="@+id/tv_start_time_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="6dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/running_history_label_start_running_time"
-            android:textAppearance="@style/MoGakRunText.Light.Small"
-            app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_running_history_date" />
+            <View
+                android:id="@+id/view_horizontal_partition_line"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:alpha="0.2"
+                android:background="?attr/colorOnSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_start_time_value" />
 
-        <TextView
-            android:id="@+id/tv_start_time_value"
-            longToTime="@{runningPost.runningHistory.startedAt}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="20dp"
-            android:textAppearance="@style/MoGakRunText.Regular.Medium"
-            app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
-            app:layout_constraintHorizontal_bias="0.6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_start_time_label"
-            tools:text="17:00" />
+            <TextView
+                android:id="@+id/tv_start_time_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/running_history_label_start_running_time"
+                android:textAppearance="@style/MoGakRunText.Light.Small"
+                app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_running_history_date" />
 
-        <TextView
-            android:id="@+id/tv_end_time_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:text="@string/running_history_label_finish_running_time"
-            android:textAppearance="@style/MoGakRunText.Light.Small"
-            app:layout_constraintStart_toStartOf="@id/view_vertical_partition_line"
-            app:layout_constraintTop_toTopOf="@id/tv_start_time_label" />
+            <TextView
+                android:id="@+id/tv_start_time_value"
+                longToTime="@{runningPost.runningHistory.startedAt}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
+                android:textAppearance="@style/MoGakRunText.Regular.Medium"
+                app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_start_time_label"
+                tools:text="17:00" />
 
-        <TextView
-            longToTime="@{runningPost.runningHistory.finishedAt}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="20dp"
-            android:textAppearance="@style/MoGakRunText.Regular.Medium"
-            app:layout_constraintEnd_toEndOf="@id/view_horizontal_partition_line"
-            app:layout_constraintHorizontal_bias="0.6"
-            app:layout_constraintStart_toEndOf="@id/view_vertical_partition_line"
-            app:layout_constraintTop_toBottomOf="@id/tv_end_time_label"
-            tools:text="19:22" />
+            <TextView
+                android:id="@+id/tv_end_time_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/running_history_label_finish_running_time"
+                android:textAppearance="@style/MoGakRunText.Light.Small"
+                app:layout_constraintStart_toStartOf="@id/view_vertical_partition_line"
+                app:layout_constraintTop_toTopOf="@id/tv_start_time_label" />
 
-        <TextView
-            android:id="@+id/tv_total_distance_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="6dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/running_history_label_running_distance"
-            android:textAppearance="@style/MoGakRunText.Light.Small"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line" />
+            <TextView
+                longToTime="@{runningPost.runningHistory.finishedAt}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
+                android:textAppearance="@style/MoGakRunText.Regular.Medium"
+                app:layout_constraintEnd_toEndOf="@id/view_horizontal_partition_line"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintStart_toEndOf="@id/view_vertical_partition_line"
+                app:layout_constraintTop_toBottomOf="@id/tv_end_time_label"
+                tools:text="19:22" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="20dp"
-            android:text="@{runningPost.runningHistory.totalDistance >= 1000 ? String.format(@string/running_history_value_running_distance_km, runningPost.runningHistory.totalDistance / 1000) : String.format(@string/running_history_value_running_distance_m, runningPost.runningHistory.totalDistance)}"
-            android:textAppearance="@style/MoGakRunText.Regular.Medium"
-            app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
-            app:layout_constraintHorizontal_bias="0.6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line"
-            tools:text="11.7km" />
+            <TextView
+                android:id="@+id/tv_total_distance_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/running_history_label_running_distance"
+                android:textAppearance="@style/MoGakRunText.Light.Small"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line" />
 
-        <TextView
-            android:id="@+id/tv_total_pace_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/running_history_label_running_pace"
-            android:textAppearance="@style/MoGakRunText.Light.Small"
-            app:layout_constraintStart_toStartOf="@id/view_vertical_partition_line"
-            app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
+                android:text="@{runningPost.runningHistory.totalDistance >= 1000 ? String.format(@string/running_history_value_running_distance_km, runningPost.runningHistory.totalDistance / 1000) : String.format(@string/running_history_value_running_distance_m, runningPost.runningHistory.totalDistance)}"
+                android:textAppearance="@style/MoGakRunText.Regular.Medium"
+                app:layout_constraintEnd_toStartOf="@id/view_vertical_partition_line"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line"
+                tools:text="11.7km" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="20dp"
-            android:text="@{String.format(@string/running_history_value_running_pace, runningPost.runningHistory.pace)}"
-            android:textAppearance="@style/MoGakRunText.Regular.Medium"
-            app:layout_constraintEnd_toEndOf="@id/view_horizontal_partition_line"
-            app:layout_constraintHorizontal_bias="0.6"
-            app:layout_constraintStart_toEndOf="@id/view_vertical_partition_line"
-            app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line"
-            tools:text="6.3km/h" />
+            <TextView
+                android:id="@+id/tv_total_pace_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/running_history_label_running_pace"
+                android:textAppearance="@style/MoGakRunText.Light.Small"
+                app:layout_constraintStart_toStartOf="@id/view_vertical_partition_line"
+                app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
+                android:text="@{String.format(@string/running_history_value_running_pace, runningPost.runningHistory.pace)}"
+                android:textAppearance="@style/MoGakRunText.Regular.Medium"
+                app:layout_constraintEnd_toEndOf="@id/view_horizontal_partition_line"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintStart_toEndOf="@id/view_vertical_partition_line"
+                app:layout_constraintTop_toBottomOf="@id/view_horizontal_partition_line"
+                tools:text="6.3km/h" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tv_like_cnt"
@@ -229,6 +231,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
             android:text="@{@string/text_like_count(runningPost.likeCount)}"
+            android:textAppearance="@style/MoGakRunText.Regular.Small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/item_view_running_history"
@@ -241,6 +244,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
             android:text="@{runningPost.content}"
+            android:textAppearance="@style/MoGakRunText.Regular.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_like_cnt"
