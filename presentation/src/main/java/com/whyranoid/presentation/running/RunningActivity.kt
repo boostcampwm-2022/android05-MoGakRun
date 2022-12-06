@@ -17,10 +17,14 @@ import com.naver.maps.map.overlay.PathOverlay
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseActivity
 import com.whyranoid.presentation.databinding.ActivityRunningBinding
+import com.whyranoid.presentation.running.runningdatamanager.RunningData
+import com.whyranoid.presentation.running.runningdatamanager.RunningFinishData
+import com.whyranoid.presentation.running.runningdatamanager.RunningState
+import com.whyranoid.presentation.running.runningdatamanager.toLatLng
 import com.whyranoid.presentation.util.dateToString
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.util.Date
 
 @AndroidEntryPoint
 internal class RunningActivity :

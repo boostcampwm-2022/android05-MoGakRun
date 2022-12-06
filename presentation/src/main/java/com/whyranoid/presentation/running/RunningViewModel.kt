@@ -12,7 +12,9 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.whyranoid.domain.usecase.FinishRunningUseCase
 import com.whyranoid.domain.usecase.StartRunningUseCase
-import com.whyranoid.presentation.model.toRunningHistory
+import com.whyranoid.presentation.running.runningdatamanager.RunningDataManager
+import com.whyranoid.presentation.running.runningdatamanager.RunningState
+import com.whyranoid.presentation.running.runningdatamanager.toRunningHistory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,10 +28,10 @@ import javax.inject.Inject
 class RunningViewModel @Inject constructor(
     @ApplicationContext context: Context,
     startRunningUseCase: StartRunningUseCase,
-    private val finishRunningUseCase: FinishRunningUseCase,
-    private val runningDataManager: RunningDataManager
+    private val finishRunningUseCase: FinishRunningUseCase
 ) : ViewModel() {
 
+    private val runningDataManager = RunningDataManager.getInstance()
     val runningState = runningDataManager.runningState
 
     private val _trackingModeState = MutableStateFlow(TrackingMode.FOLLOW)

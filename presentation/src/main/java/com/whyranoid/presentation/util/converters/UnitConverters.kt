@@ -1,8 +1,8 @@
-package com.whyranoid.presentation.util.pxdp
+package com.whyranoid.presentation.util.converters
 
 import android.content.Context
 
-object PxDpUtil {
+object UnitConverters {
     fun dpToPx(context: Context, dp: Int): Int {
         val scale: Float = context.resources.displayMetrics.density
         return (dp * scale + 0.5f).toInt()

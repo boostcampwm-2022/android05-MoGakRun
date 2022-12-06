@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.whyranoid.presentation.running.RunningState" />
+        <import type="com.whyranoid.presentation.running.runningdatamanager.RunningState" />
 
         <import type="android.view.View" />
 

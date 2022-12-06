@@ -1,15 +1,11 @@
-package com.whyranoid.presentation.running
+package com.whyranoid.presentation.running.runningdatamanager
 
 import android.location.Location
-import com.whyranoid.presentation.model.RunningHistoryUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.util.*
-import javax.inject.Inject
-import javax.inject.Singleton
+import java.util.UUID
 
-@Singleton
-class RunningDataManager @Inject constructor() {
+class RunningDataManager {
     private var _runningState = MutableStateFlow<RunningState>(
         RunningState.NotRunning()
     )
@@ -107,6 +103,16 @@ class RunningDataManager @Inject constructor() {
             it.runningData.copy(runningTime = it.runningData.runningTime + 1)
         }.let { RunningState.Running(it) }
     }
+
+    companion object {
+        private var INSTANCE: RunningDataManager? = null
+
+        fun getInstance(): RunningDataManager {
+            return INSTANCE ?: RunningDataManager().also {
+                INSTANCE = it
+            }
+        }
+    }
 }
 
 // TODO : 모델 파일 분리
@@ -120,7 +126,7 @@ data class RunningData(
 )
 
 data class RunningFinishData(
-    val runningHistory: RunningHistoryUiModel,
+    val runningHistory: RunningHistoryModel,
     val runningPositionList: List<List<RunningPosition>>
 ) : java.io.Serializable
 
@@ -136,9 +142,8 @@ sealed interface RunningState {
 
 fun RunningData.toRunningFinishData() =
     RunningFinishData(
-        RunningHistoryUiModel(
+        RunningHistoryModel(
             historyId = UUID.randomUUID().toString(),
-            date = startTime,
             startedAt = startTime,
             finishedAt = System.currentTimeMillis(),
             totalRunningTime = runningTime,
@@ -147,3 +152,12 @@ fun RunningData.toRunningFinishData() =
         ),
         runningPositionList
     )
+
+data class RunningHistoryModel(
+    val historyId: String = "",
+    val startedAt: Long = 0L,
+    val finishedAt: Long = 0L,
+    val totalRunningTime: Int = 0,
+    val pace: Double = 0.0,
+    val totalDistance: Double = 0.0
+) : java.io.Serializable

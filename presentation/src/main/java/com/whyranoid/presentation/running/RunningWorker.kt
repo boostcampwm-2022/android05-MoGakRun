@@ -22,6 +22,8 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.whyranoid.presentation.MainActivity
 import com.whyranoid.presentation.R
+import com.whyranoid.presentation.running.runningdatamanager.RunningDataManager
+import com.whyranoid.presentation.running.runningdatamanager.RunningState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.delay
@@ -29,9 +31,10 @@ import kotlinx.coroutines.delay
 @HiltWorker
 class RunningWorker @AssistedInject constructor(
     @Assisted private val context: Context,
-    @Assisted params: WorkerParameters,
-    private val runningDataManager: RunningDataManager
+    @Assisted params: WorkerParameters
 ) : CoroutineWorker(context, params) {
+
+    private val runningDataManager = RunningDataManager.getInstance()
 
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     private val locationRequest =
