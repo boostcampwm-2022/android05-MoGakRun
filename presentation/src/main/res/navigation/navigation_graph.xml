@@ -88,7 +88,9 @@
             app:argType="com.whyranoid.presentation.model.RunningHistoryUiModel" />
         <action
             android:id="@+id/action_createRunningPostFragment_to_communityFragment"
-            app:destination="@id/communityFragment" />
+            app:destination="@id/communityFragment"
+            app:popUpTo="@id/runningStartFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/runningFinishFragment"
