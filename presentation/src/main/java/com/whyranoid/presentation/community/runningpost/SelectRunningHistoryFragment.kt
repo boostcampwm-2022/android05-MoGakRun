@@ -96,7 +96,11 @@ internal class SelectRunningHistoryFragment :
                         true
                     }
                     R.id.warning_select_running_history_button -> {
-                        Snackbar.make(binding.root, getString(R.string.community_select_running_history_snack_bar), Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.community_select_running_history_snack_bar),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                         true
                     }
                     else -> {
@@ -107,14 +111,27 @@ internal class SelectRunningHistoryFragment :
         }
     }
 
-    override fun checkRunningHistoryId(runningHistory: RunningHistoryUiModel): Boolean =
-        viewModel.getSelectedRunningHistory()?.historyId == runningHistory.historyId
+    override fun checkRunningHistoryId(itemPosition: Int): Boolean {
+        // 아무것도 선택이 되지 않은 상황이거나 선택한 운동내역이 이미 선택되어있는 운동내역과 다를 때 false 반환 -> 일반 배경색
+        // true 반환 -> 선택된 배경색
+        return (viewModel.selectedItemPosition.value == NOTHING_SELECTED_ITEM_POSITION || viewModel.selectedItemPosition.value != itemPosition).not()
+    }
 
-    override fun selectRunningHistory(runningHistory: RunningHistoryUiModel) {
+    override fun selectRunningHistory(runningHistory: RunningHistoryUiModel, itemPosition: Int) {
+        // 현재 선택되어 있는 아이템의 position을 가져옴
+        val currentSelectedItemPosition = viewModel.selectedItemPosition.value
         viewModel.setSelectedRunningHistory(runningHistory)
+        viewModel.setSelectedItemPosition(itemPosition)
+        // 이전에 선택되어 있던 아이템에게 배경색을 다시 불러오도록 명령
+        runningHistoryAdapter.notifyItemChanged(currentSelectedItemPosition)
     }
 
     override fun unSelectRunningHistory() {
         viewModel.setSelectedRunningHistory(null)
+        viewModel.setSelectedItemPosition(NOTHING_SELECTED_ITEM_POSITION)
+    }
+
+    companion object {
+        private const val NOTHING_SELECTED_ITEM_POSITION = -1
     }
 }

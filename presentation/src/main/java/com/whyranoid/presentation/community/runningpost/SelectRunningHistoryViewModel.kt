@@ -26,10 +26,13 @@ class SelectRunningHistoryViewModel @Inject constructor(private val getRunningHi
     val runningHistoryListState: StateFlow<UiState<List<RunningHistoryUiModel>>>
         get() = _runningHistoryListState.asStateFlow()
 
-    // TODO 인증글 작성 넘어가도록 하는 더미데이터 -> 인증글 작성 로직이 완료되면 삭제하겠습니다
-    private val _selectedRunningHistory = MutableStateFlow<RunningHistoryUiModel?>(RunningHistoryUiModel("seungmin_history_id", 8995875L, 2452, 24524L, 134L, 124.0, 23.0))
+    private val _selectedRunningHistory = MutableStateFlow<RunningHistoryUiModel?>(null)
     val selectedRunningHistory: StateFlow<RunningHistoryUiModel?>
         get() = _selectedRunningHistory.asStateFlow()
+
+    private val _selectedItemPosition = MutableStateFlow(NOTHING_SELECTED_ITEM_POSITION)
+    val selectedItemPosition: StateFlow<Int>
+        get() = _selectedItemPosition.asStateFlow()
 
     private fun getRunningHistoryList() {
         viewModelScope.launch {
@@ -52,5 +55,13 @@ class SelectRunningHistoryViewModel @Inject constructor(private val getRunningHi
 
     fun setSelectedRunningHistory(runningHistoryUiModel: RunningHistoryUiModel?) {
         _selectedRunningHistory.value = runningHistoryUiModel
+    }
+
+    fun setSelectedItemPosition(itemPosition: Int) {
+        _selectedItemPosition.value = itemPosition
+    }
+
+    companion object {
+        private const val NOTHING_SELECTED_ITEM_POSITION = -1
     }
 }
