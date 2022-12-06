@@ -20,6 +20,7 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:elevation="0dp"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -27,7 +28,9 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:background="@color/mogakrun_background"
                 app:title="@{viewModel.groupInfo.name}"
+                app:titleTextAppearance="@style/MoGakRunText.Bold.Medium"
                 tools:title ="수피치 그룹"/>
 
         </com.google.android.material.appbar.AppBarLayout>
