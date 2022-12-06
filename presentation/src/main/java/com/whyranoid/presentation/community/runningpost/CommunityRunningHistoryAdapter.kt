@@ -1,5 +1,6 @@
 package com.whyranoid.presentation.community.runningpost
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -44,10 +45,11 @@ class CommunityRunningHistoryViewHolder(
         val isSelected = listener.checkRunningHistoryId(itemPosition)
 
         if (isSelected) {
-            binding.root.setBackgroundColor(
+            binding.root.setBackgroundResource(R.drawable.background_rounded)
+            binding.root.backgroundTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
                     binding.root.context,
-                    R.color.gray
+                    R.color.mogakrun_secondary
                 )
             )
         } else {
@@ -65,10 +67,11 @@ class CommunityRunningHistoryViewHolder(
             } else {
                 // 선택되어 있지 않던 아이템을 누른 경우
                 listener.selectRunningHistory(runningHistory, itemPosition)
-                it.setBackgroundColor(
+                binding.root.setBackgroundResource(R.drawable.background_rounded)
+                binding.root.backgroundTintList = ColorStateList.valueOf(
                     ContextCompat.getColor(
                         binding.root.context,
-                        R.color.gray
+                        R.color.mogakrun_secondary
                     )
                 )
             }

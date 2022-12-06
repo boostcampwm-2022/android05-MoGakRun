@@ -77,7 +77,7 @@ class CalendarDayBinder(
                 container.binding.root.background =
                     ContextCompat.getDrawable(
                         calendarView.context,
-                        R.drawable.calendar_kong
+                        R.drawable.kong
                     )
             }
         }
