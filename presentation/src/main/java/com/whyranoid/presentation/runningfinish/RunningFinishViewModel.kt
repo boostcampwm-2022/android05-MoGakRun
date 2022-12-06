@@ -7,8 +7,8 @@ import com.whyranoid.domain.model.MoGakRunException
 import com.whyranoid.domain.usecase.SaveRunningHistoryUseCase
 import com.whyranoid.presentation.model.UiState
 import com.whyranoid.presentation.running.RunningViewModel.Companion.RUNNING_FINISH_DATA_KEY
-import com.whyranoid.presentation.running.runningdatamanager.RunningFinishData
-import com.whyranoid.presentation.running.runningdatamanager.toRunningHistoryUiModel
+import com.whyranoid.presentation.running.toRunningHistoryUiModel
+import com.whyranoid.runningdata.model.RunningFinishData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

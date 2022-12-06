@@ -15,12 +15,12 @@ import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentRunningFinishBinding
 import com.whyranoid.presentation.model.RunningHistoryUiModel
 import com.whyranoid.presentation.model.UiState
-import com.whyranoid.presentation.running.runningdatamanager.RunningFinishData
-import com.whyranoid.presentation.running.runningdatamanager.RunningPosition
-import com.whyranoid.presentation.running.runningdatamanager.toLatLng
-import com.whyranoid.presentation.running.runningdatamanager.toRunningHistoryUiModel
+import com.whyranoid.presentation.running.toLatLng
+import com.whyranoid.presentation.running.toRunningHistoryUiModel
 import com.whyranoid.presentation.util.converters.UnitConverters
 import com.whyranoid.presentation.util.repeatWhenUiStarted
+import com.whyranoid.runningdata.model.RunningFinishData
+import com.whyranoid.runningdata.model.RunningPosition
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 

@@ -97,7 +97,7 @@
         android:name="com.whyranoid.presentation.runningfinish.RunningFinishFragment">
         <argument
             android:name="runningFinishData"
-            app:argType="com.whyranoid.presentation.running.runningdatamanager.RunningFinishData"
+            app:argType="com.whyranoid.runningdata.model.RunningFinishData"
             app:nullable="true" />
         <action
             android:id="@+id/action_runningFinishFragment_to_createRunningPostFragment"

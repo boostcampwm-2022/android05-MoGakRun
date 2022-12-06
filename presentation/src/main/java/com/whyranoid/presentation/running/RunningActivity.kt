@@ -17,12 +17,11 @@ import com.naver.maps.map.overlay.PathOverlay
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseActivity
 import com.whyranoid.presentation.databinding.ActivityRunningBinding
-import com.whyranoid.presentation.running.runningdatamanager.RunningData
-import com.whyranoid.presentation.running.runningdatamanager.RunningFinishData
-import com.whyranoid.presentation.running.runningdatamanager.RunningState
-import com.whyranoid.presentation.running.runningdatamanager.toLatLng
 import com.whyranoid.presentation.util.dateToString
 import com.whyranoid.presentation.util.repeatWhenUiStarted
+import com.whyranoid.runningdata.model.RunningData
+import com.whyranoid.runningdata.model.RunningFinishData
+import com.whyranoid.runningdata.model.RunningState
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Date
 
@@ -76,7 +75,7 @@ internal class RunningActivity :
         }
 
         observeStateOnMapReady()
-        naverMap.addOnCameraChangeListener { reason, animated ->
+        naverMap.addOnCameraChangeListener { reason, _ ->
             if (reason == CameraUpdate.REASON_GESTURE) {
                 viewModel.onTrackingCanceledByGesture()
             }

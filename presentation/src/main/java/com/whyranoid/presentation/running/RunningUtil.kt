@@ -1,13 +1,10 @@
-package com.whyranoid.presentation.running.runningdatamanager
+package com.whyranoid.presentation.running
 
 import com.naver.maps.geometry.LatLng
 import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.presentation.model.RunningHistoryUiModel
-
-data class RunningPosition(
-    val latitude: Double,
-    val longitude: Double
-) : java.io.Serializable
+import com.whyranoid.runningdata.model.RunningHistoryModel
+import com.whyranoid.runningdata.model.RunningPosition
 
 fun RunningPosition.toLatLng(): LatLng {
     return LatLng(

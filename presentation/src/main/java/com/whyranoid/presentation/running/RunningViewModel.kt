@@ -12,9 +12,8 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.whyranoid.domain.usecase.FinishRunningUseCase
 import com.whyranoid.domain.usecase.StartRunningUseCase
-import com.whyranoid.presentation.running.runningdatamanager.RunningDataManager
-import com.whyranoid.presentation.running.runningdatamanager.RunningState
-import com.whyranoid.presentation.running.runningdatamanager.toRunningHistory
+import com.whyranoid.runningdata.RunningDataManager
+import com.whyranoid.runningdata.model.RunningState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
