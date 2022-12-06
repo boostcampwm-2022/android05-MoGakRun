@@ -27,7 +27,7 @@ __모여서 각자 러닝__ 을 즐길 수 있게 도와주는 당신의 러닝�
 |K022 소병희|K023 신승민|K046 전현수|K051 주용한|
 |:-:|:-:|:-:|:-:|
 |<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=200 style="border-radius:100%" >|<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=200 style="border-radius:100%" >|<img src="https://user-images.githubusercontent.com/65655825/204988296-fc8e10b8-aabf-485c-9c6a-73346c09910a.jpg" width=200 style="border-radius:100%" >|<img src="https://user-images.githubusercontent.com/65655825/204987646-91eb987b-1a66-4f39-b4f4-0aae6a2b9368.png" width=200 style="border-radius:100%" >|
-|[@bngsh](https://github.com/bngsh)|[@Seungmin-develop](https://github.com/Seungmin-develop)|[@soopeach](https://github.com/devjungwonlee)|[@yonghanJu](https://github.com/yonghanJu)|
+|[@bngsh](https://github.com/bngsh)|[@Seungmin-develop](https://github.com/Seungmin-develop)|[@soopeach](https://github.com/soopeach)|[@yonghanJu](https://github.com/yonghanJu)|
 
 
 <br/>
@@ -108,7 +108,7 @@ __모여서 각자 러닝__ 을 즐길 수 있게 도와주는 당신의 러닝�
 <br>
 
 ### 단방향 데이터 흐름을 만들기
-- Firebase 제공해주는 여러 API들은 콜백 기반이며 이는 data, domain, presentation 레이어에 걸체 단방향 데이터 흐름을 만들기에 힘들고 따라서 가독성이 떨어지고 반응형 프로그래밍 작성이 힘들다고 생각했습니다. 이런 부분들을 개선하기 위해 suspend, flow를 활용해 단방형 데이터 흐름을 만들었습니다.
+- Firebase 제공해주는 여러 API들은 콜백 기반이며 이는 data, domain, presentation 레이어에 걸쳐 단방향 데이터 흐름을 만들기에 힘들고 따라서 가독성이 떨어지고 반응형 프로그래밍 작성이 힘들다고 생각했습니다. 이런 부분들을 개선하기 위해 suspend, flow를 활용해 단방형 데이터 흐름을 만들었습니다.
 
 <br>
 
