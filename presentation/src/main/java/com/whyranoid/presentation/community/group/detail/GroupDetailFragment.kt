@@ -13,6 +13,7 @@ import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentGroupDetailBinding
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -150,7 +151,7 @@ internal class GroupDetailFragment :
 
             binding.notificationRecyclerView.adapter = notificationAdapter
             viewLifecycleOwner.repeatWhenUiStarted {
-                viewModel.mergedNotifications.collect { notifications ->
+                viewModel.mergedNotifications.collectLatest { notifications ->
                     notificationAdapter.submitList(notifications)
                 }
             }
