@@ -3,8 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.whyranoid.presentation.model.UiState"/>
-        <import type="android.view.View"/>
+
+        <import type="com.whyranoid.presentation.model.UiState" />
+
+        <import type="android.view.View" />
 
         <variable
             name="vm"
@@ -32,12 +34,13 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/map_fragment_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/running_history_item"
             app:layout_constraintTop_toBottomOf="@id/tool_bar">
 
-            <fragment xmlns:app="http://schemas.android.com/apk/res-auto"
+            <fragment
                 android:id="@+id/map_fragment"
                 android:name="com.naver.maps.map.MapFragment"
                 android:layout_width="match_parent"
@@ -81,27 +84,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_positive" />
-
-        <FrameLayout
-            android:id="@+id/frame_progress_running"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/black"
-            android:alpha="0.8"
-            android:translationZ="@{vm.runningFinishDataState instanceof UiState.Success ? 0f : 10f }"
-            android:visibility="@{vm.runningFinishDataState instanceof UiState.Success ? View.GONE : View.VISIBLE }">
-
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/progressindicator_running"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:contentDescription="@string/running_finish_progress_description"
-                android:indeterminate="true"
-                android:visibility="@{vm.runningFinishDataState instanceof UiState.Success ? View.GONE : View.VISIBLE }"
-                app:indicatorColor="?attr/colorOnPrimary" />
-
-        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
