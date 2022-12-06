@@ -25,10 +25,22 @@ internal class GroupDetailFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initViews()
+        observeState()
+    }
+
+    private fun initViews() {
+        binding.viewModel = viewModel
         setupMenu()
-        handleEvent()
-        setBindingData()
         setNotificationAdapter()
+    }
+
+    private fun observeState() {
+        viewLifecycleOwner.repeatWhenUiStarted {
+            viewModel.eventFlow.collect { event ->
+                handleEvent(event)
+            }
+        }
     }
 
     private fun setupMenu() {
@@ -77,66 +89,58 @@ internal class GroupDetailFragment :
         }
     }
 
-    private fun handleEvent() {
-        viewLifecycleOwner.repeatWhenUiStarted {
-            viewModel.eventFlow.collect { event ->
-                when (event) {
-                    Event.RecruitButtonClick -> {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.text_check_recruit),
-                            Snackbar.LENGTH_SHORT
-                        ).setAction(R.string.text_recruit) {
-                            viewModel.onRecruitSnackBarButtonClick()
-                        }.show()
-                    }
-                    is Event.RecruitSnackBarButtonClick -> {
-                        if (event.isSuccess) {
-                            Snackbar.make(
-                                binding.root,
-                                getString(R.string.text_recruit_success),
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            Snackbar.make(
-                                binding.root,
-                                getString(R.string.text_recruit_fail),
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                    Event.ExitGroupButtonClick -> {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.text_check_exit_group),
-                            Snackbar.LENGTH_SHORT
-                        ).setAction(getString(R.string.text_exit_group)) {
-                            viewModel.onExitGroupSnackBarButtonClick()
-                        }.show()
-                    }
-                    is Event.ExitGroupSnackBarButtonClick -> {
-                        if (event.isSuccess) {
-                            Snackbar.make(
-                                binding.root,
-                                getString(R.string.text_exit_group_success),
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                            findNavController().popBackStack()
-                        } else {
-                            Snackbar.make(
-                                binding.root,
-                                getString(R.string.text_exit_group_fail),
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
+    private fun handleEvent(event: Event) {
+        when (event) {
+            Event.RecruitButtonClick -> {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.text_check_recruit),
+                    Snackbar.LENGTH_SHORT
+                ).setAction(R.string.text_recruit) {
+                    viewModel.onRecruitSnackBarButtonClick()
+                }.show()
+            }
+            is Event.RecruitSnackBarButtonClick -> {
+                if (event.isSuccess) {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_recruit_success),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_recruit_fail),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            Event.ExitGroupButtonClick -> {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.text_check_exit_group),
+                    Snackbar.LENGTH_SHORT
+                ).setAction(getString(R.string.text_exit_group)) {
+                    viewModel.onExitGroupSnackBarButtonClick()
+                }.show()
+            }
+            is Event.ExitGroupSnackBarButtonClick -> {
+                if (event.isSuccess) {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_exit_group_success),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    findNavController().popBackStack()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.text_exit_group_fail),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
-    }
-
-    private fun setBindingData() {
-        binding.viewModel = viewModel
     }
 
     private fun setNotificationAdapter() {
