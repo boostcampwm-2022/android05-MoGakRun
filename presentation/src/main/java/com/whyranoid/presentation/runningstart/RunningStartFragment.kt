@@ -52,17 +52,7 @@ internal class RunningStartFragment :
                     RUNNING_FINISH_DATA_KEY
                 )
 
-            // 결과 넘겨주기
-            if (runningFinishData?.runningPositionList.isNullOrEmpty().not()) {
-                runningFinishData?.let {
-                    val direction =
-                        RunningStartFragmentDirections.actionRunningStartFragmentToRunningFinish(
-                            runningFinishData
-                        )
-                    findNavController().navigate(direction)
-                } ?: Snackbar.make(binding.root, getString(R.string.running_start_error_message), Snackbar.LENGTH_SHORT)
-                    .show()
-            }
+            navigateToRunningFinish(runningFinishData)
         }
     }
 
@@ -153,6 +143,23 @@ internal class RunningStartFragment :
             }
             .setNegativeButton("그건 싫어요") { _, _ ->
             }
+            .show()
+    }
+
+    private fun navigateToRunningFinish(runningFinishData: RunningFinishData?) {
+        runningFinishData?.let { it ->
+            if (it.runningPositionList.flatten().isNotEmpty()) {
+                val direction =
+                    RunningStartFragmentDirections.actionRunningStartFragmentToRunningFinish(
+                        it
+                    )
+                findNavController().navigate(direction)
+            }
+        } ?: Snackbar.make(
+            binding.root,
+            getString(R.string.running_start_error_message),
+            Snackbar.LENGTH_SHORT
+        )
             .show()
     }
 }
