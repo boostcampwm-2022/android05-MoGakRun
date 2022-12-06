@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
@@ -109,6 +110,13 @@ internal class CommunityItemFragment :
                     viewModel.onGroupJoinButtonClicked(it)
                 }
             )
+
+            viewLifecycleOwner.repeatWhenUiStarted {
+                postAdapter.loadStateFlow.collectLatest { loadStates ->
+                    binding.shimmerCommunity.isVisible = loadStates.refresh is LoadState.Loading
+                }
+            }
+
             binding.rvCommunity.adapter = postAdapter
 
             viewLifecycleOwner.repeatWhenUiStarted {
@@ -119,7 +127,6 @@ internal class CommunityItemFragment :
 
             viewLifecycleOwner.repeatWhenUiStarted {
                 viewModel.pagingPost.collectLatest { postList ->
-                    removeShimmer()
                     postAdapter.submitData(postList)
                 }
             }
@@ -133,9 +140,9 @@ internal class CommunityItemFragment :
         binding.rvCommunity.adapter = myGroupAdapter
 
         viewLifecycleOwner.repeatWhenUiStarted {
-            viewModel.myGroupList.collect { groupList ->
-                removeShimmer()
+            viewModel.myGroupList.collectLatest { groupList ->
                 myGroupAdapter.submitList(groupList.sortedBy { it.name })
+                removeShimmer()
             }
         }
     }
@@ -154,6 +161,13 @@ internal class CommunityItemFragment :
                     }.show()
                 }
             )
+
+            viewLifecycleOwner.repeatWhenUiStarted {
+                postAdapter.loadStateFlow.collectLatest { loadStates ->
+                    binding.shimmerCommunity.isVisible = loadStates.refresh is LoadState.Loading
+                }
+            }
+
             binding.rvCommunity.adapter = postAdapter
 
             viewLifecycleOwner.repeatWhenUiStarted {
@@ -164,7 +178,6 @@ internal class CommunityItemFragment :
 
             viewLifecycleOwner.repeatWhenUiStarted {
                 viewModel.getMyPagingPostsUseCase().collectLatest { myPostList ->
-                    removeShimmer()
                     postAdapter.submitData(myPostList)
                 }
             }
