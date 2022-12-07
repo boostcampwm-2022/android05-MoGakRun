@@ -20,7 +20,7 @@ import com.whyranoid.presentation.databinding.ActivityRunningBinding
 import com.whyranoid.presentation.util.dateToString
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.util.Date
 
 @AndroidEntryPoint
 internal class RunningActivity :
@@ -89,34 +89,9 @@ internal class RunningActivity :
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        mapView.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mapView.onResume()
-    }
-
-    override fun onPause() {
-        mapView.onPause()
-        super.onPause()
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         mapView.onSaveInstanceState(outState)
-    }
-
-    override fun onStop() {
-        mapView.onStop()
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        mapView.onDestroy()
-        super.onDestroy()
     }
 
     override fun onLowMemory() {
@@ -135,11 +110,12 @@ internal class RunningActivity :
     private fun initViews(savedInstanceState: Bundle?) {
         mapView = binding.mapView
 
-        mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
         binding.vm = viewModel
+
         this.onBackPressedDispatcher.addCallback(this, backPressedCallback)
+        lifecycle.addObserver(RunningActivityObserver(mapView, savedInstanceState))
     }
 
     private fun observeState() {
