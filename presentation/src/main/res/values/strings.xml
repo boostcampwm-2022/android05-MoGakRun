@@ -2,6 +2,8 @@
 
     <string name="app_name">MoGakRun</string>
 
+    <string name="text_empty" />
+
     <!-- 바텀네비게이션 -->
     <string name="bottom_navigation_menu_community">커뮤니티</string>
     <string name="bottom_navigation_menu_running">러닝</string>
@@ -178,5 +180,12 @@
         <item>50</item>
         <item>55</item>
     </string-array>
+
+    <!-- 규칙 생성 다이어로그-->
+    <string name="text_date">요일</string>
+    <string name="text_hour">시</string>
+    <string name="text_minute">분</string>
+    <string name="text_confirm">확인</string>
+    <string name="text_rule_picker_title">요일 및 시간을 골라주세요!!</string>
 
 </resources>
