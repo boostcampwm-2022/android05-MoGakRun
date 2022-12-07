@@ -111,6 +111,7 @@ class RunningDataManager {
     companion object {
         private var INSTANCE: RunningDataManager? = null
 
+        @Synchronized
         fun getInstance(): RunningDataManager {
             return INSTANCE ?: RunningDataManager().also {
                 INSTANCE = it
