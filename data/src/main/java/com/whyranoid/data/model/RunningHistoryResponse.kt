@@ -22,3 +22,13 @@ fun RunningHistory.toRunningHistoryResponse(uid: String) =
         pace = pace,
         totalDistance = totalDistance
     )
+
+fun RunningHistoryResponse.toRunningHistoryEntity() =
+    RunningHistoryEntity(
+        historyId = historyId,
+        startedAt = startedAt,
+        finishedAt = finishedAt,
+        totalRunningTime = totalRunningTime,
+        pace = pace,
+        totalDistance = totalDistance
+    )
