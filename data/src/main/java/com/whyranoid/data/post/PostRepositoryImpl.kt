@@ -23,12 +23,12 @@ class PostRepositoryImpl @Inject constructor(
         }.flow.cachedIn(coroutineScope)
     }
 
-    override fun getMyPagingPosts(uid: String): Flow<PagingData<Post>> {
+    override fun getMyPagingPosts(uid: String, coroutineScope: CoroutineScope): Flow<PagingData<Post>> {
         return Pager(
             PagingConfig(pageSize = 5)
         ) {
             PostPagingDataSource(myUid = uid, postDataSource)
-        }.flow
+        }.flow.cachedIn(coroutineScope)
     }
 
     override fun getAllPostFlow(): Flow<List<Post>> {

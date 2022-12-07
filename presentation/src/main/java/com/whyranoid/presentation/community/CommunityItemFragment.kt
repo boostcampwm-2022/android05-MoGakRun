@@ -181,7 +181,7 @@ internal class CommunityItemFragment :
             }
 
             viewLifecycleOwner.repeatWhenUiStarted {
-                viewModel.getMyPagingPostsUseCase().collectLatest { myPostList ->
+                viewModel.getMyPagingPostsUseCase(viewLifecycleOwner.lifecycleScope).collectLatest { myPostList ->
                     postAdapter.submitData(myPostList)
                 }
             }

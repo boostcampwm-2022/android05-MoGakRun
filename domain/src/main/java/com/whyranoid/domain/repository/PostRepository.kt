@@ -11,7 +11,7 @@ interface PostRepository {
     // 글(홍보 / 인증) 페이징으로 가져오기 - 리모트
     fun getPagingPosts(coroutineScope: CoroutineScope): Flow<PagingData<Post>>
 
-    fun getMyPagingPosts(uid: String): Flow<PagingData<Post>>
+    fun getMyPagingPosts(uid: String, coroutineScope: CoroutineScope): Flow<PagingData<Post>>
 
     fun getAllPostFlow(): Flow<List<Post>>
 
