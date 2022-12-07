@@ -5,9 +5,6 @@ plugins {
     id "com.google.dagger.hilt.android"
 }
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
 android {
     namespace "com.whyranoid.signin"
     compileSdk 33
@@ -16,7 +13,6 @@ android {
         minSdk 23
         targetSdk 33
 
-        buildConfigField "String", "token", properties["token"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
