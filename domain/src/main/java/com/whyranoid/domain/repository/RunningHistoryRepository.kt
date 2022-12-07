@@ -21,5 +21,5 @@ interface RunningHistoryRepository {
         totalDistance: Double
     ): Result<RunningHistory>
 
-    suspend fun uploadRunningHistory(runningHistory: RunningHistory): Result<Boolean>
+    suspend fun uploadRunningHistory(uid: String, runningHistory: RunningHistory): Result<Boolean>
 }

@@ -19,7 +19,7 @@ class FinishRunningUseCase @Inject constructor(
         runnerRepository.finishRunning(uid)
 
         if (runningHistory != null) {
-            val uploadResult = runningHistoryRepository.uploadRunningHistory(runningHistory)
+            val uploadResult = runningHistoryRepository.uploadRunningHistory(uid, runningHistory)
 
             if (uploadResult.isFailure) {
                 return false

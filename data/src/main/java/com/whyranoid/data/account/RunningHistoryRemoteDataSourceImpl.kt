@@ -11,8 +11,8 @@ import javax.inject.Inject
 
 class RunningHistoryRemoteDataSourceImpl @Inject constructor(private val firebaseDB: FirebaseFirestore) :
     RunningHistoryRemoteDataSource {
-    override suspend fun uploadRunningHistory(runningHistory: RunningHistory): Result<Boolean> {
-        val runningHistoryResponse = runningHistory.toRunningHistoryResponse()
+    override suspend fun uploadRunningHistory(uid: String, runningHistory: RunningHistory): Result<Boolean> {
+        val runningHistoryResponse = runningHistory.toRunningHistoryResponse(uid)
         var uploadSuccess = false
 
         return runCatching {
