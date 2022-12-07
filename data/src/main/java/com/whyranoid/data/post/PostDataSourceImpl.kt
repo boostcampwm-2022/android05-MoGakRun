@@ -262,19 +262,10 @@ class PostDataSourceImpl @Inject constructor(
     override suspend fun convertPostType(document: QueryDocumentSnapshot): Post? {
         return if (document[RUNNING_HISTORY_ID] != null) {
             document.toObject(RunningPostResponse::class.java).let { postResponse ->
-                val authorResponse = db.collection(CollectionId.USERS_COLLECTION)
-                    .document(postResponse.authorId)
-                    .get()
-                    .await()
-                    .toObject(UserResponse::class.java)
+                val authorResponse = getUserResponse(postResponse.authorId)
 
                 authorResponse?.let {
-                    val runningHistory =
-                        db.collection(CollectionId.RUNNING_HISTORY_COLLECTION)
-                            .document(postResponse.runningHistoryId)
-                            .get()
-                            .await()
-                            .toObject(RunningHistory::class.java)
+                    val runningHistory = getRunningHistory(postResponse.runningHistoryId)
 
                     runningHistory?.let {
                         RunningPost(
@@ -290,18 +281,10 @@ class PostDataSourceImpl @Inject constructor(
             }
         } else {
             document.toObject(RecruitPostResponse::class.java).let { postResponse ->
-                val authorResponse = db.collection(CollectionId.USERS_COLLECTION)
-                    .document(postResponse.authorId)
-                    .get()
-                    .await()
-                    .toObject(UserResponse::class.java)
+                val authorResponse = getUserResponse(postResponse.authorId)
 
                 authorResponse?.let {
-                    val groupInfoResponse = db.collection(CollectionId.GROUPS_COLLECTION)
-                        .document(postResponse.groupId)
-                        .get()
-                        .await()
-                        .toObject(GroupInfoResponse::class.java)
+                    val groupInfoResponse = getGroupInfoResponse(postResponse.groupId)
 
                     groupInfoResponse?.let {
                         val author = authorResponse.toUser()
@@ -413,6 +396,33 @@ class PostDataSourceImpl @Inject constructor(
                     cancellableContinuation.resume(false)
                 }
         }
+    }
+
+    // TODO : 예외 처리
+    private suspend fun getUserResponse(userId: String): UserResponse? {
+        return db.collection(CollectionId.USERS_COLLECTION)
+            .document(userId)
+            .get()
+            .await()
+            .toObject(UserResponse::class.java)
+    }
+
+    // TODO : 예외 처리
+    private suspend fun getRunningHistory(runningHistoryId: String): RunningHistory? {
+        return db.collection(CollectionId.RUNNING_HISTORY_COLLECTION)
+            .document(runningHistoryId)
+            .get()
+            .await()
+            .toObject(RunningHistory::class.java)
+    }
+
+    // TODO : 예외 처리
+    private suspend fun getGroupInfoResponse(groupId: String): GroupInfoResponse? {
+        return db.collection(CollectionId.GROUPS_COLLECTION)
+            .document(groupId)
+            .get()
+            .await()
+            .toObject(GroupInfoResponse::class.java)
     }
 
     companion object {
