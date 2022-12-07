@@ -16,7 +16,10 @@ internal class CommunityFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
+    }
 
+    private fun initViews() {
         val adapter = CommunityCategoryAdapter(this)
         setTabLayout(adapter)
     }
