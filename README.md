@@ -26,7 +26,7 @@ __모여서 각자 러닝__ 을 즐길 수 있게 도와주는 당신의 러닝�
 
 |K022 소병희|K023 신승민|K046 전현수|K051 주용한|
 |:-:|:-:|:-:|:-:|
-|<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=200 style="border-radius:100%" >|<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=200 style="border-radius:100%" >|<img src="https://user-images.githubusercontent.com/65655825/204988296-fc8e10b8-aabf-485c-9c6a-73346c09910a.jpg" width=200 style="border-radius:100%" >|<img src="https://user-images.githubusercontent.com/65655825/204987646-91eb987b-1a66-4f39-b4f4-0aae6a2b9368.png" width=200 style="border-radius:100%" >|
+|<img src="https://user-images.githubusercontent.com/39687846/206238567-8e8d324d-8db4-43c1-accf-542ca8a0f604.png" width=200 style="border-radius:100%" >|<img src="https://user-images.githubusercontent.com/39687846/206238343-0b67efa1-a0e6-475a-823a-fba77d632501.png" width=200 height=200 style="border-radius:100%" >|<img src="https://user-images.githubusercontent.com/65655825/204988296-fc8e10b8-aabf-485c-9c6a-73346c09910a.jpg" width=200 style="border-radius:100%" >|<img src="https://user-images.githubusercontent.com/65655825/204987646-91eb987b-1a66-4f39-b4f4-0aae6a2b9368.png" width=200 style="border-radius:100%" >|
 |[@bngsh](https://github.com/bngsh)|[@Seungmin-develop](https://github.com/Seungmin-develop)|[@soopeach](https://github.com/soopeach)|[@yonghanJu](https://github.com/yonghanJu)|
 
 
