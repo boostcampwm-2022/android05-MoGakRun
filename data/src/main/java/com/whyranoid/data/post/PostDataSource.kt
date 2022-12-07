@@ -16,6 +16,10 @@ interface PostDataSource {
 
     suspend fun getNextPagingPost(lastDocumentSnapshot: DocumentSnapshot): QuerySnapshot
 
+    suspend fun getMyCurrentPagingPost(key: QuerySnapshot?, uid: String): QuerySnapshot
+
+    suspend fun getMyNextPagingPost(lastDocumentSnapshot: DocumentSnapshot, uid: String): QuerySnapshot
+
     suspend fun convertPostType(document: QueryDocumentSnapshot): Post?
 
     suspend fun createRecruitPost(

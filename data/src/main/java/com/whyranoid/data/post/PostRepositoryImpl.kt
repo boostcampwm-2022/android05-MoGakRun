@@ -11,8 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
-    private val postDataSource: PostDataSource,
-    private val myPostPagingDataSource: MyPostPagingDataSource
+    private val postDataSource: PostDataSource
 ) : PostRepository {
 
     // TODO : 캐싱하기
@@ -20,16 +19,15 @@ class PostRepositoryImpl @Inject constructor(
         return Pager(
             PagingConfig(pageSize = 5)
         ) {
-            PostPagingDataSource(postDataSource)
+            PostPagingDataSource(postDataSource = postDataSource)
         }.flow.cachedIn(coroutineScope)
     }
 
     override fun getMyPagingPosts(uid: String): Flow<PagingData<Post>> {
-        myPostPagingDataSource.setMyUid(uid)
         return Pager(
             PagingConfig(pageSize = 5)
         ) {
-            myPostPagingDataSource
+            PostPagingDataSource(myUid = uid, postDataSource)
         }.flow
     }
 

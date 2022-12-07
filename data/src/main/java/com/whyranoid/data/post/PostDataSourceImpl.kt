@@ -238,6 +238,26 @@ class PostDataSourceImpl @Inject constructor(
             .await()
     }
 
+    override suspend fun getMyCurrentPagingPost(key: QuerySnapshot?, uid: String): QuerySnapshot {
+        return key ?: db.collection(CollectionId.POST_COLLECTION)
+            .whereEqualTo(AUTHOR_ID, uid)
+            .limit(DATA_COUNT_PER_PAGE)
+            .get()
+            .await()
+    }
+
+    override suspend fun getMyNextPagingPost(
+        lastDocumentSnapshot: DocumentSnapshot,
+        uid: String
+    ): QuerySnapshot {
+        return db.collection(CollectionId.POST_COLLECTION)
+            .whereEqualTo(AUTHOR_ID, uid)
+            .limit(DATA_COUNT_PER_PAGE)
+            .startAfter(lastDocumentSnapshot)
+            .get()
+            .await()
+    }
+
     // TODO : 예외 처리
     override suspend fun convertPostType(document: QueryDocumentSnapshot): Post? {
         return if (document[RUNNING_HISTORY_ID] != null) {

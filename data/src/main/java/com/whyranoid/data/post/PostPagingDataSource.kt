@@ -6,6 +6,7 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.whyranoid.domain.model.Post
 
 class PostPagingDataSource(
+    private val myUid: String = EMPTY_STRING,
     private val postDataSource: PostDataSource
 ) : PagingSource<QuerySnapshot, Post>() {
 
@@ -18,7 +19,12 @@ class PostPagingDataSource(
             val postList = mutableListOf<Post>()
 
             // 현재 페이지
-            val currentPage = postDataSource.getCurrentPagingPost(params.key)
+            val currentPage =
+                if (myUid == EMPTY_STRING) {
+                    postDataSource.getCurrentPagingPost(params.key)
+                } else {
+                    postDataSource.getMyCurrentPagingPost(params.key, myUid)
+                }
 
             // Post 타입 캐스팅
             // TODO 예외 처리
@@ -32,7 +38,12 @@ class PostPagingDataSource(
             val lastDocumentSnapshot = currentPage.documents[currentPage.size() - 1]
 
             // 마지막 스냅샷 이후 페이지 불러오기
-            val nextPage = postDataSource.getNextPagingPost(lastDocumentSnapshot)
+            val nextPage =
+                if (myUid == EMPTY_STRING) {
+                    postDataSource.getNextPagingPost(lastDocumentSnapshot)
+                } else {
+                    postDataSource.getMyNextPagingPost(lastDocumentSnapshot, myUid)
+                }
 
             LoadResult.Page(
                 data = postList,
@@ -42,5 +53,9 @@ class PostPagingDataSource(
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
+    }
+
+    companion object {
+        private const val EMPTY_STRING = ""
     }
 }
