@@ -11,7 +11,8 @@ class PostPagingDataSource(
 ) : PagingSource<QuerySnapshot, Post>() {
 
     override fun getRefreshKey(state: PagingState<QuerySnapshot, Post>): QuerySnapshot? {
-        TODO("Not yet implemented")
+        // 새로 고침하면 데이터를 처음부터 로드
+        return null
     }
 
     override suspend fun load(params: LoadParams<QuerySnapshot>): LoadResult<QuerySnapshot, Post> {
