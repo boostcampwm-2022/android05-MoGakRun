@@ -84,7 +84,7 @@ class RunningDataManager @Inject constructor() {
                 distance
             )
             val newTotalDistance = prevRunningData.totalDistance + distance.first()
-            val newPace = newTotalDistance / newRunningTime
+            val newPace = if (newRunningTime == 0) 0.0 else newTotalDistance / newRunningTime
             val newRunningPositionList =
                 prevRunningData.runningPositionList.toList().map { it.toMutableList() }
                     .also { it[it.lastIndex].add(runningPosition) }

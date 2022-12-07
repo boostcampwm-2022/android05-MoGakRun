@@ -84,9 +84,14 @@ internal class RunningFinishFragment :
 
     private fun handleEvent(event: Event) {
         when (event) {
-            is Event.NegativeButtonButtonClick -> findNavController().popBackStack()
+            is Event.NegativeButtonButtonClick -> handleNegativeButtonClicked()
             is Event.PositiveButtonClick -> handlePositiveButtonClicked(event.runningHistory)
         }
+    }
+
+    private fun handleNegativeButtonClicked() {
+        binding.mapFragmentLayout.visibility = View.INVISIBLE
+        findNavController().popBackStack()
     }
 
     private fun handlePositiveButtonClicked(runningHistory: RunningHistoryUiModel) {
