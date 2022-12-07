@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="notifications"
             type="com.whyranoid.domain.model.FinishNotification" />
@@ -13,23 +14,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:paddingBottom="16dp"
-        >
+        android:paddingBottom="16dp">
 
         <TextView
             android:id="@+id/tv_uid"
-            style="@style/MoGakRunText.Bold.Small"
+            style="@style/MoGakRunText.Regular.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@{notifications.uid}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="수피치"/>
+            tools:text="수피치" />
 
         <TextView
             android:id="@+id/tv_end_notification"
-            style="@style/MoGakRunText.Bold.Medium"
+            style="@style/MoGakRunText.Regular.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -39,7 +39,7 @@
             app:finishLongToDate="@{notifications.runningHistory.finishedAt}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_uid"
-            tools:text="2022.11.21 / 21 시 10분 운동 종료"/>
+            tools:text="2022.11.21 / 21 시 10분 운동 종료" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

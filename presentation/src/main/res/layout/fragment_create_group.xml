@@ -39,7 +39,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:background="@color/mogakrun_primary"
+            android:background="@drawable/community_create_running_post_edit_text_background"
+            android:backgroundTint="@color/mogakrun_secondary"
             app:counterEnabled="true"
             app:layout_constraintEnd_toStartOf="@id/btn_duplicate_check"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,11 +50,13 @@
                 android:id="@+id/et_group_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/mogakrun_secondary"
+                android:background="@drawable/community_create_group_edit_text_background"
                 android:hint="@string/text_group_name"
                 android:maxLength="20"
                 android:text="@={viewModel.groupName}"
-                android:textColor="@color/mogakrun_on_secondary" />
+                android:textAppearance="@style/MoGakRunText.Regular.Medium"
+                android:textColor="@color/mogakrun_on_secondary"
+                android:textCursorDrawable="?attr/colorOnSecondary" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,6 +68,7 @@
             android:enabled="@{viewModel.isDoubleCheckButtonEnable()}"
             android:onClick="@{() -> viewModel.onDuplicateCheckButtonClicked()}"
             android:text="@string/text_duplicate_check"
+            android:textAppearance="@style/MoGakRunText.Regular.Small"
             app:layout_constraintBottom_toTopOf="@id/time_and_date_picker"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar" />
@@ -74,7 +78,8 @@
             android:layout_width="0dp"
             android:layout_height="70dp"
             android:layout_margin="16dp"
-            android:background="@color/mogakrun_secondary_dark"
+            android:background="@drawable/community_create_running_post_edit_text_background"
+            android:backgroundTint="@color/mogakrun_secondary"
             android:paddingHorizontal="8dp"
             android:scrollbars="none"
             app:layout_constraintEnd_toStartOf="@id/btn_select_rule"
@@ -95,6 +100,7 @@
             android:layout_margin="16dp"
             android:onClick="@{() -> viewModel.onAddRuleButtonClicked()}"
             android:text="@string/text_select_rule"
+            android:textAppearance="@style/MoGakRunText.Regular.Small"
             app:layout_constraintBottom_toTopOf="@id/text_input_layout_group_introduce"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_input_layout_group_name" />
@@ -104,7 +110,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="16dp"
-            android:background="@color/mogakrun_primary"
+            android:background="@drawable/community_create_running_post_edit_text_background"
+            android:backgroundTint="@color/mogakrun_secondary"
             android:gravity="top|start"
             app:counterEnabled="true"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -117,13 +124,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/mogakrun_secondary"
+                android:background="@drawable/community_create_group_edit_text_background"
                 android:gravity="top|start"
                 android:hint="@string/text_group_introduce"
                 android:maxLength="200"
                 android:minLines="2"
                 android:text="@={viewModel.groupIntroduce}"
-                android:textColor="@color/mogakrun_on_secondary" />
+                android:textAppearance="@style/MoGakRunText.Regular.Medium"
+                android:textColor="@color/mogakrun_on_secondary"
+                android:textCursorDrawable="?attr/colorOnSecondary" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

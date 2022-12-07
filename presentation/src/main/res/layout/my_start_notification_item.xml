@@ -18,12 +18,12 @@
 
         <TextView
             android:id="@+id/tv_start_notification"
-            style="@style/MoGakRunText.Bold.Medium"
+            style="@style/MoGakRunText.Regular.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/radius_background"
-            android:backgroundTint="@color/mogakrun_on_primary"
+            android:backgroundTint="@color/mogakrun_secondary"
             android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

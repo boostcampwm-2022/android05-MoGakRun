@@ -28,7 +28,7 @@ class CreateRunningPostViewModel @Inject constructor(
 
     val createPostButtonEnableState: StateFlow<Boolean>
         get() = runningPostContent.map { content ->
-            content != null
+            content.isNullOrBlank().not()
         }.stateIn(
             initialValue = false,
             started = SharingStarted.WhileSubscribed(5000),

@@ -66,4 +66,15 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="MoGakRunDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="colorAccent">@color/mogakrun_on_primary</item>
+        <item name="textAppearanceButton">@style/MoGakRunText.Bold.Small</item>
+        <item name="android:background">@color/mogakrun_background</item>
+    </style>
+
+    <style name="MogakRunDialogButton" parent="Widget.AppCompat.Button.Borderless.Colored">
+
+    </style>
+
+
 </resources>
