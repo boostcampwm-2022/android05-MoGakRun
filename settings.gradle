@@ -20,9 +20,9 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "MoGakRun"
-include ':app'
-include ':domain'
-include ':data'
-include ':presentation'
-include ':signin'
-include ':runningdata'
+include ":app"
+include ":domain"
+include ":data"
+include ":presentation"
+include ":signin"
+include ":runningdata"
