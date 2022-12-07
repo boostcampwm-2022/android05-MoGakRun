@@ -26,30 +26,48 @@ class SignInDataSourceImpl @Inject constructor(
     }
 
     override suspend fun saveLogInUserInfo(userInfo: SignInUserInfo): Boolean {
-        dataStoreDb.edit { preferences ->
-            preferences[PreferenceKeys.uid] = userInfo.uid
-            preferences[PreferenceKeys.email] = userInfo.email ?: EMPTY_STRING
-            preferences[PreferenceKeys.nickName] = userInfo.nickName ?: EMPTY_STRING
-            preferences[PreferenceKeys.profileImgUri] = userInfo.profileImgUri ?: EMPTY_STRING
-        }
+        val existedUser =
+            fireBaseDb.collection(USER_COLLECTION_PATH).document(userInfo.uid).get().await()
+        val existedUserInfo = existedUser.toObject(UserResponse::class.java)
 
-        fireBaseDb.collection(USER_COLLECTION_PATH)
-            .document(userInfo.uid).set(
-                UserResponse(
-                    userInfo.uid,
-                    userInfo.nickName,
-                    userInfo.profileImgUri,
-                    emptyList()
+        if (existedUserInfo == null) {
+            dataStoreDb.edit { preferences ->
+                preferences[PreferenceKeys.uid] = userInfo.uid
+                preferences[PreferenceKeys.email] = userInfo.email ?: EMPTY_STRING
+                preferences[PreferenceKeys.nickName] = userInfo.nickName ?: EMPTY_STRING
+                preferences[PreferenceKeys.profileImgUri] = userInfo.profileImgUri ?: EMPTY_STRING
+            }
+
+            fireBaseDb.collection(USER_COLLECTION_PATH)
+                .document(userInfo.uid).set(
+                    UserResponse(
+                        userInfo.uid,
+                        userInfo.nickName,
+                        userInfo.profileImgUri,
+                        emptyList()
+                    )
                 )
-            )
+        } else {
+            dataStoreDb.edit { preferences ->
+                preferences[PreferenceKeys.uid] = existedUserInfo.uid
+                preferences[PreferenceKeys.email] = userInfo.email ?: EMPTY_STRING
+                preferences[PreferenceKeys.nickName] = existedUserInfo.name ?: EMPTY_STRING
+                preferences[PreferenceKeys.profileImgUri] =
+                    existedUserInfo.profileUrl ?: EMPTY_STRING
+            }
+        }
 
         return true
     }
 
     override suspend fun restoreRunningHistoryData(uid: String): Result<Boolean> = runCatching {
-        val runningHistoryData = fireBaseDb.collection("RunningHistory").whereEqualTo("uid", uid).get().await()
+        val runningHistoryData =
+            fireBaseDb.collection(RUNNING_HISTORY_COLLECTION_PATH).whereEqualTo(UID_KEY, uid).get()
+                .await()
         runningHistoryData.forEach { runningHistory ->
-            runningHistoryDao.addRunningHistory(runningHistory.toObject(RunningHistoryResponse::class.java).toRunningHistoryEntity())
+            runningHistoryDao.addRunningHistory(
+                runningHistory.toObject(RunningHistoryResponse::class.java).toRunningHistoryEntity()
+            )
         }
         true
     }
@@ -61,5 +79,6 @@ class SignInDataSourceImpl @Inject constructor(
         private const val PROFILE_IMG_URI = "profile_img_uri"
         private const val EMPTY_STRING = ""
         private const val USER_COLLECTION_PATH = "Users"
+        private const val RUNNING_HISTORY_COLLECTION_PATH = "RunningHistory"
     }
 }
