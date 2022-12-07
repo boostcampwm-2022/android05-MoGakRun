@@ -1,7 +1,10 @@
 package com.whyranoid.data.post
 
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import com.whyranoid.data.constant.CollectionId
 import com.whyranoid.data.constant.FieldId.AUTHOR_ID
 import com.whyranoid.data.constant.FieldId.GROUP_ID
@@ -219,6 +222,87 @@ class PostDataSourceImpl @Inject constructor(
             awaitClose()
         }
 
+    override suspend fun getCurrentPagingPost(key: QuerySnapshot?): QuerySnapshot {
+        return key ?: db.collection(CollectionId.POST_COLLECTION)
+            .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
+            .limit(DATA_COUNT_PER_PAGE)
+            .get()
+            .await()
+    }
+
+    override suspend fun getNextPagingPost(lastDocumentSnapshot: DocumentSnapshot): QuerySnapshot {
+        return db.collection(CollectionId.POST_COLLECTION)
+            .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
+            .limit(DATA_COUNT_PER_PAGE).startAfter(lastDocumentSnapshot)
+            .get()
+            .await()
+    }
+
+    // TODO : 예외 처리
+    override suspend fun convertPostType(document: QueryDocumentSnapshot): Post? {
+        return if (document[RUNNING_HISTORY_ID] != null) {
+            document.toObject(RunningPostResponse::class.java).let { postResponse ->
+                val authorResponse = db.collection(CollectionId.USERS_COLLECTION)
+                    .document(postResponse.authorId)
+                    .get()
+                    .await()
+                    .toObject(UserResponse::class.java)
+
+                authorResponse?.let {
+                    val runningHistory =
+                        db.collection(CollectionId.RUNNING_HISTORY_COLLECTION)
+                            .document(postResponse.runningHistoryId)
+                            .get()
+                            .await()
+                            .toObject(RunningHistory::class.java)
+
+                    runningHistory?.let {
+                        RunningPost(
+                            postId = postResponse.postId,
+                            author = authorResponse.toUser(),
+                            updatedAt = postResponse.updatedAt,
+                            runningHistory = it,
+                            likeCount = 0,
+                            content = postResponse.content
+                        )
+                    }
+                }
+            }
+        } else {
+            document.toObject(RecruitPostResponse::class.java).let { postResponse ->
+                val authorResponse = db.collection(CollectionId.USERS_COLLECTION)
+                    .document(postResponse.authorId)
+                    .get()
+                    .await()
+                    .toObject(UserResponse::class.java)
+
+                authorResponse?.let {
+                    val groupInfoResponse = db.collection(CollectionId.GROUPS_COLLECTION)
+                        .document(postResponse.groupId)
+                        .get()
+                        .await()
+                        .toObject(GroupInfoResponse::class.java)
+
+                    groupInfoResponse?.let {
+                        val author = authorResponse.toUser()
+                        RecruitPost(
+                            postId = postResponse.postId,
+                            author = author,
+                            updatedAt = postResponse.updatedAt,
+                            groupInfo = groupInfoResponse
+                                .toGroupInfo(
+                                    author,
+                                    rules = groupInfoResponse.rules.map {
+                                        it.toRule()
+                                    }
+                                )
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     override suspend fun createRecruitPost(
         authorUid: String,
         groupUid: String
@@ -309,5 +393,9 @@ class PostDataSourceImpl @Inject constructor(
                     cancellableContinuation.resume(false)
                 }
         }
+    }
+
+    companion object {
+        private const val DATA_COUNT_PER_PAGE = 10L
     }
 }

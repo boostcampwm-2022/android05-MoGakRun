@@ -3,24 +3,25 @@ package com.whyranoid.data.post
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.repository.PostRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
     private val postDataSource: PostDataSource,
-    private val postPagingDataSource: PostPagingDataSource,
     private val myPostPagingDataSource: MyPostPagingDataSource
 ) : PostRepository {
 
     // TODO : 캐싱하기
-    override fun getPagingPosts(): Flow<PagingData<Post>> {
+    override fun getPagingPosts(coroutineScope: CoroutineScope): Flow<PagingData<Post>> {
         return Pager(
             PagingConfig(pageSize = 5)
         ) {
-            postPagingDataSource
-        }.flow
+            PostPagingDataSource(postDataSource)
+        }.flow.cachedIn(coroutineScope)
     }
 
     override fun getMyPagingPosts(uid: String): Flow<PagingData<Post>> {
