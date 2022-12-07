@@ -11,13 +11,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
+import com.whyranoid.presentation.R
 
 @Composable
 fun DateDropDownMenu(
     selectedDate: String,
     onDateSelected: (String) -> Unit
 ) {
-    val dateList = "월 화 수 목 금 토 일".split(" ").toList()
+    val dateList = stringArrayResource(id = R.array.rule_date_array)
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
     Button(
         onClick = { isDropDownMenuExpanded = true }
@@ -47,8 +49,7 @@ fun HourDropDownMenu(
     selectedHour: String,
     onHourSelected: (String) -> Unit
 ) {
-    val hourList =
-        "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23".split(" ").toList()
+    val hourList = stringArrayResource(id = R.array.rule_hour_array)
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
     Button(
         onClick = { isDropDownMenuExpanded = true }
@@ -78,8 +79,7 @@ fun MinuteDropDownMenu(
     selectedMinute: String,
     onMinuteSelected: (String) -> Unit
 ) {
-    val minuteList =
-        "0 5 10 15 20 25 30 35 40 45 50 55 60".split(" ").toList()
+    val minuteList = stringArrayResource(id = R.array.rule_minute_array)
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
 
     Button(
