@@ -71,33 +71,37 @@ internal class CommunityItemFragment :
                 }
             }
             is Event.JoinGroup -> {
-                if (event.isSuccess) {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_join_group_success),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_join_group_fail),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                if (category == CommunityCategory.BOARD) {
+                    if (event.isSuccess) {
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.text_join_group_success),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.text_join_group_fail),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
             is Event.DeletePost -> {
-                if (event.isSuccess) {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_delete_post_success),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_delete_post_fail),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                if (category == CommunityCategory.MY_POST) {
+                    if (event.isSuccess) {
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.text_delete_post_success),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.text_delete_post_fail),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
@@ -120,7 +124,7 @@ internal class CommunityItemFragment :
             binding.rvCommunity.adapter = postAdapter
 
             viewLifecycleOwner.repeatWhenUiStarted {
-                viewModel.myGroupList.collect { myGroupList ->
+                viewModel.myGroupList.collectLatest { myGroupList ->
                     postAdapter.setMyGroupList(myGroupList)
                 }
             }
