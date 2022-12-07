@@ -11,10 +11,13 @@ import com.whyranoid.data.model.UserResponse
 import com.whyranoid.data.model.toGroupInfo
 import com.whyranoid.data.model.toUser
 import com.whyranoid.domain.model.GroupInfo
+import com.whyranoid.domain.model.User
 import com.whyranoid.domain.model.toRule
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -62,9 +65,11 @@ class UserDataSourceImpl @Inject constructor(
         }
     }
 
-    // TODO: 콜백을 suspend로 변경
     // TODO: 예외처리
-    override fun getMyGroupListFlow(uid: String): Flow<List<GroupInfo>> = callbackFlow {
+    override fun getMyGroupListFlow(
+        uid: String,
+        coroutineScope: CoroutineScope
+    ): Flow<List<GroupInfo>> = callbackFlow {
         db.collection(USERS_COLLECTION)
             .document(uid)
             .addSnapshotListener { documentSnapshot, _ ->
@@ -74,39 +79,45 @@ class UserDataSourceImpl @Inject constructor(
 
                 joinedGroupList?.forEach { groupId ->
 
-                    db.collection(GROUPS_COLLECTION)
-                        .document(groupId)
-                        .get()
-                        .addOnSuccessListener { documentSnapshot ->
-
-                            val groupInfoResponse =
-                                documentSnapshot.toObject(GroupInfoResponse::class.java)
-
-                            groupInfoResponse?.let {
-                                db.collection(USERS_COLLECTION)
-                                    .document(it.leaderId)
-                                    .get()
-                                    .addOnSuccessListener { documentSnapshot ->
-                                        val leader =
-                                            documentSnapshot.toObject(UserResponse::class.java)
-                                                ?.toUser()
-
-                                        leader?.let {
-                                            val groupInfo = groupInfoResponse.toGroupInfo(
-                                                leader = leader,
-                                                rules = groupInfoResponse.rules.map {
-                                                    it.toRule()
-                                                }
-                                            )
-                                            myGroupInfoList.add(groupInfo)
-                                            trySend(myGroupInfoList)
-                                        }
-                                    }
-                            }
-                        }
+                    coroutineScope.launch {
+                        val groupInfo = getGroupInfo(groupId)
+                        myGroupInfoList.add(groupInfo)
+                        trySend(myGroupInfoList)
+                    }
                 }
             }
 
         awaitClose()
+    }
+
+    // TODO : 예외 처리
+    private suspend fun getGroupInfo(groupId: String): GroupInfo {
+        val groupInfoResponse = requireNotNull(
+            db.collection(GROUPS_COLLECTION)
+                .document(groupId)
+                .get()
+                .await()
+                .toObject(GroupInfoResponse::class.java)
+        )
+
+        val leader = getLeaderInfo(groupInfoResponse.leaderId)
+
+        return groupInfoResponse.toGroupInfo(
+            leader = leader,
+            rules = groupInfoResponse.rules.map {
+                it.toRule()
+            }
+        )
+    }
+
+    // TODO : 예외 처리
+    private suspend fun getLeaderInfo(leaderId: String): User {
+        return requireNotNull(
+            db.collection(USERS_COLLECTION)
+                .document(leaderId)
+                .get()
+                .await()
+                .toObject(UserResponse::class.java)?.toUser()
+        )
     }
 }
