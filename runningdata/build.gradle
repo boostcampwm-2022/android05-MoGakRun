@@ -30,7 +30,7 @@ android {
         jvmTarget = "11"
     }
     publishing {
-        singleVariant("release") {
+        singleVariant("runningdata") {
             withSourcesJar()
             withJavadocJar()
         }
@@ -53,8 +53,8 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = "com.github.boostcampwm-2022"
-                artifactId = "mogarkrun-running"
-                version = "1.0.0"
+                artifactId = "runningdata"
+                version = "v0.0.4"
             }
         }
     }
