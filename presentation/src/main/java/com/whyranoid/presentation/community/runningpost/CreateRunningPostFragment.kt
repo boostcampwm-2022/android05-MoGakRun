@@ -2,13 +2,19 @@ package com.whyranoid.presentation.community.runningpost
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
+import com.whyranoid.presentation.compose.TopSnackBar
 import com.whyranoid.presentation.databinding.FragmentCreateRunningPostBinding
 import com.whyranoid.presentation.model.UiState
+import com.whyranoid.presentation.util.networkconnection.NetworkState
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,6 +41,22 @@ internal class CreateRunningPostFragment :
         binding.selectedRunningHistory = viewModel.selectedRunningHistory
         binding.executePendingBindings()
         setUpMenu()
+        binding.cvNetworkConnection.apply {
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+            )
+            setContent {
+                MaterialTheme {
+                    val showSnackBar: NetworkState by viewModel.networkState.collectAsState()
+                    TopSnackBar(
+                        isVisible =
+                        showSnackBar is NetworkState.DisConnection,
+                        text =
+                        getString(R.string.network_connection_alert)
+                    )
+                }
+            }
+        }
     }
 
     private fun observeState() {

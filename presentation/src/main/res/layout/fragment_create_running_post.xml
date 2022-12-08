@@ -18,19 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_network_connection"
-            networkConnectionVisibility="@{vm.networkState}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/gray"
-            android:gravity="center"
-            android:padding="4dp"
-            android:text="@string/network_connection_alert"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_bar" />
-
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
@@ -49,13 +36,21 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/cv_network_connection"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar"/>
+
         <TextView
             android:id="@+id/tv_label_running_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/community_label_running_history"
             android:textAppearance="@style/MoGakRunText.Bold.Medium"
-            app:layout_constraintTop_toBottomOf="@id/tv_network_connection"
+            app:layout_constraintTop_toBottomOf="@id/app_bar"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="20dp"
             android:layout_marginStart="16dp"
