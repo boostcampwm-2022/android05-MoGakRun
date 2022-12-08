@@ -127,7 +127,7 @@ internal class CommunityItemFragment :
             binding.swipeRefreshLayout.apply {
                 setOnRefreshListener {
                     postAdapter.refresh()
-                    binding.rvCommunity.scrollToPosition(0)
+                    binding.rvCommunity.scrollToPosition(POSITION_TOP)
                     binding.swipeRefreshLayout.isRefreshing = false
                 }
 
@@ -190,7 +190,7 @@ internal class CommunityItemFragment :
             binding.swipeRefreshLayout.apply {
                 setOnRefreshListener {
                     postAdapter.refresh()
-                    binding.rvCommunity.scrollToPosition(0)
+                    binding.rvCommunity.scrollToPosition(POSITION_TOP)
                     binding.swipeRefreshLayout.isRefreshing = false
                 }
 
@@ -221,6 +221,7 @@ internal class CommunityItemFragment :
 
     companion object {
         private const val COMMUNITY_CATEGORY_KEY = "communityCategoryKey"
+        private const val POSITION_TOP = 0
 
         fun newInstance(communityCategory: CommunityCategory): CommunityItemFragment {
             val fragment = CommunityItemFragment()
