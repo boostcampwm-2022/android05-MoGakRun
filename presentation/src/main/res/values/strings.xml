@@ -2,6 +2,8 @@
 
     <string name="app_name">MoGakRun</string>
 
+    <string name="text_empty" />
+
     <!-- 바텀네비게이션 -->
     <string name="bottom_navigation_menu_community">커뮤니티</string>
     <string name="bottom_navigation_menu_running">러닝</string>
@@ -115,7 +117,7 @@
     <string name="running_map_location_button">🎯</string>
     <string name="running_start_progress_description">러닝 시작을 기다리고 있어요</string>
 
-    <!--라닝 종료 화면-->
+    <!-- 러닝 종료 화면 -->
     <string name="running_finish_tool_bar">러닝 종료</string>
     <string name="running_finish_positive_btn">자랑할래요</string>
     <string name="running_finish_negative_btn">괜찮아요</string>
@@ -123,5 +125,67 @@
     <string name="running_finish_snackbar_content">러닝을 종료하시겠습니까?</string>
     <string name="running_finish_snackbar_action">종료하기</string>
     <string name="running_start_error_message">러닝 도중 에러가 발생했어요! 죄송해요..</string>
+
+    <!-- 규칙 생성 시 요일 -->
+    <string-array name="rule_date_array">
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+        <item>일</item>
+    </string-array>
+
+    <!-- 규칙 생성 시 시간 -->
+    <string-array name="rule_hour_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+    </string-array>
+
+    <!-- 규칙 생성 시 분 -->
+    <string-array name="rule_minute_array">
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+    </string-array>
+
+    <!-- 규칙 생성 다이어로그-->
+    <string name="text_date">요일</string>
+    <string name="text_hour">시</string>
+    <string name="text_minute">분</string>
+    <string name="text_confirm">확인</string>
+    <string name="text_rule_picker_title">요일 및 시간을 골라주세요!!</string>
 
 </resources>
