@@ -117,4 +117,8 @@ dependencies {
     // HiltWorker
     implementation "androidx.hilt:hilt-work:$hiltWorkerVersion"
     kapt "androidx.hilt:hilt-compiler:$hiltCompilerVersion"
+
+    // SwipeRefresh
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshLayoutVersion"
+
 }

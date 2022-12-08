@@ -7,43 +7,51 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".community.CommunityItemFragment">
+        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/mogakrun_background">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_community"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_community"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:context=".community.CommunityItemFragment">
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_community"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_community"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <include layout="@layout/my_group_item_loading"/>
-                <include layout="@layout/my_group_item_loading"/>
-                <include layout="@layout/my_group_item_loading"/>
-                <include layout="@layout/my_group_item_loading"/>
-                <include layout="@layout/my_group_item_loading"/>
-                <include layout="@layout/my_group_item_loading"/>
-                <include layout="@layout/my_group_item_loading"/>
-                <include layout="@layout/my_group_item_loading"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <include layout="@layout/my_group_item_loading"/>
+                    <include layout="@layout/my_group_item_loading"/>
+                    <include layout="@layout/my_group_item_loading"/>
+                    <include layout="@layout/my_group_item_loading"/>
+                    <include layout="@layout/my_group_item_loading"/>
+                    <include layout="@layout/my_group_item_loading"/>
+                    <include layout="@layout/my_group_item_loading"/>
+                    <include layout="@layout/my_group_item_loading"/>
 
-        </com.facebook.shimmer.ShimmerFrameLayout>
+                </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

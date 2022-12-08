@@ -35,6 +35,7 @@ buildscript {
         hiltWorkerVersion = "1.0.0"
         hiltCompilerVersion = "1.0.0"
         crashlyticsVersion = "2.9.2"
+        swipeRefreshLayoutVersion = "1.1.0"
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"

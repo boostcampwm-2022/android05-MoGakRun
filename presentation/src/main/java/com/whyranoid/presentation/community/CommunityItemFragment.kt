@@ -118,10 +118,21 @@ internal class CommunityItemFragment :
             viewLifecycleOwner.repeatWhenUiStarted {
                 postAdapter.loadStateFlow.collectLatest { loadStates ->
                     binding.shimmerCommunity.isVisible = loadStates.refresh is LoadState.Loading
+                    binding.rvCommunity.isVisible = (loadStates.refresh is LoadState.Loading).not()
                 }
             }
 
             binding.rvCommunity.adapter = postAdapter
+
+            binding.swipeRefreshLayout.apply {
+                setOnRefreshListener {
+                    postAdapter.refresh()
+                    binding.rvCommunity.scrollToPosition(POSITION_TOP)
+                    binding.swipeRefreshLayout.isRefreshing = false
+                }
+
+                setColorSchemeColors(context.getColor(R.color.mogakrun_on_primary))
+            }
 
             viewLifecycleOwner.repeatWhenUiStarted {
                 viewModel.myGroupList.collectLatest { myGroupList ->
@@ -138,6 +149,7 @@ internal class CommunityItemFragment :
     }
 
     private fun setMyGroupAdapter() {
+        binding.swipeRefreshLayout.isEnabled = false
         val myGroupAdapter = MyGroupAdapter { groupInfo ->
             viewModel.onGroupItemClicked(groupInfo)
         }
@@ -169,10 +181,21 @@ internal class CommunityItemFragment :
             viewLifecycleOwner.repeatWhenUiStarted {
                 postAdapter.loadStateFlow.collectLatest { loadStates ->
                     binding.shimmerCommunity.isVisible = loadStates.refresh is LoadState.Loading
+                    binding.rvCommunity.isVisible = (loadStates.refresh is LoadState.Loading).not()
                 }
             }
 
             binding.rvCommunity.adapter = postAdapter
+
+            binding.swipeRefreshLayout.apply {
+                setOnRefreshListener {
+                    postAdapter.refresh()
+                    binding.rvCommunity.scrollToPosition(POSITION_TOP)
+                    binding.swipeRefreshLayout.isRefreshing = false
+                }
+
+                setColorSchemeColors(context.getColor(R.color.mogakrun_on_primary))
+            }
 
             viewLifecycleOwner.repeatWhenUiStarted {
                 viewModel.myGroupList.collect { myGroupList ->
@@ -181,9 +204,10 @@ internal class CommunityItemFragment :
             }
 
             viewLifecycleOwner.repeatWhenUiStarted {
-                viewModel.getMyPagingPostsUseCase(viewLifecycleOwner.lifecycleScope).collectLatest { myPostList ->
-                    postAdapter.submitData(myPostList)
-                }
+                viewModel.getMyPagingPostsUseCase(viewLifecycleOwner.lifecycleScope)
+                    .collectLatest { myPostList ->
+                        postAdapter.submitData(myPostList)
+                    }
             }
         }
     }
@@ -197,6 +221,7 @@ internal class CommunityItemFragment :
 
     companion object {
         private const val COMMUNITY_CATEGORY_KEY = "communityCategoryKey"
+        private const val POSITION_TOP = 0
 
         fun newInstance(communityCategory: CommunityCategory): CommunityItemFragment {
             val fragment = CommunityItemFragment()
