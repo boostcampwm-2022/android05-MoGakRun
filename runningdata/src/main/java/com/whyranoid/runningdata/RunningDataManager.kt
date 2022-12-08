@@ -1,15 +1,15 @@
-package com.whyranoid.presentation.running
+package com.whyranoid.runningdata
 
 import android.location.Location
-import com.whyranoid.presentation.model.RunningHistoryUiModel
+import com.whyranoid.runningdata.model.RunningData
+import com.whyranoid.runningdata.model.RunningFinishData
+import com.whyranoid.runningdata.model.RunningPosition
+import com.whyranoid.runningdata.model.RunningState
+import com.whyranoid.runningdata.model.toRunningFinishData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.util.*
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class RunningDataManager @Inject constructor() {
+class RunningDataManager {
     private var _runningState = MutableStateFlow<RunningState>(
         RunningState.NotRunning()
     )
@@ -107,43 +107,15 @@ class RunningDataManager @Inject constructor() {
             it.runningData.copy(runningTime = it.runningData.runningTime + 1)
         }.let { RunningState.Running(it) }
     }
+
+    companion object {
+        private var INSTANCE: RunningDataManager? = null
+
+        @Synchronized
+        fun getInstance(): RunningDataManager {
+            return INSTANCE ?: RunningDataManager().also {
+                INSTANCE = it
+            }
+        }
+    }
 }
-
-// TODO : 모델 파일 분리
-data class RunningData(
-    val startTime: Long = 0L,
-    val runningTime: Int = 0,
-    val totalDistance: Double = 0.0,
-    val pace: Double = 0.0,
-    val runningPositionList: List<List<RunningPosition>> = listOf(emptyList()),
-    val lastLocation: Location? = null
-)
-
-data class RunningFinishData(
-    val runningHistory: RunningHistoryUiModel,
-    val runningPositionList: List<List<RunningPosition>>
-) : java.io.Serializable
-
-sealed interface RunningState {
-    val runningData: RunningData
-
-    data class NotRunning(override val runningData: RunningData = RunningData()) : RunningState
-
-    data class Running(override val runningData: RunningData) : RunningState
-
-    data class Paused(override val runningData: RunningData) : RunningState
-}
-
-fun RunningData.toRunningFinishData() =
-    RunningFinishData(
-        RunningHistoryUiModel(
-            historyId = UUID.randomUUID().toString(),
-            date = startTime,
-            startedAt = startTime,
-            finishedAt = System.currentTimeMillis(),
-            totalRunningTime = runningTime,
-            pace = pace,
-            totalDistance = totalDistance
-        ),
-        runningPositionList
-    )

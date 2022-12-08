@@ -15,11 +15,12 @@ import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentRunningFinishBinding
 import com.whyranoid.presentation.model.RunningHistoryUiModel
 import com.whyranoid.presentation.model.UiState
-import com.whyranoid.presentation.running.RunningFinishData
-import com.whyranoid.presentation.running.RunningPosition
 import com.whyranoid.presentation.running.toLatLng
-import com.whyranoid.presentation.util.pxdp.PxDpUtil
+import com.whyranoid.presentation.running.toRunningHistoryUiModel
+import com.whyranoid.presentation.util.converters.UnitConverters
 import com.whyranoid.presentation.util.repeatWhenUiStarted
+import com.whyranoid.runningdata.model.RunningFinishData
+import com.whyranoid.runningdata.model.RunningPosition
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -72,7 +73,8 @@ internal class RunningFinishFragment :
     }
 
     private fun handleDataStateSuccess(runningFinishData: RunningFinishData) {
-        binding.runningHistoryItem.runningHistory = runningFinishData.runningHistory
+        binding.runningHistoryItem.runningHistory =
+            runningFinishData.runningHistory.toRunningHistoryUiModel()
 
         moveCamera(runningFinishData)
         updatePathsOverlay(runningFinishData.runningPositionList)
@@ -95,9 +97,10 @@ internal class RunningFinishFragment :
     }
 
     private fun handlePositiveButtonClicked(runningHistory: RunningHistoryUiModel) {
-        val direction = RunningFinishFragmentDirections.actionRunningFinishFragmentToCreateRunningPostFragment(
-            runningHistory
-        )
+        val direction =
+            RunningFinishFragmentDirections.actionRunningFinishFragmentToCreateRunningPostFragment(
+                runningHistory
+            )
         findNavController().navigate(direction)
     }
 
@@ -118,7 +121,7 @@ internal class RunningFinishFragment :
                         position.toLatLng()
                     }
                 ).build(),
-                PxDpUtil.pxToDp(requireContext(), 200)
+                UnitConverters.pxToDp(requireContext(), 200)
             )
             it.moveCamera(cameraUpdate)
         }

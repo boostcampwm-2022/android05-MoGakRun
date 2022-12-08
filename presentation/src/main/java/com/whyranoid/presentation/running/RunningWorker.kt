@@ -22,6 +22,8 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.whyranoid.presentation.MainActivity
 import com.whyranoid.presentation.R
+import com.whyranoid.runningdata.RunningDataManager
+import com.whyranoid.runningdata.model.RunningState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.delay
@@ -29,9 +31,10 @@ import kotlinx.coroutines.delay
 @HiltWorker
 class RunningWorker @AssistedInject constructor(
     @Assisted private val context: Context,
-    @Assisted params: WorkerParameters,
-    private val runningDataManager: RunningDataManager
+    @Assisted params: WorkerParameters
 ) : CoroutineWorker(context, params) {
+
+    private val runningDataManager = RunningDataManager.getInstance()
 
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     private val locationRequest =
@@ -59,7 +62,6 @@ class RunningWorker @AssistedInject constructor(
     }
 
     private fun createForegroundInfo(progress: String): ForegroundInfo {
-        val id = context.getString(R.string.running_notification_id)
         val title = context.getString(R.string.running_notification_title)
 
         val intent = Intent(context, MainActivity::class.java)
@@ -70,7 +72,7 @@ class RunningWorker @AssistedInject constructor(
             createChannel()
         }
 
-        val notification = NotificationCompat.Builder(applicationContext, id)
+        val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setContentTitle(title)
             .setTicker(title)
             .setContentText(progress)

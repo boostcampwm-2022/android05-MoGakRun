@@ -19,8 +19,11 @@ import com.whyranoid.presentation.base.BaseActivity
 import com.whyranoid.presentation.databinding.ActivityRunningBinding
 import com.whyranoid.presentation.util.dateToString
 import com.whyranoid.presentation.util.repeatWhenUiStarted
+import com.whyranoid.runningdata.model.RunningData
+import com.whyranoid.runningdata.model.RunningFinishData
+import com.whyranoid.runningdata.model.RunningState
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.util.Date
 
 @AndroidEntryPoint
 internal class RunningActivity :
@@ -72,7 +75,7 @@ internal class RunningActivity :
         }
 
         observeStateOnMapReady()
-        naverMap.addOnCameraChangeListener { reason, animated ->
+        naverMap.addOnCameraChangeListener { reason, _ ->
             if (reason == CameraUpdate.REASON_GESTURE) {
                 viewModel.onTrackingCanceledByGesture()
             }

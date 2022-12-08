@@ -17,12 +17,12 @@ import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentRunningStartBinding
 import com.whyranoid.presentation.running.RunningActivity
-import com.whyranoid.presentation.running.RunningFinishData
-import com.whyranoid.presentation.running.RunningState
 import com.whyranoid.presentation.running.RunningViewModel.Companion.RUNNING_FINISH_DATA_KEY
 import com.whyranoid.presentation.util.getSerializableData
 import com.whyranoid.presentation.util.gpsstate.GPSState
 import com.whyranoid.presentation.util.repeatWhenUiStarted
+import com.whyranoid.runningdata.model.RunningFinishData
+import com.whyranoid.runningdata.model.RunningState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

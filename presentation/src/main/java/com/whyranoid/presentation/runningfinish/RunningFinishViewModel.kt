@@ -6,8 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.model.MoGakRunException
 import com.whyranoid.domain.usecase.SaveRunningHistoryUseCase
 import com.whyranoid.presentation.model.UiState
-import com.whyranoid.presentation.running.RunningFinishData
 import com.whyranoid.presentation.running.RunningViewModel.Companion.RUNNING_FINISH_DATA_KEY
+import com.whyranoid.presentation.running.toRunningHistoryUiModel
+import com.whyranoid.runningdata.model.RunningFinishData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,7 +59,7 @@ class RunningFinishViewModel @Inject constructor(
 
     fun onPositiveButtonClicked() {
         (runningFinishDataState.value as? UiState.Success<RunningFinishData>)?.value?.let { runningFinishData ->
-            emitEvent(Event.PositiveButtonClick(runningFinishData.runningHistory))
+            emitEvent(Event.PositiveButtonClick(runningFinishData.runningHistory.toRunningHistoryUiModel()))
         } ?: kotlin.run {
             _runningFinishDataState.value = UiState.Failure(
                 MoGakRunException.FileNotFoundedException
