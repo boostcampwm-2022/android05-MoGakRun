@@ -6,14 +6,14 @@ import com.whyranoid.data.constant.CollectionId
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class RunnerDataSourceImpl(private val db: FirebaseFirestore) : RunnerDataSource {
 
     override fun getCurrentRunnerCount(): Flow<Int> = callbackFlow {
         db.collection(CollectionId.RUNNERS_COLLECTION)
-            .document("runnersId")
+            .document(CollectionId.RUNNERS_ID)
             .addSnapshotListener { snapshot, _ ->
                 snapshot?.let {
                     val count = it.data?.size ?: -1
@@ -26,9 +26,9 @@ class RunnerDataSourceImpl(private val db: FirebaseFirestore) : RunnerDataSource
 
     override suspend fun startRunning(uid: String): Boolean {
         if (uid.isBlank()) return false
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             db.collection(CollectionId.RUNNERS_COLLECTION)
-                .document("runnersId")
+                .document(CollectionId.RUNNERS_ID)
                 .update(uid, uid)
                 .addOnSuccessListener {
                     continuation.resume(true)
@@ -41,9 +41,9 @@ class RunnerDataSourceImpl(private val db: FirebaseFirestore) : RunnerDataSource
 
     override suspend fun finishRunning(uid: String): Boolean {
         if (uid.isBlank()) return false
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             db.collection(CollectionId.RUNNERS_COLLECTION)
-                .document("runnersId")
+                .document(CollectionId.RUNNERS_ID)
                 .update(uid, FieldValue.delete())
                 .addOnSuccessListener {
                     continuation.resume(true)
