@@ -38,7 +38,7 @@ class CommunityViewModel @Inject constructor(
     val eventFlow: SharedFlow<Event>
         get() = _eventFlow.asSharedFlow()
 
-    val pagingPost = getPagingPostsUseCase()
+    val pagingPost = getPagingPostsUseCase(viewModelScope)
 
     fun onGroupItemClicked(groupInfo: GroupInfoUiModel) {
         emitEvent(Event.GroupItemClick(groupInfo))
@@ -82,7 +82,7 @@ class CommunityViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getMyGroupListUseCase().onEach { groupInfoList ->
+            getMyGroupListUseCase(this).onEach { groupInfoList ->
                 _myGroupList.value = groupInfoList.map { groupInfo ->
                     groupInfo.toGroupInfoUiModel()
                 }

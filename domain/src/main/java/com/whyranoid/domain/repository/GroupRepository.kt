@@ -4,13 +4,14 @@ import com.whyranoid.domain.model.GroupInfo
 import com.whyranoid.domain.model.GroupNotification
 import com.whyranoid.domain.model.Rule
 import com.whyranoid.domain.model.RunningHistory
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 interface GroupRepository {
 
     suspend fun getMyGroupList(uid: String): Result<List<GroupInfo>>
 
-    fun getMyGroupListFlow(uid: String): Flow<List<GroupInfo>>
+    fun getMyGroupListFlow(uid: String, coroutineScope: CoroutineScope): Flow<List<GroupInfo>>
 
     // 그룹 정보 수정, 홍보 글 수정
     suspend fun updateGroupInfo(
