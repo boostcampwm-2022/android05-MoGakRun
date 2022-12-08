@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentRunningStartBinding
@@ -20,6 +19,7 @@ import com.whyranoid.presentation.running.RunningActivity
 import com.whyranoid.presentation.running.RunningViewModel.Companion.RUNNING_FINISH_DATA_KEY
 import com.whyranoid.presentation.util.getSerializableData
 import com.whyranoid.presentation.util.gpsstate.GPSState
+import com.whyranoid.presentation.util.makeSnackBar
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import com.whyranoid.runningdata.model.RunningFinishData
 import com.whyranoid.runningdata.model.RunningState
@@ -105,7 +105,7 @@ internal class RunningStartFragment :
                 if (GPSState.getGpsState(requireContext())) {
                     tryRunningStart()
                 } else {
-                    Snackbar.make(binding.root, "gps 켜주세요", Snackbar.LENGTH_SHORT).show()
+                    binding.root.makeSnackBar(getString(R.string.running_start_turn_on_gps)).show()
                 }
             }
         }
@@ -163,11 +163,6 @@ internal class RunningStartFragment :
                     )
                 findNavController().navigate(direction)
             }
-        } ?: Snackbar.make(
-            binding.root,
-            getString(R.string.running_start_error_message),
-            Snackbar.LENGTH_SHORT
-        )
-            .show()
+        } ?: binding.root.makeSnackBar(getString(R.string.running_start_error_message)).show()
     }
 }

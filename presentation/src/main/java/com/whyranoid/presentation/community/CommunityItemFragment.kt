@@ -7,11 +7,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentCommunityItemBinding
 import com.whyranoid.presentation.util.getSerializableData
+import com.whyranoid.presentation.util.makeSnackBar
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -73,34 +73,20 @@ internal class CommunityItemFragment :
             is Event.JoinGroup -> {
                 if (category == CommunityCategory.BOARD) {
                     if (event.isSuccess) {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.text_join_group_success),
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        binding.root.makeSnackBar(getString(R.string.text_join_group_success))
+                            .show()
                     } else {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.text_join_group_fail),
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        binding.root.makeSnackBar(getString(R.string.text_join_group_fail)).show()
                     }
                 }
             }
             is Event.DeletePost -> {
                 if (category == CommunityCategory.MY_POST) {
                     if (event.isSuccess) {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.text_delete_post_success),
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        binding.root.makeSnackBar(getString(R.string.text_delete_post_success))
+                            .show()
                     } else {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.text_delete_post_fail),
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        binding.root.makeSnackBar(getString(R.string.text_delete_post_fail)).show()
                     }
                 }
             }
@@ -168,13 +154,10 @@ internal class CommunityItemFragment :
             val postAdapter = PostAdapter(
                 isMyPost = true,
                 itemLongClickListener = { postId ->
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_check_delete_post),
-                        Snackbar.LENGTH_SHORT
-                    ).setAction(R.string.text_delete) {
-                        viewModel.deletePost(postId)
-                    }.show()
+                    binding.root.makeSnackBar(getString(R.string.text_check_delete_post))
+                        .setAction(R.string.text_delete) {
+                            viewModel.deletePost(postId)
+                        }.show()
                 }
             )
 

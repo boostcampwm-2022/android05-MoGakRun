@@ -15,6 +15,7 @@
     <string name="runner_start_suffix">함께 달리고 있습니다</string>
     <string name="runner_start_button_text">달리기</string>
     <string name="running_start_thumbnail_des">모각런 썸네일</string>
+    <string name="running_start_turn_on_gps">gps 켜주세요</string>
 
     <!-- 커뮤니티 탭 화면 -->
     <string name="text_board">게시판</string>
@@ -42,6 +43,7 @@
     <string name="text_delete">삭제</string>
     <string name="text_join_group">그룹 가입하기</string>
     <string name="text_like_count">좋아요 %d개</string>
+    <string name="community_click_add_rule">룰 추가 클릭</string>
 
     <!-- 마이런 탭 화면 -->
     <string name="my_run_tool_bar_menu_setting">설정</string>
@@ -52,6 +54,7 @@
     <string name="my_run_edit_nick_name_dialog_negative">취소</string>
     <string name="my_run_edit_nick_name_dialog_hint">20글자 이하로 입력해주세요</string>
     <string name="my_run_label_my_running_history">내 운동기록</string>
+    <string name="my_run_year_month_indicator">%s %s</string>
 
     <!-- 설정 화면 -->
     <string name="setting_connected_account">연결된 계정</string>

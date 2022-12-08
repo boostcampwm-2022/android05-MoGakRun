@@ -25,8 +25,6 @@ class CalendarDayBinder(
         DayContainer(ItemCalendarDayBinding.bind(view))
 
     override fun bind(container: DayContainer, day: CalendarDay) {
-        val (startDate, endDate) = this.calendar
-
         container.binding.tvCalendarDay.text = day.date.dayOfMonth.toString()
 
         if (day.owner != DayOwner.THIS_MONTH) {
@@ -41,7 +39,7 @@ class CalendarDayBinder(
             container.binding.tvCalendarDay.setTextColor(
                 ContextCompat.getColor(
                     calendarView.context,
-                    R.color.black
+                    R.color.mogakrun_on_secondary
                 )
             )
             container.binding.root.background = null
@@ -54,20 +52,6 @@ class CalendarDayBinder(
                     R.color.gray
                 )
             )
-        }
-
-        if (startDate == day.date) {
-            container.binding.root.background =
-                ContextCompat.getDrawable(
-                    calendarView.context,
-                    R.drawable.thumbnail_src_small
-                )
-        } else if (endDate == day.date) {
-            container.binding.root.background =
-                ContextCompat.getDrawable(
-                    calendarView.context,
-                    R.drawable.thumbnail_src_small
-                )
         }
 
         runningDays.forEach { runningDay ->

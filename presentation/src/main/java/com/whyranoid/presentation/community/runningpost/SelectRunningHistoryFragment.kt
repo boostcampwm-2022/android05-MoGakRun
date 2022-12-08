@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentSelectRunningHistoryBinding
 import com.whyranoid.presentation.model.RunningHistoryUiModel
 import com.whyranoid.presentation.model.UiState
+import com.whyranoid.presentation.util.makeSnackBar
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -96,11 +96,8 @@ internal class SelectRunningHistoryFragment :
                         true
                     }
                     R.id.warning_select_running_history_button -> {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.community_select_running_history_snack_bar),
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        binding.root.makeSnackBar(getString(R.string.community_select_running_history_snack_bar))
+                            .show()
                         true
                     }
                     else -> {

@@ -136,7 +136,7 @@ internal class MyRunFragment : BaseFragment<FragmentMyRunBinding>(R.layout.fragm
 
     private fun onMonthScrolled(currentMonth: YearMonth) {
         val visibleMonth = binding.calendarView.findFirstVisibleMonth() ?: return
-        binding.tvMonthIndicator.text = visibleMonth.yearMonth.month.toString()
+        binding.tvMonthIndicator.text = getString(R.string.my_run_year_month_indicator, visibleMonth.yearMonth.month.toString(), visibleMonth.year.toString())
         if (currentMonth != visibleMonth.yearMonth) {
             binding.calendarView.smoothScrollToMonth(currentMonth)
         }
