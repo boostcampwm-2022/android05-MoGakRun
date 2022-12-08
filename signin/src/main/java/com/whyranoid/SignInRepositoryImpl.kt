@@ -8,4 +8,8 @@ class SignInRepositoryImpl @Inject constructor(private val signInDataSource: Sig
     override suspend fun saveLogInUserInfo(userInfo: SignInUserInfo): Boolean {
         return signInDataSource.saveLogInUserInfo(userInfo)
     }
+
+    override suspend fun restoreRunningHistoryData(uid: String): Result<Boolean> {
+        return signInDataSource.restoreRunningHistoryData(uid)
+    }
 }

@@ -9,8 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RunningHistoryDao {
-    // TODO 일단 쓰기, 읽기만 해놨습니다~
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addRunningHistory(runningHistory: RunningHistoryEntity)
 
     @Query("SELECT * FROM running_history ORDER BY started_at ASC")

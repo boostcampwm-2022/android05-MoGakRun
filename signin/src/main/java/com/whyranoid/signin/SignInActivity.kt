@@ -126,6 +126,7 @@ class SignInActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     uid?.let { uid ->
                         viewModel.saveUserInfo(SignInUserInfo(uid, email, nickName, profileImgUri))
+                        viewModel.restoreRunningHistoryData(uid)
                     }
                 }
 

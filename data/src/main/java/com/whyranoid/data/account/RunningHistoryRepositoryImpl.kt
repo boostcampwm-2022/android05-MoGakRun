@@ -38,7 +38,7 @@ class RunningHistoryRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun uploadRunningHistory(runningHistory: RunningHistory): Result<Boolean> {
-        return runningHistoryRemoteDataSource.uploadRunningHistory(runningHistory)
+    override suspend fun uploadRunningHistory(uid: String, runningHistory: RunningHistory): Result<Boolean> {
+        return runningHistoryRemoteDataSource.uploadRunningHistory(uid, runningHistory)
     }
 }
