@@ -118,10 +118,17 @@ internal class CommunityItemFragment :
             viewLifecycleOwner.repeatWhenUiStarted {
                 postAdapter.loadStateFlow.collectLatest { loadStates ->
                     binding.shimmerCommunity.isVisible = loadStates.refresh is LoadState.Loading
+                    binding.rvCommunity.isVisible = (loadStates.refresh is LoadState.Loading).not()
                 }
             }
 
             binding.rvCommunity.adapter = postAdapter
+
+            binding.swipeRefreshLayout.setOnRefreshListener {
+                postAdapter.refresh()
+                binding.rvCommunity.scrollToPosition(0)
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
 
             viewLifecycleOwner.repeatWhenUiStarted {
                 viewModel.myGroupList.collectLatest { myGroupList ->
@@ -138,6 +145,7 @@ internal class CommunityItemFragment :
     }
 
     private fun setMyGroupAdapter() {
+        binding.swipeRefreshLayout.isEnabled = false
         val myGroupAdapter = MyGroupAdapter { groupInfo ->
             viewModel.onGroupItemClicked(groupInfo)
         }
@@ -169,10 +177,17 @@ internal class CommunityItemFragment :
             viewLifecycleOwner.repeatWhenUiStarted {
                 postAdapter.loadStateFlow.collectLatest { loadStates ->
                     binding.shimmerCommunity.isVisible = loadStates.refresh is LoadState.Loading
+                    binding.rvCommunity.isVisible = (loadStates.refresh is LoadState.Loading).not()
                 }
             }
 
             binding.rvCommunity.adapter = postAdapter
+
+            binding.swipeRefreshLayout.setOnRefreshListener {
+                postAdapter.refresh()
+                binding.rvCommunity.scrollToPosition(0)
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
 
             viewLifecycleOwner.repeatWhenUiStarted {
                 viewModel.myGroupList.collect { myGroupList ->
@@ -181,9 +196,10 @@ internal class CommunityItemFragment :
             }
 
             viewLifecycleOwner.repeatWhenUiStarted {
-                viewModel.getMyPagingPostsUseCase(viewLifecycleOwner.lifecycleScope).collectLatest { myPostList ->
-                    postAdapter.submitData(myPostList)
-                }
+                viewModel.getMyPagingPostsUseCase(viewLifecycleOwner.lifecycleScope)
+                    .collectLatest { myPostList ->
+                        postAdapter.submitData(myPostList)
+                    }
             }
         }
     }
