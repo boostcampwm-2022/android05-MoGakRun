@@ -124,10 +124,14 @@ internal class CommunityItemFragment :
 
             binding.rvCommunity.adapter = postAdapter
 
-            binding.swipeRefreshLayout.setOnRefreshListener {
-                postAdapter.refresh()
-                binding.rvCommunity.scrollToPosition(0)
-                binding.swipeRefreshLayout.isRefreshing = false
+            binding.swipeRefreshLayout.apply {
+                setOnRefreshListener {
+                    postAdapter.refresh()
+                    binding.rvCommunity.scrollToPosition(0)
+                    binding.swipeRefreshLayout.isRefreshing = false
+                }
+
+                setColorSchemeColors(context.getColor(R.color.mogakrun_on_primary))
             }
 
             viewLifecycleOwner.repeatWhenUiStarted {
@@ -183,10 +187,14 @@ internal class CommunityItemFragment :
 
             binding.rvCommunity.adapter = postAdapter
 
-            binding.swipeRefreshLayout.setOnRefreshListener {
-                postAdapter.refresh()
-                binding.rvCommunity.scrollToPosition(0)
-                binding.swipeRefreshLayout.isRefreshing = false
+            binding.swipeRefreshLayout.apply {
+                setOnRefreshListener {
+                    postAdapter.refresh()
+                    binding.rvCommunity.scrollToPosition(0)
+                    binding.swipeRefreshLayout.isRefreshing = false
+                }
+
+                setColorSchemeColors(context.getColor(R.color.mogakrun_on_primary))
             }
 
             viewLifecycleOwner.repeatWhenUiStarted {
