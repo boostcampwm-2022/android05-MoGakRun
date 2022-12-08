@@ -42,7 +42,8 @@ fun TopSnackBar(isVisible: Boolean, text: String) {
         ) {
             Text(
                 modifier = Modifier.padding(8.dp),
-                text = text
+                text = text,
+                color = colorResource(id = R.color.mogakrun_on_secondary)
             )
         }
     }
