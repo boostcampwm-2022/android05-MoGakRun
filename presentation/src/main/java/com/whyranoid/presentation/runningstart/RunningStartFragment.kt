@@ -65,8 +65,15 @@ internal class RunningStartFragment :
         observeState()
     }
 
+    override fun onDestroyView() {
+        viewModel.finishObservingNetworkState()
+        super.onDestroyView()
+    }
+
     private fun initViews() {
         binding.vm = viewModel
+        binding.executePendingBindings()
+
         if ((viewModel.runningDataManager.runningState.value is RunningState.NotRunning).not()) {
             runningActivityLauncher.launch(
                 Intent(
@@ -78,6 +85,7 @@ internal class RunningStartFragment :
     }
 
     private fun observeState() {
+        viewModel.startObservingNetworkState()
         viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.runnerCount.collect { runnerCount ->
                 binding.tvRunnerCountNumber.text = runnerCount.toString()

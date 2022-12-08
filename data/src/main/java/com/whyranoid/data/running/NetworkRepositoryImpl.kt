@@ -1,52 +1,46 @@
-package com.whyranoid.presentation.util.networkconnection
+package com.whyranoid.data.running
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
-import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
+import com.whyranoid.domain.repository.NetworkRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
-class NetworkConnectionStateHolder(private val context: Context) {
+class NetworkRepositoryImpl(private val context: Context) :
+    NetworkRepository {
 
-    private val _networkConnectionState = MutableStateFlow<NetworkState>(NetworkState.UnInitialized)
-    val networkConnectionState: StateFlow<NetworkState> = _networkConnectionState
+    private val _networkConnectionState = MutableStateFlow(getCurrentNetwork())
+    override fun getNetworkConnectionState() = _networkConnectionState.asStateFlow()
 
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    private val connectivityCallback = object : NetworkCallback() {
+
+    private val connectivityCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
-            emitNetworkConnectionState(NetworkState.Connection)
+            emitNetworkConnectionState(true)
         }
 
         override fun onLost(network: Network) {
-            emitNetworkConnectionState(NetworkState.DisConnection)
+            emitNetworkConnectionState(false)
         }
     }
     private val connectivityReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (context != null && context.isConnected) {
-                emitNetworkConnectionState(NetworkState.Connection)
+                emitNetworkConnectionState(true)
             } else {
-                emitNetworkConnectionState(NetworkState.DisConnection)
+                emitNetworkConnectionState(false)
             }
         }
     }
 
-    fun startObservingState() {
-        val networkCapabilities =
-            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        if (networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true) {
-            emitNetworkConnectionState(NetworkState.Connection)
-        } else {
-            emitNetworkConnectionState(NetworkState.DisConnection)
-        }
-
+    override fun addNetworkConnectionCallback() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             connectivityManager.registerDefaultNetworkCallback(connectivityCallback)
         } else {
@@ -57,7 +51,7 @@ class NetworkConnectionStateHolder(private val context: Context) {
         }
     }
 
-    fun finishObservingState() {
+    override fun removeNetworkConnectionCallback() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             connectivityManager.unregisterNetworkCallback(connectivityCallback)
         } else {
@@ -65,7 +59,17 @@ class NetworkConnectionStateHolder(private val context: Context) {
         }
     }
 
-    private fun emitNetworkConnectionState(currentState: NetworkState) {
+    private fun getCurrentNetwork(): Boolean {
+        return try {
+            val networkCapabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun emitNetworkConnectionState(currentState: Boolean) {
         _networkConnectionState.value = currentState
     }
 }

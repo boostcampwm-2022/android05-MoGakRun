@@ -25,13 +25,20 @@ internal class CreateRunningPostFragment :
         observeState()
     }
 
+    override fun onDestroyView() {
+        viewModel.finishObservingNetworkState()
+        super.onDestroyView()
+    }
+
     private fun initViews() {
         binding.vm = viewModel
         binding.selectedRunningHistory = viewModel.selectedRunningHistory
+        binding.executePendingBindings()
         setUpMenu()
     }
 
     private fun observeState() {
+        viewModel.startObservingNetworkState()
         viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.createPostState.collect { createPostState ->
                 when (createPostState) {
