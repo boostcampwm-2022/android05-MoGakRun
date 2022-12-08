@@ -9,7 +9,6 @@ plugins {
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file("local.properties").newDataInputStream())
-def naver_map_client_id = properties.getProperty("naver.map.client.id")
 
 android {
     namespace "com.whyranoid.presentation"
@@ -19,10 +18,10 @@ android {
         minSdk 23
         targetSdk 33
 
+        buildConfigField "String", "NAVER_MAP_CLIENT_ID", properties.getOrDefault("naver.map.client.id", "\"\"")
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-
-        manifestPlaceholders = [naverMapClientId: naver_map_client_id]
     }
 
     buildTypes {

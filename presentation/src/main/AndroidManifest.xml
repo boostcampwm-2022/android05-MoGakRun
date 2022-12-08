@@ -11,9 +11,6 @@
             android:exported="true">
         </activity>
         <activity android:name="com.whyranoid.presentation.running.RunningActivity" />
-        <meta-data
-            android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="${naverMapClientId}" />
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

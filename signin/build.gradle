@@ -16,7 +16,7 @@ android {
         minSdk 23
         targetSdk 33
 
-        buildConfigField "String", "token", properties["token"]
+        buildConfigField "String", "token", properties.getOrDefault("token", "\"\"")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
