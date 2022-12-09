@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationSource
@@ -18,6 +17,7 @@ import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseActivity
 import com.whyranoid.presentation.databinding.ActivityRunningBinding
 import com.whyranoid.presentation.util.dateToString
+import com.whyranoid.presentation.util.makeSnackBar
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import com.whyranoid.runningdata.model.RunningData
 import com.whyranoid.runningdata.model.RunningFinishData
@@ -35,13 +35,10 @@ internal class RunningActivity :
 
     private val backPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            Snackbar.make(
-                binding.root,
-                getString(R.string.running_finish_snackbar_content),
-                Snackbar.LENGTH_SHORT
-            ).setAction(getString(R.string.running_finish_snackbar_action)) {
-                viewModel.onFinishButtonClicked()
-            }.show()
+            binding.root.makeSnackBar(getString(R.string.running_finish_snackbar_content))
+                .setAction(getString(R.string.running_finish_snackbar_action)) {
+                    viewModel.onFinishButtonClicked()
+                }.show()
         }
     }
 

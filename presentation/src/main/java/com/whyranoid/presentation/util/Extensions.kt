@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -29,6 +31,10 @@ fun Date.dateToString(format: String): String {
 fun Long.toRunningDateString(): String {
     val formatter = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
     return formatter.format(this)
+}
+
+fun View.makeSnackBar(message: String): Snackbar {
+    return Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
 }
 
 inline fun <reified T : Serializable> Intent.getSerializableData(key: String): T? = when {

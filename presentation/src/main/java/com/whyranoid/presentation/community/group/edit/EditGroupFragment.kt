@@ -5,10 +5,10 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentEditGroupBinding
+import com.whyranoid.presentation.util.makeSnackBar
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,22 +33,14 @@ internal class EditGroupFragment :
         when (event) {
             // TODO : 다이어로그로 그룹을 수정할 수 있도록 변경
             is Event.AddRuleButtonClick -> {
-                Snackbar.make(binding.root, "룰 추가 클릭", Snackbar.LENGTH_SHORT).show()
+                binding.root.makeSnackBar(getString(R.string.community_click_add_rule)).show()
             }
             is Event.EditGroupButtonClick -> {
                 if (event.isSuccess) {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_edit_group_success),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    binding.root.makeSnackBar(getString(R.string.text_edit_group_success)).show()
                     findNavController().popBackStack()
                 } else {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_edit_group_fail),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    binding.root.makeSnackBar(getString(R.string.text_edit_group_fail)).show()
                 }
             }
         }

@@ -7,10 +7,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentGroupDetailBinding
+import com.whyranoid.presentation.util.makeSnackBar
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -93,52 +93,30 @@ internal class GroupDetailFragment :
     private fun handleEvent(event: Event) {
         when (event) {
             Event.RecruitButtonClick -> {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.text_check_recruit),
-                    Snackbar.LENGTH_SHORT
-                ).setAction(R.string.text_recruit) {
-                    viewModel.onRecruitSnackBarButtonClick()
-                }.show()
+                binding.root.makeSnackBar(getString(R.string.text_check_recruit))
+                    .setAction(R.string.text_recruit) {
+                        viewModel.onRecruitSnackBarButtonClick()
+                    }.show()
             }
             is Event.RecruitSnackBarButtonClick -> {
                 if (event.isSuccess) {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_recruit_success),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    binding.root.makeSnackBar(getString(R.string.text_recruit_success)).show()
                 } else {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_recruit_fail),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    binding.root.makeSnackBar(getString(R.string.text_recruit_fail)).show()
                 }
             }
             Event.ExitGroupButtonClick -> {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.text_check_exit_group),
-                    Snackbar.LENGTH_SHORT
-                ).setAction(getString(R.string.text_exit_group)) {
-                    viewModel.onExitGroupSnackBarButtonClick()
-                }.show()
+                binding.root.makeSnackBar(getString(R.string.text_check_exit_group))
+                    .setAction(getString(R.string.text_exit_group)) {
+                        viewModel.onExitGroupSnackBarButtonClick()
+                    }.show()
             }
             is Event.ExitGroupSnackBarButtonClick -> {
                 if (event.isSuccess) {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_exit_group_success),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    binding.root.makeSnackBar(getString(R.string.text_exit_group_success)).show()
                     findNavController().popBackStack()
                 } else {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_exit_group_fail),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    binding.root.makeSnackBar(getString(R.string.text_exit_group_fail)).show()
                 }
             }
         }
