@@ -9,11 +9,11 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.compose.RulePicker
 import com.whyranoid.presentation.databinding.FragmentCreateGroupBinding
+import com.whyranoid.presentation.util.makeSnackBar
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -79,42 +79,22 @@ internal class CreateGroupFragment :
         when (event) {
             is Event.CreateGroupButtonClick -> {
                 if (event.isSuccess) {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_create_group_success),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    binding.root.makeSnackBar(getString(R.string.text_create_group_success)).show()
                     findNavController().popBackStack()
                 } else {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_create_group_fail),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    binding.root.makeSnackBar(getString(R.string.text_create_group_fail)).show()
                 }
             }
             is Event.DuplicateCheckButtonClick -> {
                 if (event.isDuplicatedGroupName) {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_duplicated_group_name),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    binding.root.makeSnackBar(getString(R.string.text_duplicated_group_name)).show()
                 } else {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.text_un_duplicated_group_name),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    binding.root.makeSnackBar(getString(R.string.text_un_duplicated_group_name)).show()
                     binding.etGroupName.isEnabled = false
                 }
             }
             is Event.WarningButtonClick -> {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.text_warning_create_group),
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                binding.root.makeSnackBar(getString(R.string.text_warning_create_group)).show()
             }
             is Event.AddRuleButtonClick -> {
                 binding.composeView.apply {

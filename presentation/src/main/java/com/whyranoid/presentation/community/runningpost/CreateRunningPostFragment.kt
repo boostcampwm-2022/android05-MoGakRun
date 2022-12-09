@@ -8,13 +8,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.compose.TopSnackBar
 import com.whyranoid.presentation.databinding.FragmentCreateRunningPostBinding
 import com.whyranoid.presentation.model.UiState
 import com.whyranoid.presentation.util.networkconnection.NetworkState
+import com.whyranoid.presentation.util.makeSnackBar
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -96,12 +96,7 @@ internal class CreateRunningPostFragment :
                         true
                     }
                     R.id.warning_about_create_running_post_button -> {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.community_warning_running_post),
-                            Snackbar.LENGTH_SHORT
-                        )
-                            .show()
+                        binding.root.makeSnackBar(getString(R.string.community_warning_running_post))
                         true
                     }
                     else -> {
@@ -117,21 +112,10 @@ internal class CreateRunningPostFragment :
             val action =
                 CreateRunningPostFragmentDirections.actionCreateRunningPostFragmentToCommunityFragment()
 
-            Snackbar.make(
-                requireView(),
-                getString(R.string.community_success_create_running_post),
-                Snackbar.LENGTH_SHORT
-            )
-                .show()
-
+            requireView().makeSnackBar(getString(R.string.community_success_create_running_post))
             findNavController().navigate(action)
         } else {
-            Snackbar.make(
-                requireView(),
-                getString(R.string.community_fail_create_running_post),
-                Snackbar.LENGTH_SHORT
-            )
-                .show()
+            requireView().makeSnackBar(getString(R.string.community_fail_create_running_post))
         }
     }
 }

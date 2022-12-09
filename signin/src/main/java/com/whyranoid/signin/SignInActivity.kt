@@ -14,7 +14,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -22,6 +21,7 @@ import com.google.firebase.ktx.Firebase
 import com.whyranoid.SignInUserInfo
 import com.whyranoid.SignInViewModel
 import com.whyranoid.presentation.MainActivity
+import com.whyranoid.presentation.util.makeSnackBar
 import com.whyranoid.signin.databinding.ActivitySignInBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -64,19 +64,11 @@ class SignInActivity : AppCompatActivity() {
                         profileImgUri = account.photoUrl.toString()
                     }
                 } catch (e: ApiException) {
-                    Snackbar.make(
-                        binding.constraintLayoutSignIn,
-                        getString(R.string.sign_in_fail_network),
-                        Snackbar.LENGTH_SHORT
-                    )
+                    binding.constraintLayoutSignIn.makeSnackBar(getString(R.string.sign_in_fail_network))
                         .show()
                 }
             } else {
-                Snackbar.make(
-                    binding.constraintLayoutSignIn,
-                    getString(R.string.sign_in_fail_cancel),
-                    Snackbar.LENGTH_SHORT
-                )
+                binding.constraintLayoutSignIn.makeSnackBar(getString(R.string.sign_in_fail_cancel))
                     .show()
             }
         }
@@ -116,11 +108,8 @@ class SignInActivity : AppCompatActivity() {
 
         auth.signInWithCredential(credential).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Snackbar.make(
-                    binding.constraintLayoutSignIn,
-                    getString(R.string.sign_in_success),
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                binding.constraintLayoutSignIn.makeSnackBar(getString(R.string.sign_in_success))
+                    .show()
 
                 uid = auth.uid
                 lifecycleScope.launch {
@@ -132,11 +121,8 @@ class SignInActivity : AppCompatActivity() {
 
                 startActivity(intent)
             } else {
-                Snackbar.make(
-                    binding.constraintLayoutSignIn,
-                    getString(R.string.sign_in_fail_network),
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                binding.constraintLayoutSignIn.makeSnackBar(getString(R.string.sign_in_fail_network))
+                    .show()
             }
         }
     }
