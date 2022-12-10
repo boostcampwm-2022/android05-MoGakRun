@@ -7,7 +7,6 @@ import com.whyranoid.domain.model.GroupNotification
 import com.whyranoid.domain.model.Rule
 import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.repository.GroupRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -21,7 +20,7 @@ class GroupRepositoryImpl @Inject constructor(
         return userDataSource.getMyGroupList(uid)
     }
 
-    override fun getMyGroupListFlow(uid: String, coroutineScope: CoroutineScope) = userDataSource.getMyGroupListFlow(uid, coroutineScope)
+    override fun getMyGroupListFlow(uid: String) = userDataSource.getMyGroupListFlow(uid)
 
     override suspend fun updateGroupInfo(
         groupId: String,
