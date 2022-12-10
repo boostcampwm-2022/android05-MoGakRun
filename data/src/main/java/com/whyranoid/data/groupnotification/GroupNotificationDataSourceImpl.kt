@@ -13,7 +13,6 @@ import com.whyranoid.domain.model.FinishNotification
 import com.whyranoid.domain.model.GroupNotification
 import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.model.StartNotification
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +21,6 @@ import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
 
@@ -98,19 +96,17 @@ class GroupNotificationDataSourceImpl @Inject constructor(
     }
 
     override suspend fun notifyRunningStart(uid: String, groupIdList: List<String>) {
-        withContext(Dispatchers.IO) {
-            groupIdList.forEach { groupId ->
-                db.collection(GROUP_NOTIFICATIONS_COLLECTION)
-                    .document(groupId)
-                    .collection(START_NOTIFICATION)
-                    .document(UUID.randomUUID().toString())
-                    .set(
-                        StartNotification(
-                            startedAt = System.currentTimeMillis(),
-                            uid = uid
-                        )
+        groupIdList.forEach { groupId ->
+            db.collection(GROUP_NOTIFICATIONS_COLLECTION)
+                .document(groupId)
+                .collection(START_NOTIFICATION)
+                .document(UUID.randomUUID().toString())
+                .set(
+                    StartNotification(
+                        startedAt = System.currentTimeMillis(),
+                        uid = uid
                     )
-            }
+                )
         }
     }
 
@@ -119,19 +115,17 @@ class GroupNotificationDataSourceImpl @Inject constructor(
         runningHistory: RunningHistory,
         groupIdList: List<String>
     ) {
-        withContext(Dispatchers.IO) {
-            groupIdList.forEach { groupId ->
-                db.collection(GROUP_NOTIFICATIONS_COLLECTION)
-                    .document(groupId)
-                    .collection(FINISH_NOTIFICATION)
-                    .document(UUID.randomUUID().toString())
-                    .set(
-                        FinishNotificationResponse(
-                            uid = uid,
-                            historyId = runningHistory.historyId
-                        )
+        groupIdList.forEach { groupId ->
+            db.collection(GROUP_NOTIFICATIONS_COLLECTION)
+                .document(groupId)
+                .collection(FINISH_NOTIFICATION)
+                .document(UUID.randomUUID().toString())
+                .set(
+                    FinishNotificationResponse(
+                        uid = uid,
+                        historyId = runningHistory.historyId
                     )
-            }
+                )
         }
     }
 }
