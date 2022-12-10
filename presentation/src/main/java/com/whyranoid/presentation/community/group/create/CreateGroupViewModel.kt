@@ -39,7 +39,10 @@ class CreateGroupViewModel @Inject constructor(
     }
 
     fun onDialogConfirm(date: String, hour: String, minute: String) {
-        rules.value = rules.value + listOf("$date-$hour-$minute")
+        if (date.isNotEmpty() && hour.isNotEmpty() && minute.isNotEmpty()) {
+            rules.value = rules.value + listOf("$date-$hour-$minute")
+        }
+
         _showDialog.value = false
     }
 

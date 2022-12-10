@@ -6,7 +6,7 @@ data class Rule(
     val minute: Int
 ) {
     override fun toString(): String {
-        return "${dayOfWeek.dayResId}요일${hour}시${minute}분"
+        return "${dayOfWeek.dayResId}-$hour-$minute"
     }
 }
 
