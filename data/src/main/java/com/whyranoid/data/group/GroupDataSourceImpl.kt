@@ -178,7 +178,7 @@ class GroupDataSourceImpl @Inject constructor(
 
     private fun getGroupInfoResponse(groupId: String): Flow<GroupInfoResponse> {
         return callbackFlow {
-            db.collection(GROUPS_COLLECTION)
+            val registration = db.collection(GROUPS_COLLECTION)
                 .document(groupId)
                 .addSnapshotListener { documentSnapshot, _ ->
                     trySend(
@@ -186,13 +186,15 @@ class GroupDataSourceImpl @Inject constructor(
                             ?: throw MoGakRunException.FileNotFoundedException
                     )
                 }
-            awaitClose()
+            awaitClose {
+                registration.remove()
+            }
         }
     }
 
     private fun getUserResponse(uid: String): Flow<UserResponse> {
         return callbackFlow {
-            db.collection(USERS_COLLECTION)
+            val registration = db.collection(USERS_COLLECTION)
                 .document(uid)
                 .addSnapshotListener { documentSnapshot, _ ->
                     trySend(
@@ -200,7 +202,9 @@ class GroupDataSourceImpl @Inject constructor(
                             ?: throw MoGakRunException.FileNotFoundedException
                     )
                 }
-            awaitClose()
+            awaitClose {
+                registration.remove()
+            }
         }
     }
 

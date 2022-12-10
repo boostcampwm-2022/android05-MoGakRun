@@ -12,7 +12,7 @@ import kotlin.coroutines.resume
 class RunnerDataSourceImpl(private val db: FirebaseFirestore) : RunnerDataSource {
 
     override fun getCurrentRunnerCount(): Flow<Int> = callbackFlow {
-        db.collection(CollectionId.RUNNERS_COLLECTION)
+        val registration = db.collection(CollectionId.RUNNERS_COLLECTION)
             .document(CollectionId.RUNNERS_ID)
             .addSnapshotListener { snapshot, _ ->
                 snapshot?.let {
@@ -21,7 +21,9 @@ class RunnerDataSourceImpl(private val db: FirebaseFirestore) : RunnerDataSource
                 }
             }
 
-        awaitClose()
+        awaitClose {
+            registration.remove()
+        }
     }
 
     override suspend fun startRunning(uid: String): Boolean {

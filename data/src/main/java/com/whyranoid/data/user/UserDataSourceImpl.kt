@@ -75,7 +75,7 @@ class UserDataSourceImpl @Inject constructor(
         uid: String
     ): Flow<List<GroupInfo>> = callbackFlow {
         val coroutineScope = CoroutineScope(dispatcher)
-        db.collection(USERS_COLLECTION)
+        val registration = db.collection(USERS_COLLECTION)
             .document(uid)
             .addSnapshotListener { documentSnapshot, _ ->
                 val myGroupInfoList = mutableListOf<GroupInfo>()
@@ -93,6 +93,7 @@ class UserDataSourceImpl @Inject constructor(
 
         awaitClose {
             coroutineScope.cancel()
+            registration.remove()
         }
     }
 

@@ -40,7 +40,7 @@ class GroupNotificationDataSourceImpl @Inject constructor(
 
     private fun getGroupStartNotifications(groupId: String): Flow<List<GroupNotification>> =
         callbackFlow {
-            db.collection(GROUP_NOTIFICATIONS_COLLECTION)
+            val registration = db.collection(GROUP_NOTIFICATIONS_COLLECTION)
                 .document(groupId)
                 .collection(START_NOTIFICATION)
                 .addSnapshotListener { snapshot, error ->
@@ -53,12 +53,14 @@ class GroupNotificationDataSourceImpl @Inject constructor(
                     trySend(startNotificationList)
                 }
 
-            awaitClose()
+            awaitClose {
+                registration.remove()
+            }
         }
 
     private fun getGroupFinishNotifications(groupId: String): Flow<List<GroupNotification>> =
         callbackFlow {
-            db.collection(GROUP_NOTIFICATIONS_COLLECTION)
+            val registration = db.collection(GROUP_NOTIFICATIONS_COLLECTION)
                 .document(groupId)
                 .collection(FINISH_NOTIFICATION)
                 .addSnapshotListener { snapshot, error ->
@@ -88,7 +90,9 @@ class GroupNotificationDataSourceImpl @Inject constructor(
                     }
                 }
 
-            awaitClose()
+            awaitClose {
+                registration.remove()
+            }
         }
 
     override suspend fun notifyRunningStart(uid: String, groupIdList: List<String>) {
