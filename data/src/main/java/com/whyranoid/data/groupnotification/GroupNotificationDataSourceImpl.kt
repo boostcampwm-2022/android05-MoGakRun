@@ -1,6 +1,7 @@
 package com.whyranoid.data.groupnotification
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.snapshots
 import com.whyranoid.data.constant.CollectionId.FINISH_NOTIFICATION
 import com.whyranoid.data.constant.CollectionId.GROUP_NOTIFICATIONS_COLLECTION
 import com.whyranoid.data.constant.CollectionId.RUNNING_HISTORY_COLLECTION
@@ -19,6 +20,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
@@ -43,7 +46,7 @@ class GroupNotificationDataSourceImpl @Inject constructor(
             val registration = db.collection(GROUP_NOTIFICATIONS_COLLECTION)
                 .document(groupId)
                 .collection(START_NOTIFICATION)
-                .addSnapshotListener { snapshot, error ->
+                .addSnapshotListener { snapshot, _ ->
                     val startNotificationList = mutableListOf<GroupNotification>()
                     snapshot?.forEach { document ->
                         val startNotification =
@@ -58,42 +61,41 @@ class GroupNotificationDataSourceImpl @Inject constructor(
             }
         }
 
-    private fun getGroupFinishNotifications(groupId: String): Flow<List<GroupNotification>> =
-        callbackFlow {
-            val registration = db.collection(GROUP_NOTIFICATIONS_COLLECTION)
-                .document(groupId)
-                .collection(FINISH_NOTIFICATION)
-                .addSnapshotListener { snapshot, error ->
-                    val finishNotificationList = mutableListOf<GroupNotification>()
-                    snapshot?.forEach { document ->
-                        val finishNotificationResponse =
-                            document.toObject(FinishNotificationResponse::class.java)
+    private fun getGroupFinishNotifications(groupId: String): Flow<List<GroupNotification>> {
+        return db.collection(GROUP_NOTIFICATIONS_COLLECTION)
+            .document(groupId)
+            .collection(FINISH_NOTIFICATION)
+            .snapshots()
+            .map { snapshot ->
+                val finishNotificationList = mutableListOf<GroupNotification>()
 
-                        finishNotificationResponse.let { finishNotificationResponse ->
-                            db.collection(RUNNING_HISTORY_COLLECTION)
-                                .document(finishNotificationResponse.historyId)
-                                .get()
-                                .addOnSuccessListener {
-                                    val runningHistory = it.toObject(RunningHistory::class.java)
+                snapshot.forEach { document ->
+                    val finishNotificationResponse =
+                        document.toObject(FinishNotificationResponse::class.java)
 
-                                    runningHistory?.let {
-                                        finishNotificationList.add(
-                                            FinishNotification(
-                                                uid = finishNotificationResponse.uid,
-                                                runningHistory = runningHistory
-                                            )
-                                        )
-                                    }
-                                    trySend(finishNotificationList)
-                                }
+                    finishNotificationResponse.let { finishNotification ->
+                        getRunningHistory(finishNotification.historyId)?.let { runningHistory ->
+                            finishNotificationList.add(
+                                FinishNotification(
+                                    uid = finishNotification.uid,
+                                    runningHistory = runningHistory
+                                )
+                            )
                         }
                     }
                 }
-
-            awaitClose {
-                registration.remove()
+                finishNotificationList
             }
-        }
+    }
+
+    // TODO : 예외처리
+    private suspend fun getRunningHistory(historyId: String): RunningHistory? {
+        return db.collection(RUNNING_HISTORY_COLLECTION)
+            .document(historyId)
+            .get()
+            .await()
+            .toObject(RunningHistory::class.java)
+    }
 
     override suspend fun notifyRunningStart(uid: String, groupIdList: List<String>) {
         withContext(Dispatchers.IO) {
