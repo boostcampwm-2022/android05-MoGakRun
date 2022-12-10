@@ -2,6 +2,7 @@ package com.whyranoid.data.group
 
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.snapshots
 import com.whyranoid.data.constant.CollectionId.GROUPS_COLLECTION
 import com.whyranoid.data.constant.CollectionId.USERS_COLLECTION
 import com.whyranoid.data.constant.FieldId.GROUP_INTRODUCE
@@ -17,10 +18,9 @@ import com.whyranoid.domain.model.GroupInfo
 import com.whyranoid.domain.model.MoGakRunException
 import com.whyranoid.domain.model.Rule
 import com.whyranoid.domain.model.toRule
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import java.util.*
@@ -177,35 +177,23 @@ class GroupDataSourceImpl @Inject constructor(
     }
 
     private fun getGroupInfoResponse(groupId: String): Flow<GroupInfoResponse> {
-        return callbackFlow {
-            val registration = db.collection(GROUPS_COLLECTION)
-                .document(groupId)
-                .addSnapshotListener { documentSnapshot, _ ->
-                    trySend(
-                        documentSnapshot?.toObject(GroupInfoResponse::class.java)
-                            ?: throw MoGakRunException.FileNotFoundedException
-                    )
-                }
-            awaitClose {
-                registration.remove()
+        return db.collection(GROUPS_COLLECTION)
+            .document(groupId)
+            .snapshots()
+            .map { documentSnapshot ->
+                documentSnapshot.toObject(GroupInfoResponse::class.java)
+                    ?: throw MoGakRunException.FileNotFoundedException
             }
-        }
     }
 
     private fun getUserResponse(uid: String): Flow<UserResponse> {
-        return callbackFlow {
-            val registration = db.collection(USERS_COLLECTION)
-                .document(uid)
-                .addSnapshotListener { documentSnapshot, _ ->
-                    trySend(
-                        documentSnapshot?.toObject(UserResponse::class.java)
-                            ?: throw MoGakRunException.FileNotFoundedException
-                    )
-                }
-            awaitClose {
-                registration.remove()
+        return db.collection(USERS_COLLECTION)
+            .document(uid)
+            .snapshots()
+            .map { documentSnapshot ->
+                documentSnapshot.toObject(UserResponse::class.java)
+                    ?: throw MoGakRunException.FileNotFoundedException
             }
-        }
     }
 
     override suspend fun isDuplicatedGroupName(groupName: String): Boolean {
