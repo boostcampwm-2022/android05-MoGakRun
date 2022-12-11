@@ -101,6 +101,7 @@ internal class GroupDetailFragment :
             is Event.RecruitSnackBarButtonClick -> {
                 if (event.isSuccess) {
                     binding.root.makeSnackBar(getString(R.string.text_recruit_success)).show()
+                    findNavController().popBackStack()
                 } else {
                     binding.root.makeSnackBar(getString(R.string.text_recruit_fail)).show()
                 }
