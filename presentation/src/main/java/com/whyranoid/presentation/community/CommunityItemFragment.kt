@@ -22,7 +22,7 @@ internal class CommunityItemFragment :
     BaseFragment<FragmentCommunityItemBinding>(R.layout.fragment_community_item) {
 
     private val viewModel: CommunityViewModel by activityViewModels()
-
+    private lateinit var postAdapter: PostAdapter
     private val category by lazy {
         arguments?.getSerializableData(COMMUNITY_CATEGORY_KEY) ?: CommunityCategory.BOARD
     }
@@ -85,6 +85,7 @@ internal class CommunityItemFragment :
                     if (event.isSuccess) {
                         binding.root.makeSnackBar(getString(R.string.text_delete_post_success))
                             .show()
+                        event.block.invoke()
                     } else {
                         binding.root.makeSnackBar(getString(R.string.text_delete_post_fail)).show()
                     }
@@ -95,7 +96,7 @@ internal class CommunityItemFragment :
 
     private fun setPostAdapter() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val postAdapter = PostAdapter(
+            postAdapter = PostAdapter(
                 buttonClickListener = {
                     viewModel.onGroupJoinButtonClicked(it)
                 }
@@ -151,12 +152,14 @@ internal class CommunityItemFragment :
 
     private fun setMyPostAdapter() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val postAdapter = PostAdapter(
+            postAdapter = PostAdapter(
                 isMyPost = true,
                 itemLongClickListener = { postId ->
                     binding.root.makeSnackBar(getString(R.string.text_check_delete_post))
                         .setAction(R.string.text_delete) {
-                            viewModel.deletePost(postId)
+                            viewModel.deletePost(postId) {
+                                postAdapter.refresh()
+                            }
                         }.show()
                 }
             )
