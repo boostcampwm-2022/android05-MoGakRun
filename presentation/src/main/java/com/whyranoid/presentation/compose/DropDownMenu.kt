@@ -1,7 +1,7 @@
 package com.whyranoid.presentation.compose
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -30,7 +31,7 @@ fun DateDropDownMenu(
     val dateText = stringResource(id = R.string.text_date)
     val dateList = stringArrayResource(id = R.array.rule_date_array)
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
-    Box {
+    Column {
         Button(
             onClick = { isDropDownMenuExpanded = true },
             colors = ButtonDefaults
@@ -50,7 +51,11 @@ fun DateDropDownMenu(
         DropdownMenu(
             modifier = Modifier
                 .wrapContentWidth()
-                .wrapContentHeight(),
+                .wrapContentHeight()
+                .heightIn(
+                    0.dp,
+                    LocalConfiguration.current.screenHeightDp.dp / 2 - ButtonDefaults.MinHeight
+                ),
             expanded = isDropDownMenuExpanded,
             onDismissRequest = { isDropDownMenuExpanded = false }
         ) {
@@ -74,7 +79,7 @@ fun HourDropDownMenu(
     val hourText = stringResource(id = R.string.text_hour)
     val hourList = stringArrayResource(id = R.array.rule_hour_array)
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
-    Box {
+    Column {
         Button(
             onClick = { isDropDownMenuExpanded = true },
             colors = ButtonDefaults
@@ -94,7 +99,11 @@ fun HourDropDownMenu(
         DropdownMenu(
             modifier = Modifier
                 .wrapContentWidth()
-                .height(500.dp),
+                .wrapContentHeight()
+                .heightIn(
+                    0.dp,
+                    LocalConfiguration.current.screenHeightDp.dp / 2 - ButtonDefaults.MinHeight
+                ),
             expanded = isDropDownMenuExpanded,
             onDismissRequest = { isDropDownMenuExpanded = false }
         ) {
@@ -119,7 +128,7 @@ fun MinuteDropDownMenu(
     val minuteList = stringArrayResource(id = R.array.rule_minute_array)
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
 
-    Box {
+    Column {
         Button(
             onClick = { isDropDownMenuExpanded = true },
             colors = ButtonDefaults
@@ -139,7 +148,11 @@ fun MinuteDropDownMenu(
         DropdownMenu(
             modifier = Modifier
                 .wrapContentWidth()
-                .height(500.dp),
+                .wrapContentHeight()
+                .heightIn(
+                    0.dp,
+                    LocalConfiguration.current.screenHeightDp.dp / 2 - ButtonDefaults.MinHeight
+                ),
             expanded = isDropDownMenuExpanded,
             onDismissRequest = { isDropDownMenuExpanded = false }
         ) {
