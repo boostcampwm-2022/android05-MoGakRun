@@ -35,15 +35,17 @@ internal class CommunityItemFragment :
     }
 
     private fun initViews() {
-        // TODO : 카테고리 별 다른 Shimmer Layout 생성
         when (category) {
             CommunityCategory.BOARD -> {
+                inflateShimmerLoadingLayout(isGroupItem = false)
                 setPostAdapter()
             }
             CommunityCategory.MY_GROUP -> {
+                inflateShimmerLoadingLayout()
                 setMyGroupAdapter()
             }
             CommunityCategory.MY_POST -> {
+                inflateShimmerLoadingLayout(isGroupItem = false)
                 setMyPostAdapter()
             }
         }
@@ -202,6 +204,18 @@ internal class CommunityItemFragment :
         binding.shimmerCommunity.apply {
             stopShimmer()
             isVisible = false
+        }
+    }
+
+    private fun inflateShimmerLoadingLayout(isGroupItem: Boolean = false) {
+        repeat(10) {
+            binding.shimmerLinearLayout.addView(
+                layoutInflater.inflate(
+                    if (isGroupItem) R.layout.my_group_item_loading else R.layout.post_item_loading,
+                    binding.shimmerLinearLayout,
+                    false
+                )
+            )
         }
     }
 
