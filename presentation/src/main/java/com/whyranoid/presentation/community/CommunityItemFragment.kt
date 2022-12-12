@@ -146,8 +146,9 @@ internal class CommunityItemFragment :
 
         viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.myGroupList.collectLatest { groupList ->
+                binding.shimmerCommunity.isVisible = true
                 myGroupAdapter.submitList(groupList.sortedBy { it.name })
-                removeShimmer()
+                binding.shimmerCommunity.isVisible = false
             }
         }
     }
@@ -200,14 +201,7 @@ internal class CommunityItemFragment :
         }
     }
 
-    private fun removeShimmer() {
-        binding.shimmerCommunity.apply {
-            stopShimmer()
-            isVisible = false
-        }
-    }
-
-    private fun inflateShimmerLoadingLayout(isGroupItem: Boolean = false) {
+    private fun inflateShimmerLoadingLayout(isGroupItem: Boolean = true) {
         repeat(10) {
             binding.shimmerLinearLayout.addView(
                 layoutInflater.inflate(
