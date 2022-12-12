@@ -82,7 +82,7 @@ class CommunityViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getMyGroupListUseCase(this).onEach { groupInfoList ->
+            getMyGroupListUseCase().onEach { groupInfoList ->
                 _myGroupList.value = groupInfoList.map { groupInfo ->
                     groupInfo.toGroupInfoUiModel()
                 }

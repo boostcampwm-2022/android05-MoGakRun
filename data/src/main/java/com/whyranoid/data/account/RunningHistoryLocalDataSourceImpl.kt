@@ -22,7 +22,7 @@ class RunningHistoryLocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun saveRunningHistory(runningHistoryEntity: RunningHistoryEntity): Result<RunningHistory> {
-        return kotlin.runCatching {
+        return runCatching {
             runningHistoryDao.addRunningHistory(runningHistoryEntity)
             runningHistoryEntity.toRunningHistory()
         }

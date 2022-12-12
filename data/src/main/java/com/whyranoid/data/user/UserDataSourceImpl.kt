@@ -6,6 +6,7 @@ import com.whyranoid.data.constant.CollectionId.USERS_COLLECTION
 import com.whyranoid.data.constant.Exceptions.NO_GROUP_EXCEPTION
 import com.whyranoid.data.constant.Exceptions.NO_JOINED_GROUP_EXCEPTION
 import com.whyranoid.data.constant.Exceptions.NO_USER_EXCEPTION
+import com.whyranoid.data.di.IODispatcher
 import com.whyranoid.data.model.GroupInfoResponse
 import com.whyranoid.data.model.UserResponse
 import com.whyranoid.data.model.toGroupInfo
@@ -13,7 +14,9 @@ import com.whyranoid.data.model.toUser
 import com.whyranoid.domain.model.GroupInfo
 import com.whyranoid.domain.model.User
 import com.whyranoid.domain.model.toRule
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -22,7 +25,9 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class UserDataSourceImpl @Inject constructor(
-    private val db: FirebaseFirestore
+    private val db: FirebaseFirestore,
+    @IODispatcher
+    private val dispatcher: CoroutineDispatcher
 ) : UserDataSource {
 
     override suspend fun getMyGroupList(uid: String): Result<List<GroupInfo>> {
@@ -67,19 +72,18 @@ class UserDataSourceImpl @Inject constructor(
 
     // TODO: 예외처리
     override fun getMyGroupListFlow(
-        uid: String,
-        coroutineScope: CoroutineScope
+        uid: String
     ): Flow<List<GroupInfo>> = callbackFlow {
-        db.collection(USERS_COLLECTION)
+        val coroutineScope = CoroutineScope(dispatcher)
+        val registration = db.collection(USERS_COLLECTION)
             .document(uid)
             .addSnapshotListener { documentSnapshot, _ ->
                 val myGroupInfoList = mutableListOf<GroupInfo>()
                 val joinedGroupList =
                     documentSnapshot?.toObject(UserResponse::class.java)?.joinedGroupList
 
-                joinedGroupList?.forEach { groupId ->
-
-                    coroutineScope.launch {
+                coroutineScope.launch {
+                    joinedGroupList?.forEach { groupId ->
                         val groupInfo = getGroupInfo(groupId)
                         myGroupInfoList.add(groupInfo)
                         trySend(myGroupInfoList)
@@ -87,7 +91,10 @@ class UserDataSourceImpl @Inject constructor(
                 }
             }
 
-        awaitClose()
+        awaitClose {
+            coroutineScope.cancel()
+            registration.remove()
+        }
     }
 
     // TODO : 예외 처리
