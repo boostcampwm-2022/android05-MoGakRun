@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/iv_leader_profile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:background="#ffaaaaaa"
+        android:contentDescription="@string/my_run_profile_image_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_leader_name"
+        android:layout_width="60dp"
+        android:layout_height="20dp"
+        android:layout_margin="16dp"
+        android:background="#ffaaaaaa"
+        android:textAppearance="@style/MoGakRunText.Regular.Medium"
+        app:layout_constraintBottom_toBottomOf="@id/iv_leader_profile"
+        app:layout_constraintStart_toEndOf="@id/iv_leader_profile"
+        app:layout_constraintTop_toTopOf="@+id/iv_leader_profile"
+        tools:text="수피치" />
+
+    <TextView
+        android:id="@+id/tv_group_name"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        android:background="#ffaaaaaa"
+        android:textAppearance="@style/MoGakRunText.Regular.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_leader_profile"
+        tools:text="수피치와 함께 춤을\n출까 말까" />
+
+    <TextView
+        android:id="@+id/tv_group_introduce"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_margin="16dp"
+        android:background="#ffaaaaaa"
+        android:textAppearance="@style/MoGakRunText.Regular.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_group_name"
+        tools:text="우리 그룹은요\n이러쿵\n저러쿵\n이렇고요\n저렇고요" />
+
+    <TextView
+        android:id="@+id/tv_rules"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_margin="16dp"
+        android:background="#ffaaaaaa"
+        android:textAppearance="@style/MoGakRunText.Regular.Small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_group_introduce"
+        tools:text="규칙들\n이 적히게\n됩니다." />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

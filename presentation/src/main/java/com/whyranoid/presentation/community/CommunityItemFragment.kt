@@ -22,7 +22,7 @@ internal class CommunityItemFragment :
     BaseFragment<FragmentCommunityItemBinding>(R.layout.fragment_community_item) {
 
     private val viewModel: CommunityViewModel by activityViewModels()
-
+    private lateinit var postAdapter: PostAdapter
     private val category by lazy {
         arguments?.getSerializableData(COMMUNITY_CATEGORY_KEY) ?: CommunityCategory.BOARD
     }
@@ -35,15 +35,17 @@ internal class CommunityItemFragment :
     }
 
     private fun initViews() {
-        // TODO : 카테고리 별 다른 Shimmer Layout 생성
         when (category) {
             CommunityCategory.BOARD -> {
+                inflateShimmerLoadingLayout(isGroupItem = false)
                 setPostAdapter()
             }
             CommunityCategory.MY_GROUP -> {
+                inflateShimmerLoadingLayout()
                 setMyGroupAdapter()
             }
             CommunityCategory.MY_POST -> {
+                inflateShimmerLoadingLayout(isGroupItem = false)
                 setMyPostAdapter()
             }
         }
@@ -85,6 +87,7 @@ internal class CommunityItemFragment :
                     if (event.isSuccess) {
                         binding.root.makeSnackBar(getString(R.string.text_delete_post_success))
                             .show()
+                        event.block.invoke()
                     } else {
                         binding.root.makeSnackBar(getString(R.string.text_delete_post_fail)).show()
                     }
@@ -95,7 +98,7 @@ internal class CommunityItemFragment :
 
     private fun setPostAdapter() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val postAdapter = PostAdapter(
+            postAdapter = PostAdapter(
                 buttonClickListener = {
                     viewModel.onGroupJoinButtonClicked(it)
                 }
@@ -143,20 +146,23 @@ internal class CommunityItemFragment :
 
         viewLifecycleOwner.repeatWhenUiStarted {
             viewModel.myGroupList.collectLatest { groupList ->
+                binding.shimmerCommunity.isVisible = true
                 myGroupAdapter.submitList(groupList.sortedBy { it.name })
-                removeShimmer()
+                binding.shimmerCommunity.isVisible = false
             }
         }
     }
 
     private fun setMyPostAdapter() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val postAdapter = PostAdapter(
+            postAdapter = PostAdapter(
                 isMyPost = true,
                 itemLongClickListener = { postId ->
                     binding.root.makeSnackBar(getString(R.string.text_check_delete_post))
                         .setAction(R.string.text_delete) {
-                            viewModel.deletePost(postId)
+                            viewModel.deletePost(postId) {
+                                postAdapter.refresh()
+                            }
                         }.show()
                 }
             )
@@ -195,10 +201,15 @@ internal class CommunityItemFragment :
         }
     }
 
-    private fun removeShimmer() {
-        binding.shimmerCommunity.apply {
-            stopShimmer()
-            isVisible = false
+    private fun inflateShimmerLoadingLayout(isGroupItem: Boolean = true) {
+        repeat(10) {
+            binding.shimmerLinearLayout.addView(
+                layoutInflater.inflate(
+                    if (isGroupItem) R.layout.my_group_item_loading else R.layout.post_item_loading,
+                    binding.shimmerLinearLayout,
+                    false
+                )
+            )
         }
     }
 

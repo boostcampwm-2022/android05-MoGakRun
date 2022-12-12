@@ -13,8 +13,8 @@ import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.compose.TopSnackBar
 import com.whyranoid.presentation.databinding.FragmentCreateRunningPostBinding
 import com.whyranoid.presentation.model.UiState
-import com.whyranoid.presentation.util.networkconnection.NetworkState
 import com.whyranoid.presentation.util.makeSnackBar
+import com.whyranoid.presentation.util.networkconnection.NetworkState
 import com.whyranoid.presentation.util.repeatWhenUiStarted
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -113,9 +113,11 @@ internal class CreateRunningPostFragment :
                 CreateRunningPostFragmentDirections.actionCreateRunningPostFragmentToCommunityFragment()
 
             requireView().makeSnackBar(getString(R.string.community_success_create_running_post))
+                .show()
             findNavController().navigate(action)
         } else {
             requireView().makeSnackBar(getString(R.string.community_fail_create_running_post))
+                .show()
         }
     }
 }

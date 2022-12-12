@@ -74,9 +74,9 @@ class CommunityViewModel @Inject constructor(
         }
     }
 
-    fun deletePost(postId: String) {
+    fun deletePost(postId: String, block: () -> Unit) {
         viewModelScope.launch {
-            emitEvent(Event.DeletePost(deletePostUseCase(postId)))
+            emitEvent(Event.DeletePost(deletePostUseCase(postId), block))
         }
     }
 
