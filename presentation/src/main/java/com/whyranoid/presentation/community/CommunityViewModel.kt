@@ -8,6 +8,7 @@ import com.whyranoid.domain.usecase.GetMyPagingPostsUseCase
 import com.whyranoid.domain.usecase.GetPagingPostsUseCase
 import com.whyranoid.domain.usecase.JoinGroupUseCase
 import com.whyranoid.presentation.model.GroupInfoUiModel
+import com.whyranoid.presentation.model.UiState
 import com.whyranoid.presentation.model.toGroupInfoUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -30,9 +31,10 @@ class CommunityViewModel @Inject constructor(
     val getMyPagingPostsUseCase: GetMyPagingPostsUseCase
 ) : ViewModel() {
 
-    private val _myGroupList = MutableStateFlow<List<GroupInfoUiModel>>(emptyList())
-    val myGroupList: StateFlow<List<GroupInfoUiModel>>
-        get() = _myGroupList.asStateFlow()
+    private val _myGroupListState =
+        MutableStateFlow<UiState<List<GroupInfoUiModel>>>(UiState.UnInitialized)
+    val myGroupListState: StateFlow<UiState<List<GroupInfoUiModel>>>
+        get() = _myGroupListState.asStateFlow()
 
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow: SharedFlow<Event>
@@ -82,9 +84,17 @@ class CommunityViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getMyGroupListUseCase().onEach { groupInfoList ->
-                _myGroupList.value = groupInfoList.map { groupInfo ->
-                    groupInfo.toGroupInfoUiModel()
+            getMyGroupListUseCase().onEach { groupInfoListResult ->
+
+                _myGroupListState.value = UiState.Loading
+                groupInfoListResult.onSuccess { groupInfoList ->
+                    _myGroupListState.value = UiState.Success(
+                        groupInfoList.map { groupInfo ->
+                            groupInfo.toGroupInfoUiModel()
+                        }
+                    )
+                }.onFailure { throwable ->
+                    _myGroupListState.value = UiState.Failure(throwable)
                 }
             }.launchIn(this)
         }

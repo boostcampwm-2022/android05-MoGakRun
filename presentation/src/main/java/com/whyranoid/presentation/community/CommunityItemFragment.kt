@@ -10,6 +10,7 @@ import androidx.paging.LoadState
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentCommunityItemBinding
+import com.whyranoid.presentation.model.UiState
 import com.whyranoid.presentation.util.getSerializableData
 import com.whyranoid.presentation.util.makeSnackBar
 import com.whyranoid.presentation.util.repeatWhenUiStarted
@@ -22,6 +23,7 @@ internal class CommunityItemFragment :
     BaseFragment<FragmentCommunityItemBinding>(R.layout.fragment_community_item) {
 
     private val viewModel: CommunityViewModel by activityViewModels()
+    private lateinit var myGroupAdapter: MyGroupAdapter
     private lateinit var postAdapter: PostAdapter
     private val category by lazy {
         arguments?.getSerializableData(COMMUNITY_CATEGORY_KEY) ?: CommunityCategory.BOARD
@@ -37,7 +39,7 @@ internal class CommunityItemFragment :
     private fun initViews() {
         when (category) {
             CommunityCategory.BOARD -> {
-                inflateShimmerLoadingLayout(isGroupItem = false)
+                inflateShimmerLoadingLayout(isGroup = false)
                 setPostAdapter()
             }
             CommunityCategory.MY_GROUP -> {
@@ -45,7 +47,7 @@ internal class CommunityItemFragment :
                 setMyGroupAdapter()
             }
             CommunityCategory.MY_POST -> {
-                inflateShimmerLoadingLayout(isGroupItem = false)
+                inflateShimmerLoadingLayout(isGroup = false)
                 setMyPostAdapter()
             }
         }
@@ -124,9 +126,7 @@ internal class CommunityItemFragment :
             }
 
             viewLifecycleOwner.repeatWhenUiStarted {
-                viewModel.myGroupList.collectLatest { myGroupList ->
-                    postAdapter.setMyGroupList(myGroupList)
-                }
+                observeGroupInfoListState(isMyGroupTab = false)
             }
 
             viewLifecycleOwner.repeatWhenUiStarted {
@@ -139,17 +139,13 @@ internal class CommunityItemFragment :
 
     private fun setMyGroupAdapter() {
         binding.swipeRefreshLayout.isEnabled = false
-        val myGroupAdapter = MyGroupAdapter { groupInfo ->
+        myGroupAdapter = MyGroupAdapter { groupInfo ->
             viewModel.onGroupItemClicked(groupInfo)
         }
         binding.rvCommunity.adapter = myGroupAdapter
 
         viewLifecycleOwner.repeatWhenUiStarted {
-            viewModel.myGroupList.collectLatest { groupList ->
-                binding.shimmerCommunity.isVisible = true
-                myGroupAdapter.submitList(groupList.sortedBy { it.name })
-                binding.shimmerCommunity.isVisible = false
-            }
+            observeGroupInfoListState()
         }
     }
 
@@ -187,9 +183,7 @@ internal class CommunityItemFragment :
             }
 
             viewLifecycleOwner.repeatWhenUiStarted {
-                viewModel.myGroupList.collect { myGroupList ->
-                    postAdapter.setMyGroupList(myGroupList)
-                }
+                observeGroupInfoListState(isMyGroupTab = false)
             }
 
             viewLifecycleOwner.repeatWhenUiStarted {
@@ -201,15 +195,39 @@ internal class CommunityItemFragment :
         }
     }
 
-    private fun inflateShimmerLoadingLayout(isGroupItem: Boolean = true) {
+    private fun inflateShimmerLoadingLayout(isGroup: Boolean = true) {
         repeat(10) {
             binding.shimmerLinearLayout.addView(
                 layoutInflater.inflate(
-                    if (isGroupItem) R.layout.my_group_item_loading else R.layout.post_item_loading,
+                    if (isGroup) R.layout.my_group_item_loading else R.layout.post_item_loading,
                     binding.shimmerLinearLayout,
                     false
                 )
             )
+        }
+    }
+
+    // 게시글, 내가 쓴 글 탭은 PagingState에 따라 Shimmer를 관리해줌.
+    private suspend fun observeGroupInfoListState(isMyGroupTab: Boolean = true) {
+        viewModel.myGroupListState.collectLatest { groupInfoListState ->
+
+            when (groupInfoListState) {
+                is UiState.UnInitialized -> {}
+                is UiState.Loading -> {
+                    if (isMyGroupTab) binding.shimmerCommunity.isVisible = true
+                }
+                is UiState.Success -> {
+                    if (isMyGroupTab) {
+                        myGroupAdapter.submitList(groupInfoListState.value.sortedBy { it.name })
+                        binding.shimmerCommunity.isVisible = false
+                    } else {
+                        postAdapter.setMyGroupList(groupInfoListState.value)
+                    }
+                }
+                is UiState.Failure -> {
+                    if (isMyGroupTab) binding.shimmerCommunity.isVisible = false
+                }
+            }
         }
     }
 

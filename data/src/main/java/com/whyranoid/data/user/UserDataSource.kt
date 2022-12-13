@@ -7,5 +7,5 @@ interface UserDataSource {
 
     suspend fun getMyGroupList(uid: String): Result<List<GroupInfo>>
 
-    fun getMyGroupListFlow(uid: String): Flow<List<GroupInfo>>
+    fun getMyGroupListFlow(uid: String): Flow<Result<List<GroupInfo>>>
 }
