@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface RunnerDataSource {
 
-    fun getCurrentRunnerCount(): Flow<Int>
+    fun getCurrentRunnerCount(): Flow<Result<Int>>
 
     suspend fun startRunning(uid: String): Boolean
 
