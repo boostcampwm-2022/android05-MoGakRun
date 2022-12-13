@@ -59,31 +59,34 @@ __모여서 각자 러닝__ 을 즐길 수 있게 도와주는 당신의 러닝�
 
 ## 📁 프로젝트 주요 기능 
 
-> 🔑 Google 계정을 통해 회원가입, 로그인을 할 수 있어요!
+> 🔑 Google 계정을 통해 로그인하면 모각런을 시작할 수 있어요!
 
-<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%><img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%>
-<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%>
-
+<img src="https://user-images.githubusercontent.com/44428543/207325548-5dc6354d-4916-4473-88fc-3b5725c10cc8.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207329352-668b43cc-7e77-44cc-88e8-d6855353f49e.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207327679-f386fa7b-fb9a-4c5e-af7c-73eeebac081c.png" border=1 width=30% style="border-radius:5%">  
+<br/>
+<br/>   
 > 🏃 모각런과 함께 운동을 시작해 볼까요?!
 
-<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%><img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%>
-<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%>
-<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%><img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%>
-<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%>
+<img src="https://user-images.githubusercontent.com/44428543/207345729-e6fad010-8017-455b-bf04-a24920568eac.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207346844-787f349a-ee67-4fdd-84e2-5c435000c634.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207349111-6f8c48d5-32ad-46e1-b658-aff7c3753002.png" border=1 width=30% style="border-radius:5%">  
+<br/>
+<br/>   
+> 👍 나의 운동 기록을 사람들에게 자랑해보세요!
 
-> 👍 나의 운동 기록을 친구들에게 자랑해보세요!
+<img src="https://user-images.githubusercontent.com/44428543/207354536-5dbce06a-a995-436e-9914-63769e1e41a5.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207353291-18b2e415-5362-47b0-8162-80533815bbd6.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207353918-6c4439ca-c765-41b9-8aa8-3e8294b4d87f.png" border=1 width=30% style="border-radius:5%">  
+<br/>
+<br/>   
+> 💌 나만의 그룹을 만들어 사람들을 초대할 수 있어요~
 
-<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%><img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%>
-<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%>
-
+<img src="https://user-images.githubusercontent.com/44428543/207360623-accd5e28-ee8c-44c0-8a05-9c41db4b2ce0.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207360050-7a00d73f-ac3a-40b4-b7ae-0f17ab2d09d8.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207361079-793b0fa6-ed7c-4c08-9535-bcc750e7ea8d.png" border=1 width=30% style="border-radius:5%">  
+<br/>
+<br/>   
 > 🙌 그룹원들과 모여서 각자 달려보는건 어떨까요?
 
-<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=23%><img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=23%>
-<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=23%><img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=23%>
+<img src="https://user-images.githubusercontent.com/44428543/207356021-0cf3004a-1886-4206-b03c-b411b90fe1c6.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207356528-58f99171-b46d-4236-b385-2828bd81c189.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207357110-54783e1e-801e-4cfe-8a89-a3042f304179.png" border=1 width=30% style="border-radius:5%">  
+<br/>
+<br/>   
+> 📊 나의 프로필과 운동 기록들을 한눈에 살펴보아요
 
-> 😊 나의 운동 기록들을 한눈에 살펴보아요
-
-<img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%><img src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png" width=30%>
+<img src="https://user-images.githubusercontent.com/44428543/207357419-5fc40dff-b234-495e-89e1-9001b4feed7c.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207357849-5c8b7a65-d951-43ec-8cb5-35df5f26ac9b.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207358024-cf4bc2cc-4359-4ea1-99f4-e7b1e3733706.png" border=1 width=30% style="border-radius:5%">
 
 <br/>
 <br/>
