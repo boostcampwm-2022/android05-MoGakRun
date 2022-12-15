@@ -23,4 +23,9 @@ dependencies {
 
     // junit
     testImplementation "junit:junit:$junitVersion"
+
+    // mockito
+    testImplementation ("org.mockito:mockito-android:$mockitoAndroidVersion")
+    // mockito - kotlin
+    testImplementation "org.mockito:mockito-inline:$mockitoInlineVersion"
 }
