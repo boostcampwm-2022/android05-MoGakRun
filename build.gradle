@@ -36,6 +36,8 @@ buildscript {
         hiltCompilerVersion = "1.0.0"
         crashlyticsVersion = "2.9.2"
         swipeRefreshLayoutVersion = "1.1.0"
+        mockitoAndroidVersion = "2.24.5"
+        mockitoInlineVersion = "3.5.13"
     }
     dependencies {
         classpath "com.google.gms:google-services:$googleServiceVersion"
