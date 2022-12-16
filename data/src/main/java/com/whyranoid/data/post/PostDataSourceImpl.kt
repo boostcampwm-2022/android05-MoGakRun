@@ -16,14 +16,12 @@ import com.whyranoid.data.model.RunningPostResponse
 import com.whyranoid.data.model.UserResponse
 import com.whyranoid.data.model.toGroupInfo
 import com.whyranoid.data.model.toUser
+import com.whyranoid.domain.model.MoGakRunException
 import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.model.RecruitPost
 import com.whyranoid.domain.model.RunningHistory
 import com.whyranoid.domain.model.RunningPost
 import com.whyranoid.domain.model.toRule
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import java.util.*
@@ -33,194 +31,6 @@ import kotlin.coroutines.resume
 class PostDataSourceImpl @Inject constructor(
     private val db: FirebaseFirestore
 ) : PostDataSource {
-
-    // TODO : 조금 더 간결하게 처리 필요.
-    // TODO : 페이징 처리가 잘 끝나면 삭제
-    override fun getAllPostFlow(): Flow<List<Post>> =
-        callbackFlow {
-            db.collection(CollectionId.POST_COLLECTION)
-                .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
-                .addSnapshotListener { snapshot, _ ->
-                    val postList = mutableListOf<Post>()
-                    snapshot?.forEach { docuemnt ->
-
-                        if (docuemnt[RUNNING_HISTORY_ID] != null) {
-                            docuemnt.toObject(RunningPostResponse::class.java).let { postResponse ->
-                                db.collection(CollectionId.USERS_COLLECTION)
-                                    .document(postResponse.authorId)
-                                    .get()
-                                    .addOnSuccessListener { authorDocument ->
-                                        val authorResponse =
-                                            authorDocument?.toObject(UserResponse::class.java)
-
-                                        authorResponse?.let {
-                                            db.collection(CollectionId.RUNNING_HISTORY_COLLECTION)
-                                                .document(postResponse.runningHistoryId)
-                                                .get()
-                                                .addOnSuccessListener { runningHistoryDocument ->
-                                                    val runningHistoryResponse =
-                                                        runningHistoryDocument.toObject(
-                                                            RunningHistory::class.java
-                                                        )
-
-                                                    runningHistoryResponse?.let {
-                                                        val author = authorResponse.toUser()
-
-                                                        postList.add(
-                                                            RunningPost(
-                                                                postId = postResponse.postId,
-                                                                author = author,
-                                                                updatedAt = postResponse.updatedAt,
-                                                                runningHistory = it,
-                                                                likeCount = 0,
-                                                                content = postResponse.content
-                                                            )
-                                                        )
-                                                    }
-                                                }
-                                        }
-                                    }
-                            }
-                        } else {
-                            docuemnt.toObject(RecruitPostResponse::class.java).let { postResponse ->
-
-                                db.collection(CollectionId.USERS_COLLECTION)
-                                    .document(postResponse.authorId)
-                                    .get()
-                                    .addOnSuccessListener { authorDocument ->
-                                        val authorResponse =
-                                            authorDocument?.toObject(UserResponse::class.java)
-
-                                        authorResponse?.let {
-                                            db.collection(CollectionId.GROUPS_COLLECTION)
-                                                .document(postResponse.groupId)
-                                                .get()
-                                                .addOnSuccessListener { groupDocument ->
-                                                    val groupInfoResponse =
-                                                        groupDocument.toObject(GroupInfoResponse::class.java)
-
-                                                    groupInfoResponse?.let { groupInfoResponse ->
-                                                        val author = authorResponse.toUser()
-                                                        postList.add(
-                                                            RecruitPost(
-                                                                postId = postResponse.postId,
-                                                                author = author,
-                                                                updatedAt = postResponse.updatedAt,
-                                                                groupInfo = groupInfoResponse
-                                                                    .toGroupInfo(
-                                                                        author,
-                                                                        rules = groupInfoResponse.rules.map {
-                                                                            it.toRule()
-                                                                        }
-                                                                    )
-                                                            )
-                                                        )
-                                                        trySend(postList)
-                                                    }
-                                                }
-                                        }
-                                    }
-                            }
-                        }
-                    }
-                }
-
-            awaitClose()
-        }
-
-    // TODO : 페이징 처리가 잘 끝나면 삭제
-    override fun getMyPostFlow(uid: String): Flow<List<Post>> =
-        callbackFlow {
-            db.collection(CollectionId.POST_COLLECTION)
-                .whereEqualTo(AUTHOR_ID, uid)
-                .orderBy(UPDATED_AT, Query.Direction.DESCENDING)
-                .addSnapshotListener { snapshot, _ ->
-                    val postList = mutableListOf<Post>()
-                    snapshot?.forEach { document ->
-
-                        if (document[RUNNING_HISTORY_ID] != null) {
-                            document.toObject(RunningPostResponse::class.java).let { postResponse ->
-                                db.collection(CollectionId.USERS_COLLECTION)
-                                    .document(postResponse.authorId)
-                                    .get()
-                                    .addOnSuccessListener { authorDocument ->
-                                        val authorResponse =
-                                            authorDocument?.toObject(UserResponse::class.java)
-
-                                        authorResponse?.let {
-                                            db.collection(CollectionId.RUNNING_HISTORY_COLLECTION)
-                                                .document(postResponse.runningHistoryId)
-                                                .get()
-                                                .addOnSuccessListener { runningHistoryDocument ->
-                                                    val runningHistoryResponse =
-                                                        runningHistoryDocument.toObject(
-                                                            RunningHistory::class.java
-                                                        )
-
-                                                    runningHistoryResponse?.let {
-                                                        val author = authorResponse.toUser()
-
-                                                        postList.add(
-                                                            RunningPost(
-                                                                postId = postResponse.postId,
-                                                                author = author,
-                                                                updatedAt = postResponse.updatedAt,
-                                                                runningHistory = it,
-                                                                likeCount = 0,
-                                                                content = postResponse.content
-                                                            )
-                                                        )
-                                                    }
-                                                }
-                                        }
-                                    }
-                            }
-                        } else {
-                            document.toObject(RecruitPostResponse::class.java).let { postResponse ->
-
-                                db.collection(CollectionId.USERS_COLLECTION)
-                                    .document(postResponse.authorId)
-                                    .get()
-                                    .addOnSuccessListener { authorDocument ->
-                                        val authorResponse =
-                                            authorDocument?.toObject(UserResponse::class.java)
-
-                                        authorResponse?.let {
-                                            db.collection(CollectionId.GROUPS_COLLECTION)
-                                                .document(postResponse.groupId)
-                                                .get()
-                                                .addOnSuccessListener { groupDocument ->
-                                                    val groupInfoResponse =
-                                                        groupDocument.toObject(GroupInfoResponse::class.java)
-
-                                                    groupInfoResponse?.let { groupInfoResponse ->
-                                                        val author = authorResponse.toUser()
-                                                        postList.add(
-                                                            RecruitPost(
-                                                                postId = postResponse.postId,
-                                                                author = author,
-                                                                updatedAt = postResponse.updatedAt,
-                                                                groupInfo = groupInfoResponse
-                                                                    .toGroupInfo(
-                                                                        author,
-                                                                        rules = groupInfoResponse.rules.map {
-                                                                            it.toRule()
-                                                                        }
-                                                                    )
-                                                            )
-                                                        )
-                                                        trySend(postList)
-                                                    }
-                                                }
-                                        }
-                                    }
-                            }
-                        }
-                    }
-                }
-
-            awaitClose()
-        }
 
     override suspend fun getCurrentPagingPost(key: QuerySnapshot?): QuerySnapshot {
         return key ?: db.collection(CollectionId.POST_COLLECTION)
@@ -258,35 +68,36 @@ class PostDataSourceImpl @Inject constructor(
             .await()
     }
 
-    // TODO : 예외 처리
-    override suspend fun convertPostType(document: QueryDocumentSnapshot): Post? {
+    override suspend fun convertPostType(document: QueryDocumentSnapshot): Result<Post> {
         return if (document[RUNNING_HISTORY_ID] != null) {
             document.toObject(RunningPostResponse::class.java).let { postResponse ->
-                val authorResponse = getUserResponse(postResponse.authorId)
 
-                authorResponse?.let {
-                    val runningHistory = getRunningHistory(postResponse.runningHistoryId)
+                val authorResponseResult = getUserResponse(postResponse.authorId)
+                authorResponseResult.mapCatching { authorResponse ->
 
-                    runningHistory?.let {
+                    val runningHistoryResult = getRunningHistory(postResponse.runningHistoryId)
+                    runningHistoryResult.mapCatching { runningHistory ->
+
                         RunningPost(
                             postId = postResponse.postId,
                             author = authorResponse.toUser(),
                             updatedAt = postResponse.updatedAt,
-                            runningHistory = it,
+                            runningHistory = runningHistory,
                             likeCount = 0,
                             content = postResponse.content
                         )
-                    }
+                    }.getOrThrow()
                 }
             }
+
         } else {
             document.toObject(RecruitPostResponse::class.java).let { postResponse ->
-                val authorResponse = getUserResponse(postResponse.authorId)
+                val authorResponseResult = getUserResponse(postResponse.authorId)
+                authorResponseResult.mapCatching { authorResponse ->
 
-                authorResponse?.let {
-                    val groupInfoResponse = getGroupInfoResponse(postResponse.groupId)
+                    val groupInfoResponseResult = getGroupInfoResponse(postResponse.groupId)
+                    groupInfoResponseResult.mapCatching { groupInfoResponse ->
 
-                    groupInfoResponse?.let {
                         val author = authorResponse.toUser()
                         RecruitPost(
                             postId = postResponse.postId,
@@ -300,7 +111,7 @@ class PostDataSourceImpl @Inject constructor(
                                     }
                                 )
                         )
-                    }
+                    }.getOrThrow()
                 }
             }
         }
@@ -398,31 +209,37 @@ class PostDataSourceImpl @Inject constructor(
         }
     }
 
-    // TODO : 예외 처리
-    private suspend fun getUserResponse(userId: String): UserResponse? {
-        return db.collection(CollectionId.USERS_COLLECTION)
-            .document(userId)
-            .get()
-            .await()
-            .toObject(UserResponse::class.java)
+    private suspend fun getUserResponse(userId: String): Result<UserResponse> {
+        return runCatching {
+            db.collection(CollectionId.USERS_COLLECTION)
+                .document(userId)
+                .get()
+                .await()
+                .toObject(UserResponse::class.java)
+                ?: throw MoGakRunException.FileNotFoundedException
+        }
     }
 
-    // TODO : 예외 처리
-    private suspend fun getRunningHistory(runningHistoryId: String): RunningHistory? {
-        return db.collection(CollectionId.RUNNING_HISTORY_COLLECTION)
-            .document(runningHistoryId)
-            .get()
-            .await()
-            .toObject(RunningHistory::class.java)
+    private suspend fun getRunningHistory(runningHistoryId: String): Result<RunningHistory> {
+        return runCatching {
+            db.collection(CollectionId.RUNNING_HISTORY_COLLECTION)
+                .document(runningHistoryId)
+                .get()
+                .await()
+                .toObject(RunningHistory::class.java)
+                ?: throw MoGakRunException.FileNotFoundedException
+        }
     }
 
-    // TODO : 예외 처리
-    private suspend fun getGroupInfoResponse(groupId: String): GroupInfoResponse? {
-        return db.collection(CollectionId.GROUPS_COLLECTION)
-            .document(groupId)
-            .get()
-            .await()
-            .toObject(GroupInfoResponse::class.java)
+    private suspend fun getGroupInfoResponse(groupId: String): Result<GroupInfoResponse> {
+        return runCatching {
+            db.collection(CollectionId.GROUPS_COLLECTION)
+                .document(groupId)
+                .get()
+                .await()
+                .toObject(GroupInfoResponse::class.java)
+                ?: throw MoGakRunException.FileNotFoundedException
+        }
     }
 
     companion object {

@@ -30,7 +30,7 @@ class PostPagingDataSource(
             // Post 타입 캐스팅
             // TODO 예외 처리
             currentPage.forEach { document ->
-                postDataSource.convertPostType(document)?.let { post ->
+                postDataSource.convertPostType(document).onSuccess { post ->
                     postList.add(post)
                 }
             }

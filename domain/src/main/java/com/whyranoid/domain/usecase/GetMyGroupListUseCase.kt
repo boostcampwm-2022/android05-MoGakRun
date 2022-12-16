@@ -10,7 +10,7 @@ class GetMyGroupListUseCase @Inject constructor(
     private val groupRepository: GroupRepository,
     private val accountRepository: AccountRepository
 ) {
-    suspend operator fun invoke(): Flow<List<GroupInfo>> {
+    suspend operator fun invoke(): Flow<Result<List<GroupInfo>>> {
         val uid = accountRepository.getUid()
         return groupRepository.getMyGroupListFlow(uid)
     }

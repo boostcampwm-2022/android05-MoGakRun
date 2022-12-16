@@ -12,6 +12,7 @@ import com.whyranoid.data.model.UserResponse
 import com.whyranoid.data.model.toGroupInfo
 import com.whyranoid.data.model.toUser
 import com.whyranoid.domain.model.GroupInfo
+import com.whyranoid.domain.model.MoGakRunException
 import com.whyranoid.domain.model.User
 import com.whyranoid.domain.model.toRule
 import kotlinx.coroutines.CoroutineDispatcher
@@ -70,10 +71,9 @@ class UserDataSourceImpl @Inject constructor(
         }
     }
 
-    // TODO: 예외처리
     override fun getMyGroupListFlow(
         uid: String
-    ): Flow<List<GroupInfo>> = callbackFlow {
+    ): Flow<Result<List<GroupInfo>>> = callbackFlow {
         val coroutineScope = CoroutineScope(dispatcher)
         val registration = db.collection(USERS_COLLECTION)
             .document(uid)
@@ -84,9 +84,15 @@ class UserDataSourceImpl @Inject constructor(
 
                 coroutineScope.launch {
                     joinedGroupList?.forEach { groupId ->
-                        val groupInfo = getGroupInfo(groupId)
-                        myGroupInfoList.add(groupInfo)
-                        trySend(myGroupInfoList)
+
+                        trySend(
+                            runCatching {
+                                val groupInfo = getGroupInfo(groupId)
+                                myGroupInfoList.apply {
+                                    add(groupInfo)
+                                }
+                            }
+                        )
                     }
                 }
             }
@@ -97,15 +103,14 @@ class UserDataSourceImpl @Inject constructor(
         }
     }
 
-    // TODO : 예외 처리
     private suspend fun getGroupInfo(groupId: String): GroupInfo {
-        val groupInfoResponse = requireNotNull(
+        val groupInfoResponse =
             db.collection(GROUPS_COLLECTION)
                 .document(groupId)
                 .get()
                 .await()
                 .toObject(GroupInfoResponse::class.java)
-        )
+                ?: throw MoGakRunException.FileNotFoundedException
 
         val leader = getLeaderInfo(groupInfoResponse.leaderId)
 
@@ -117,14 +122,12 @@ class UserDataSourceImpl @Inject constructor(
         )
     }
 
-    // TODO : 예외 처리
     private suspend fun getLeaderInfo(leaderId: String): User {
-        return requireNotNull(
-            db.collection(USERS_COLLECTION)
-                .document(leaderId)
-                .get()
-                .await()
-                .toObject(UserResponse::class.java)?.toUser()
-        )
+        return db.collection(USERS_COLLECTION)
+            .document(leaderId)
+            .get()
+            .await()
+            .toObject(UserResponse::class.java)?.toUser()
+            ?: throw MoGakRunException.FileNotFoundedException
     }
 }

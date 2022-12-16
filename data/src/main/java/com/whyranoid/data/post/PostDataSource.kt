@@ -4,13 +4,8 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.whyranoid.domain.model.Post
-import kotlinx.coroutines.flow.Flow
 
 interface PostDataSource {
-
-    fun getAllPostFlow(): Flow<List<Post>>
-
-    fun getMyPostFlow(uid: String): Flow<List<Post>>
 
     suspend fun getCurrentPagingPost(key: QuerySnapshot?): QuerySnapshot
 
@@ -18,9 +13,12 @@ interface PostDataSource {
 
     suspend fun getMyCurrentPagingPost(key: QuerySnapshot?, uid: String): QuerySnapshot
 
-    suspend fun getMyNextPagingPost(lastDocumentSnapshot: DocumentSnapshot, uid: String): QuerySnapshot
+    suspend fun getMyNextPagingPost(
+        lastDocumentSnapshot: DocumentSnapshot,
+        uid: String
+    ): QuerySnapshot
 
-    suspend fun convertPostType(document: QueryDocumentSnapshot): Post?
+    suspend fun convertPostType(document: QueryDocumentSnapshot): Result<Post>
 
     suspend fun createRecruitPost(
         authorUid: String,

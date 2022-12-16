@@ -31,14 +31,6 @@ class PostRepositoryImpl @Inject constructor(
         }.flow.cachedIn(coroutineScope)
     }
 
-    override fun getAllPostFlow(): Flow<List<Post>> {
-        return postDataSource.getAllPostFlow()
-    }
-
-    override fun getMyPostFlow(uid: String): Flow<List<Post>> {
-        return postDataSource.getMyPostFlow(uid)
-    }
-
     override suspend fun createRunningPost(
         authorUid: String,
         runningHistoryId: String,
