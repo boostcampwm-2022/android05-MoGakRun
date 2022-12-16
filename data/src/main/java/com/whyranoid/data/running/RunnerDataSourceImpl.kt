@@ -16,13 +16,10 @@ class RunnerDataSourceImpl(private val db: FirebaseFirestore) : RunnerDataSource
         val registration = db.collection(CollectionId.RUNNERS_COLLECTION)
             .document(CollectionId.RUNNERS_ID)
             .addSnapshotListener { snapshot, _ ->
-                snapshot?.let {
-                    it.data?.size?.let { count ->
-                        trySend(Result.success(count))
-                    } ?: kotlin.run {
-                        trySend(Result.failure(MoGakRunException.FileNotFoundedException))
-                    }
-                }
+                trySend(runCatching {
+                    snapshot?.data?.size
+                        ?: throw MoGakRunException.FileNotFoundedException
+                })
             }
 
         awaitClose {
