@@ -15,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.whyranoid.presentation.R
 import com.whyranoid.presentation.base.BaseFragment
 import com.whyranoid.presentation.databinding.FragmentRunningStartBinding
+import com.whyranoid.presentation.model.UiState
 import com.whyranoid.presentation.running.RunningActivity
 import com.whyranoid.presentation.running.RunningViewModel.Companion.RUNNING_FINISH_DATA_KEY
 import com.whyranoid.presentation.util.getSerializableData
@@ -87,8 +88,13 @@ internal class RunningStartFragment :
     private fun observeState() {
         viewModel.startObservingNetworkState()
         viewLifecycleOwner.repeatWhenUiStarted {
-            viewModel.runnerCount.collect { runnerCount ->
-                binding.tvRunnerCountNumber.text = runnerCount.toString()
+            viewModel.runnerCountState.collect { runnerCountState ->
+                when (runnerCountState) {
+                    is UiState.Failure -> {}
+                    is UiState.Loading -> {}
+                    is UiState.Success -> binding.tvRunnerCountNumber.text = runnerCountState.value.toString()
+                    is UiState.UnInitialized -> {}
+                }
             }
         }
 

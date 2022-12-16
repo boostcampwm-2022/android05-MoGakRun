@@ -4,7 +4,7 @@ import com.whyranoid.domain.repository.RunnerRepository
 import kotlinx.coroutines.flow.Flow
 
 class RunnerRepositoryImpl(private val runnerDataSource: RunnerDataSource) : RunnerRepository {
-    override fun getCurrentRunnerCount(): Flow<Int> {
+    override fun getCurrentRunnerCount(): Flow<Result<Int>> {
         return runnerDataSource.getCurrentRunnerCount()
     }
 

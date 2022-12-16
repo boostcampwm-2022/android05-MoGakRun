@@ -3,6 +3,7 @@ package com.whyranoid.data.running
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.whyranoid.data.constant.CollectionId
+import com.whyranoid.domain.model.MoGakRunException
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -11,14 +12,14 @@ import kotlin.coroutines.resume
 
 class RunnerDataSourceImpl(private val db: FirebaseFirestore) : RunnerDataSource {
 
-    override fun getCurrentRunnerCount(): Flow<Int> = callbackFlow {
+    override fun getCurrentRunnerCount(): Flow<Result<Int>> = callbackFlow {
         val registration = db.collection(CollectionId.RUNNERS_COLLECTION)
             .document(CollectionId.RUNNERS_ID)
             .addSnapshotListener { snapshot, _ ->
-                snapshot?.let {
-                    val count = it.data?.size ?: -1
-                    trySend(count)
-                }
+                trySend(runCatching {
+                    snapshot?.data?.size
+                        ?: throw MoGakRunException.FileNotFoundedException
+                })
             }
 
         awaitClose {
