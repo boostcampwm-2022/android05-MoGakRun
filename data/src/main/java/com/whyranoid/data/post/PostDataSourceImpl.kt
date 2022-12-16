@@ -16,6 +16,7 @@ import com.whyranoid.data.model.RunningPostResponse
 import com.whyranoid.data.model.UserResponse
 import com.whyranoid.data.model.toGroupInfo
 import com.whyranoid.data.model.toUser
+import com.whyranoid.domain.model.MoGakRunException
 import com.whyranoid.domain.model.Post
 import com.whyranoid.domain.model.RecruitPost
 import com.whyranoid.domain.model.RunningHistory
@@ -67,35 +68,36 @@ class PostDataSourceImpl @Inject constructor(
             .await()
     }
 
-    // TODO : 예외 처리
-    override suspend fun convertPostType(document: QueryDocumentSnapshot): Post? {
+    override suspend fun convertPostType(document: QueryDocumentSnapshot): Result<Post> {
         return if (document[RUNNING_HISTORY_ID] != null) {
             document.toObject(RunningPostResponse::class.java).let { postResponse ->
-                val authorResponse = getUserResponse(postResponse.authorId)
 
-                authorResponse?.let {
-                    val runningHistory = getRunningHistory(postResponse.runningHistoryId)
+                val authorResponseResult = getUserResponse(postResponse.authorId)
+                authorResponseResult.mapCatching { authorResponse ->
 
-                    runningHistory?.let {
+                    val runningHistoryResult = getRunningHistory(postResponse.runningHistoryId)
+                    runningHistoryResult.mapCatching { runningHistory ->
+
                         RunningPost(
                             postId = postResponse.postId,
                             author = authorResponse.toUser(),
                             updatedAt = postResponse.updatedAt,
-                            runningHistory = it,
+                            runningHistory = runningHistory,
                             likeCount = 0,
                             content = postResponse.content
                         )
-                    }
+                    }.getOrThrow()
                 }
             }
+
         } else {
             document.toObject(RecruitPostResponse::class.java).let { postResponse ->
-                val authorResponse = getUserResponse(postResponse.authorId)
+                val authorResponseResult = getUserResponse(postResponse.authorId)
+                authorResponseResult.mapCatching { authorResponse ->
 
-                authorResponse?.let {
-                    val groupInfoResponse = getGroupInfoResponse(postResponse.groupId)
+                    val groupInfoResponseResult = getGroupInfoResponse(postResponse.groupId)
+                    groupInfoResponseResult.mapCatching { groupInfoResponse ->
 
-                    groupInfoResponse?.let {
                         val author = authorResponse.toUser()
                         RecruitPost(
                             postId = postResponse.postId,
@@ -109,7 +111,7 @@ class PostDataSourceImpl @Inject constructor(
                                     }
                                 )
                         )
-                    }
+                    }.getOrThrow()
                 }
             }
         }
@@ -207,31 +209,37 @@ class PostDataSourceImpl @Inject constructor(
         }
     }
 
-    // TODO : 예외 처리
-    private suspend fun getUserResponse(userId: String): UserResponse? {
-        return db.collection(CollectionId.USERS_COLLECTION)
-            .document(userId)
-            .get()
-            .await()
-            .toObject(UserResponse::class.java)
+    private suspend fun getUserResponse(userId: String): Result<UserResponse> {
+        return runCatching {
+            db.collection(CollectionId.USERS_COLLECTION)
+                .document(userId)
+                .get()
+                .await()
+                .toObject(UserResponse::class.java)
+                ?: throw MoGakRunException.FileNotFoundedException
+        }
     }
 
-    // TODO : 예외 처리
-    private suspend fun getRunningHistory(runningHistoryId: String): RunningHistory? {
-        return db.collection(CollectionId.RUNNING_HISTORY_COLLECTION)
-            .document(runningHistoryId)
-            .get()
-            .await()
-            .toObject(RunningHistory::class.java)
+    private suspend fun getRunningHistory(runningHistoryId: String): Result<RunningHistory> {
+        return runCatching {
+            db.collection(CollectionId.RUNNING_HISTORY_COLLECTION)
+                .document(runningHistoryId)
+                .get()
+                .await()
+                .toObject(RunningHistory::class.java)
+                ?: throw MoGakRunException.FileNotFoundedException
+        }
     }
 
-    // TODO : 예외 처리
-    private suspend fun getGroupInfoResponse(groupId: String): GroupInfoResponse? {
-        return db.collection(CollectionId.GROUPS_COLLECTION)
-            .document(groupId)
-            .get()
-            .await()
-            .toObject(GroupInfoResponse::class.java)
+    private suspend fun getGroupInfoResponse(groupId: String): Result<GroupInfoResponse> {
+        return runCatching {
+            db.collection(CollectionId.GROUPS_COLLECTION)
+                .document(groupId)
+                .get()
+                .await()
+                .toObject(GroupInfoResponse::class.java)
+                ?: throw MoGakRunException.FileNotFoundedException
+        }
     }
 
     companion object {
