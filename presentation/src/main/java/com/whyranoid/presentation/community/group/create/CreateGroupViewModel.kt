@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -56,8 +55,8 @@ class CreateGroupViewModel @Inject constructor(
     }
 
     val isDoubleCheckButtonEnable: StateFlow<Boolean>
-        get() = groupName.map { name ->
-            name?.trim()?.isNotEmpty() ?: false
+        get() = groupName.combine(isNotDuplicate) { name, isNotDuplicated ->
+            name?.trim()?.isNotEmpty() ?: false && isNotDuplicated.not()
         }.stateIn(
             scope = viewModelScope,
             initialValue = false,
