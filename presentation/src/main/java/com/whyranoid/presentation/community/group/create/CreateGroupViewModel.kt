@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.usecase.CheckIsDuplicatedGroupNameUseCase
 import com.whyranoid.domain.usecase.CreateGroupUseCase
+import com.whyranoid.presentation.util.MutableEventFlow
+import com.whyranoid.presentation.util.asEventFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -30,8 +30,8 @@ class CreateGroupViewModel @Inject constructor(
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
 
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
+    private val _eventFlow = MutableEventFlow<Event>()
+    val eventFlow = _eventFlow.asEventFlow()
 
     private val isNotDuplicate = MutableStateFlow(false)
 
