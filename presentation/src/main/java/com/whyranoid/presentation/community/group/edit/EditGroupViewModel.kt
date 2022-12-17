@@ -6,10 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.whyranoid.domain.model.toRule
 import com.whyranoid.domain.usecase.UpdateGroupInfoUseCase
 import com.whyranoid.presentation.model.GroupInfoUiModel
+import com.whyranoid.presentation.util.MutableEventFlow
+import com.whyranoid.presentation.util.asEventFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,8 +25,8 @@ class EditGroupViewModel @Inject constructor(
     val groupIntroduce = MutableStateFlow<String>(initGroupInfo.introduce)
     val rules = MutableStateFlow<List<String>>(initGroupInfo.rules.map { it.toString() })
 
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
+    private val _eventFlow = MutableEventFlow<Event>()
+    val eventFlow = _eventFlow.asEventFlow()
 
     fun onAddRuleButtonClicked() {
         emitEvent(Event.AddRuleButtonClick)
