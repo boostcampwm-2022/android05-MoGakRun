@@ -110,6 +110,9 @@ internal class CreateGroupFragment :
                     }
                 }
             }
+            is Event.InvalidRule -> {
+                binding.root.makeSnackBar(getString(R.string.text_invalid_rule)).show()
+            }
         }
     }
 

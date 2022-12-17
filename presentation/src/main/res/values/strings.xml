@@ -190,5 +190,6 @@
     <string name="text_minute">분</string>
     <string name="text_confirm">확인</string>
     <string name="text_rule_picker_title">요일 및 시간을 골라주세요!!</string>
+    <string name="text_invalid_rule">유효하지 않은 규칙입니다.</string>
 
 </resources>

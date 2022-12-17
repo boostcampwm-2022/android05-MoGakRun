@@ -41,6 +41,8 @@ class CreateGroupViewModel @Inject constructor(
     fun onDialogConfirm(date: String, hour: String, minute: String) {
         if (date.isNotEmpty() && hour.isNotEmpty() && minute.isNotEmpty()) {
             rules.value = rules.value + listOf("$date-$hour-$minute")
+        } else {
+            emitEvent(Event.InvalidRule)
         }
 
         _showDialog.value = false
@@ -110,10 +112,9 @@ class CreateGroupViewModel @Inject constructor(
                         _eventFlow.emit(event)
                     }
                 }
-                is Event.WarningButtonClick -> {
-                    _eventFlow.emit(event)
-                }
-                is Event.AddRuleButtonClick -> {
+                is Event.WarningButtonClick,
+                is Event.AddRuleButtonClick,
+                is Event.InvalidRule -> {
                     _eventFlow.emit(event)
                 }
             }
