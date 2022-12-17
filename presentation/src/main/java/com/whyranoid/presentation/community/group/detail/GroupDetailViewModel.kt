@@ -13,12 +13,12 @@ import com.whyranoid.domain.usecase.GetGroupNotificationsUseCase
 import com.whyranoid.domain.usecase.GetUidUseCase
 import com.whyranoid.presentation.model.GroupInfoUiModel
 import com.whyranoid.presentation.model.toGroupInfoUiModel
+import com.whyranoid.presentation.util.EventFlow
+import com.whyranoid.presentation.util.MutableEventFlow
+import com.whyranoid.presentation.util.asEventFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -44,9 +44,9 @@ class GroupDetailViewModel @Inject constructor(
     val groupInfo: StateFlow<GroupInfoUiModel>
         get() = _groupInfo.asStateFlow()
 
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow: SharedFlow<Event>
-        get() = _eventFlow.asSharedFlow()
+    private val _eventFlow = MutableEventFlow<Event>()
+    val eventFlow: EventFlow<Event>
+        get() = _eventFlow.asEventFlow()
 
     private val startNotification = MutableStateFlow<List<GroupNotification>>(emptyList())
     private val finishNotification = MutableStateFlow<List<GroupNotification>>(emptyList())
