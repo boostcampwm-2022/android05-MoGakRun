@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,6 +41,8 @@ class CreateGroupViewModel @Inject constructor(
     fun onDialogConfirm(date: String, hour: String, minute: String) {
         if (date.isNotEmpty() && hour.isNotEmpty() && minute.isNotEmpty()) {
             rules.value = rules.value + listOf("$date-$hour-$minute")
+        } else {
+            emitEvent(Event.InvalidRule)
         }
 
         _showDialog.value = false
@@ -56,8 +57,8 @@ class CreateGroupViewModel @Inject constructor(
     }
 
     val isDoubleCheckButtonEnable: StateFlow<Boolean>
-        get() = groupName.map { name ->
-            name?.trim()?.isNotEmpty() ?: false
+        get() = groupName.combine(isNotDuplicate) { name, isNotDuplicated ->
+            name?.trim()?.isNotEmpty() ?: false && isNotDuplicated.not()
         }.stateIn(
             scope = viewModelScope,
             initialValue = false,
@@ -111,10 +112,9 @@ class CreateGroupViewModel @Inject constructor(
                         _eventFlow.emit(event)
                     }
                 }
-                is Event.WarningButtonClick -> {
-                    _eventFlow.emit(event)
-                }
-                is Event.AddRuleButtonClick -> {
+                is Event.WarningButtonClick,
+                is Event.AddRuleButtonClick,
+                is Event.InvalidRule -> {
                     _eventFlow.emit(event)
                 }
             }
