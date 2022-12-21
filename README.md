@@ -8,7 +8,7 @@
 # MoGakRun
 <img height="250" src="https://user-images.githubusercontent.com/65655825/204984450-cd7aa396-edd6-4d6c-9a72-3ac9253e9675.png"></img>
 > **_모여서 각자 달려 볼까?~ 🏃‍♂️🏃‍♀️ with MoGakRun_** <br/><br/>
-> **개발기간: 2021.11.07 ~ 2021.12.16**
+> **개발기간: 2022.11.07 ~ **
 
 <br/>
 
@@ -61,7 +61,7 @@ __모여서 각자 러닝__ 을 즐길 수 있게 도와주는 당신의 러닝�
 
 > 🔑 Google 계정을 통해 로그인하면 모각런을 시작할 수 있어요!
 
-<img src="https://user-images.githubusercontent.com/44428543/207325548-5dc6354d-4916-4473-88fc-3b5725c10cc8.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207329352-668b43cc-7e77-44cc-88e8-d6855353f49e.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207327679-f386fa7b-fb9a-4c5e-af7c-73eeebac081c.png" border=1 width=30% style="border-radius:5%">  
+<img src="https://user-images.githubusercontent.com/44428543/207329352-668b43cc-7e77-44cc-88e8-d6855353f49e.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207325548-5dc6354d-4916-4473-88fc-3b5725c10cc8.png" border=1 width=30% style="border-radius:5%"> 　<img src="https://user-images.githubusercontent.com/44428543/207327679-f386fa7b-fb9a-4c5e-af7c-73eeebac081c.png" border=1 width=30% style="border-radius:5%">  
 <br/>
 <br/>   
 > 🏃 모각런과 함께 운동을 시작해 볼까요?!
