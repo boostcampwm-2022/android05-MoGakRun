@@ -1,6 +1,5 @@
 package com.whyranoid.presentation.running
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,7 +14,6 @@ import com.whyranoid.domain.usecase.StartRunningUseCase
 import com.whyranoid.runningdata.RunningDataManager
 import com.whyranoid.runningdata.model.RunningState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -25,9 +23,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RunningViewModel @Inject constructor(
-    @ApplicationContext context: Context,
+    private val workManager: WorkManager,
     startRunningUseCase: StartRunningUseCase,
-    private val finishRunningUseCase: FinishRunningUseCase
+    private val finishRunningUseCase: FinishRunningUseCase,
 ) : ViewModel() {
 
     private val runningDataManager = RunningDataManager.getInstance()
@@ -45,10 +43,10 @@ class RunningViewModel @Inject constructor(
                 startRunningUseCase()
             }
         }
-        startRunningWorker(context)
+        startRunningWorker()
     }
 
-    private fun startRunningWorker(context: Context): LiveData<WorkInfo> {
+    private fun startRunningWorker(): LiveData<WorkInfo> {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
@@ -57,13 +55,11 @@ class RunningViewModel @Inject constructor(
             .setConstraints(constraints)
             .build()
 
-        val workManager = WorkManager.getInstance(context)
-
         workManager
             .beginUniqueWork(
                 RunningWorker.WORKER_NAME,
                 ExistingWorkPolicy.KEEP,
-                runningRequest
+                runningRequest,
             )
             .enqueue()
 
